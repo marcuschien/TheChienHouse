@@ -1,5 +1,7 @@
 # Backend Engineering Practical Test
 
+For questions or clarifications, contact kelsey.champagne@lightspeedhq.com
+
 You will be implementing a simple API. You may use any language or technology you prefer. 
 It's recommended that you set up a working development environment ahead of time.
 
