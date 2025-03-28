@@ -2,13 +2,14 @@
 
 namespace LightspeedTakeHome.Models
 {
-    public class ProductContext : DbContext
+    public class RetailContext : DbContext
     {
-        public ProductContext(DbContextOptions<ProductContext> options)
+        public RetailContext(DbContextOptions<RetailContext> options)
             : base(options)
         {
         }
 
         public DbSet<Product> Products { get; set; } = null!;
+        public DbSet<Sale> Sales { get; set; } = null!;
     }
 }

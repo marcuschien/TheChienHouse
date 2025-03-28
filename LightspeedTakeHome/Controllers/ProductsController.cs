@@ -13,9 +13,9 @@ namespace LightspeedTakeHome.Controllers
     [ApiController] // This attribute indicates that the controller responds to web API requests
     public class ProductsController : ControllerBase
     {
-        private readonly ProductContext _context; // Using in memory database
+        private readonly RetailContext _context; // Using in memory database
 
-        public ProductsController(ProductContext context)
+        public ProductsController(RetailContext context)
         {
             _context = context;
         }
@@ -80,7 +80,7 @@ namespace LightspeedTakeHome.Controllers
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product); // This needs to return the line items in the sale, the line item totals, and the sale total.
         }
 
         // DELETE: api/Products/5

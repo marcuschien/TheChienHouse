@@ -14,7 +14,20 @@ GET {{LightspeedTakeHome_HostAddress}}/api/products
 
 ###
 
-@id = 1
-GET {{LightspeedTakeHome_HostAddress}}/api/products/{{id}}
+POST {{LightspeedTakeHome_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "LineItems": [
+    {
+      "ProductId": 1, 
+      "Quantity": 3
+    },
+    {
+      "ProductId": 2, 
+      "Quantity": 2
+    }
+  ]
+}
 
 ###
