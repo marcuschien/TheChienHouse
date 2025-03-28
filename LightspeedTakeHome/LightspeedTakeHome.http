@@ -1,16 +1,33 @@
 @LightspeedTakeHome_HostAddress = https://localhost:7291
 
-GET {{LightspeedTakeHome_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
-
 POST {{LightspeedTakeHome_HostAddress}}/api/products
 Content-Type: application/json
 
 {
     "name": "lightspeedProduct",
     "price": 420
+}
+
+###
+
+GET {{LightspeedTakeHome_HostAddress}}/api/products
+
+###
+
+POST {{LightspeedTakeHome_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "LineItems": [
+    {
+      "ProductId": 1, 
+      "Quantity": 3
+    },
+    {
+      "ProductId": 2, 
+      "Quantity": 2
+    }
+  ]
 }
 
 ###
