@@ -13,9 +13,9 @@ namespace LightspeedTakeHome.Controllers
     [ApiController]
     public class SalesController : ControllerBase
     {
-        private readonly SaleContext _context;
+        private readonly RetailContext _context;
 
-        public SalesController(SaleContext context)
+        public SalesController(RetailContext context)
         {
             _context = context;
         }
