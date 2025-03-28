@@ -77,10 +77,20 @@ namespace LightspeedTakeHome.Controllers
         [HttpPost]
         public async Task<ActionResult<Sale>> PostSale(Sale sale)
         {
+            
+            List<long> lineItemTotals = new List<long>(); // Index order is guaranteed with Lists in C# so it should match up with the LineItems; there's probably a more robust way to do this
+            // For each line item in the sale, calculate the total cost of the line item and add it to the total of the sale
+            foreach (LineItem lineItem in sale.LineItems)
+            {
+                lineItem.ProductForSale = await _context.Products.FindAsync(lineItem.ProductId);
+                //Write a sanity check for lineItem.ProductForSale
+                lineItem.TotalCost = lineItem.ProductForSale.Price * lineItem.Quantity;
+                lineItemTotals.Add(lineItem.TotalCost);
+                sale.Total += lineItem.TotalCost;
+            }
             _context.Sales.Add(sale);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetSale", new { id = sale.Id }, sale);
+            return CreatedAtAction("GetSale", new { id = sale.Id}, sale);
         }
 
         // DELETE: api/Sales/5
