@@ -9,6 +9,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<ProductContext>(options =>
     options.UseInMemoryDatabase("ProductList"));
+builder.Services.AddDbContext<SaleContext>(options =>
+    options.UseInMemoryDatabase("SaleList"));
 
 var app = builder.Build();
 
