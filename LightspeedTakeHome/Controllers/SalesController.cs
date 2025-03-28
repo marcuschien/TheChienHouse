@@ -78,15 +78,25 @@ namespace LightspeedTakeHome.Controllers
         public async Task<ActionResult<Sale>> PostSale(Sale sale)
         {
             
-            List<long> lineItemTotals = new List<long>(); // Index order is guaranteed with Lists in C# so it should match up with the LineItems; there's probably a more robust way to do this
+            List<double> lineItemTotals = new List<double>(); // Index order is guaranteed with Lists in C# so it should match up with the LineItems; there's probably a more robust way to do this
             // For each line item in the sale, calculate the total cost of the line item and add it to the total of the sale
             foreach (LineItem lineItem in sale.LineItems)
             {
                 lineItem.ProductForSale = await _context.Products.FindAsync(lineItem.ProductId);
                 //Write a sanity check for lineItem.ProductForSale
                 lineItem.TotalCost = lineItem.ProductForSale.Price * lineItem.Quantity;
+                lineItem.TotalCost = Math.Round(lineItem.TotalCost, 2);
                 lineItemTotals.Add(lineItem.TotalCost);
                 sale.Total += lineItem.TotalCost;
+            }
+            if (sale.SaleDiscount != null)
+            {
+                foreach (LineItem lineItem in sale.LineItems)
+                {
+                    lineItem.LineItemDiscount = Math.Round((lineItem.TotalCost / sale.Total) * (double)sale.SaleDiscount, 2);
+                    lineItem.TotalCost -= lineItem.LineItemDiscount;
+                }
+                sale.Total -= sale.SaleDiscount.Value;
             }
             _context.Sales.Add(sale);
             await _context.SaveChangesAsync();
