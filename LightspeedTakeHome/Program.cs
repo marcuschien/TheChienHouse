@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using LightspeedTakeHome.Models;
+using LightspeedTakeHome.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddDbContext<RetailContext>(options =>
     options.UseInMemoryDatabase("ProductList"));
 builder.Services.AddDbContext<RetailContext>(options =>
     options.UseInMemoryDatabase("SaleList"));
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ISaleService, SaleService>();
 
 var app = builder.Build();
 
