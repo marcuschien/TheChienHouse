@@ -51,6 +51,7 @@ namespace LightspeedTakeHome.Services
                     _logger.LogError("Could not create sale because product {ProductId} does not exist.", lineItem.ProductId);
                     return 0; // Throw a global exception here.
                 }
+                // Add sanity check for totals.
                 lineItem.TotalCost = Math.Round(result.Price * lineItem.Quantity, 2);
                 saleTotal += lineItem.TotalCost;
             }

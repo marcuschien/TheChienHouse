@@ -1,4 +1,6 @@
-﻿namespace LightspeedTakeHome.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LightspeedTakeHome.Models
 {
     public class ProductDTO
     {
@@ -7,7 +9,8 @@
          * But for the scope of this assignment, I've just kept it as one for simplicity. 
          */
         public record ProductCreateRequest(
-            string Name, // Can I make these required?
+            string Name,
+            [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
             decimal Price
         );
 
@@ -18,6 +21,7 @@
         public record ProductResponse(
             long Id,
             string Name,
+            [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
             decimal Price,
             DateTime CreatedAt,
             DateTime UpdatedAt

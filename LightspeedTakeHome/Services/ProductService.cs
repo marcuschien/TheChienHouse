@@ -28,7 +28,6 @@ namespace LightspeedTakeHome.Services
 
             return MapToResponse(product);
         }
-
         
         public async Task<IEnumerable<ProductResponse>> GetProductsAsync() // TODO: Introduce parameters int page and int pagesize to allow for pagination
         {
@@ -49,7 +48,7 @@ namespace LightspeedTakeHome.Services
             if (product == null)
             {
                 _logger.LogError("Product {ProductId} not found", id);
-                return null; //Add some globalException here
+                return null; //Add some exception here. Response should throw a different error code, depending on what we want the response to be. 
             }
 
             return MapToResponse(product);
