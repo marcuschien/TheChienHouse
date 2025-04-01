@@ -29,7 +29,7 @@ namespace LightspeedTakeHome.Controllers
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
             IEnumerable<ProductResponse> response = await _productService.GetProductsAsync();
-            return CreatedAtAction(nameof(GetProducts), response);
+            return CreatedAtAction(nameof(GetProducts), response); // Response could possibly be null, how would we handle a product being null? 
         }
 
         // GET: api/Products/5

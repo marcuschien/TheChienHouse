@@ -4,7 +4,7 @@ namespace LightspeedTakeHome.Models
 {
     public class Product
     {
-        public long Id { get; set; }
+        public long Id { get; set; } // Make me a UUID
 
         [Required(ErrorMessage = "Product name is required")]
         [StringLength(100, ErrorMessage = "Product name cannot exceed 100 characters")]

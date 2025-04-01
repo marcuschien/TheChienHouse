@@ -4,11 +4,11 @@ namespace LightspeedTakeHome.Models
 {
     public class Sale
     {
-        public long Id { get; set; }
+        public long Id { get; set; } // Make me a UUID
         public required List<LineItem> LineItems {get; set;}
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
         public decimal Total {get; set;}
-        [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Discount must be greater than 0")]
         public decimal? SaleDiscount { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // The timestamps are useful for tracing and debugging purposes 
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow; // Some customers find them useful as well
@@ -22,7 +22,7 @@ namespace LightspeedTakeHome.Models
      */
     public class LineItem
     {
-        public long Id { get; set; }
+        public long Id { get; set; } // Make me a UUID
         public required long ProductId { get; set; } // Using this to pull the Product from the DB.
         [Range(1, long.MaxValue, ErrorMessage = "Quantity must be greater than 0")]
         public required long Quantity {get; set;}
