@@ -1,0 +1,33 @@
+@TheChienHouse_HostAddress = https://localhost:7291
+
+POST {{LightspeedTakeHome_HostAddress}}/api/products
+Content-Type: application/json
+
+{
+    "name": "dish1",
+    "price": 420
+}
+
+###
+
+GET {{TheChienHouse_HostAddress}}/api/products
+
+###
+
+POST {{TheChienHouse_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "LineItems": [
+    {
+      "ProductId": 1, 
+      "Quantity": 3
+    },
+    {
+      "ProductId": 2, 
+      "Quantity": 2
+    }
+  ]
+}
+
+###
