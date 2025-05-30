@@ -40,9 +40,12 @@ namespace TheChienHouse.Controllers
             return CreatedAtAction(nameof(GetMenuItem),response); // Response could possibly be null, need to handle this case. 
         }
 
-        //TODO: Create a GET call by item category
-
-        //TODO: Create a Get call by item name 
+        [HttpGet("dishtype/{dishtype}")]
+        public async Task<ActionResult<MenuItem>> GetMenuItemsByDishType(DishType dishType)
+        {
+            IEnumerable<MenuItemResponse> response = await _menuItemService.GetMenuItemsByDishTypeAsync(dishType);
+            return CreatedAtAction(nameof(GetMenuItemsByDishType), response);
+        }
 
         // POST: api/MenuItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

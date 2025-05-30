@@ -55,8 +55,23 @@ namespace TheChienHouse.Services
             return MapToResponse(menuItem);
         }
 
+        public async Task<IEnumerable<MenuItemResponse>> GetMenuItemsByDishTypeAsync(DishType dishType)
+        {
+            List<MenuItem> menuItems = await _context.MenuItems.ToListAsync();
+            List<MenuItemResponse> response = new List<MenuItemResponse>();
+            foreach (MenuItem menuItem in menuItems) //Is there a better way I can batch this or something?
+            { // If I had a relational database I could just write a SQL query to get the items by category.
+                if (menuItem.DishType != dishType) continue; // Filter by dish type 
+                response.Add(MapToResponse(menuItem));
+            }
+            return response;
+        }
+
         private static MenuItemResponse MapToResponse(MenuItem item) =>
             new(item.Id, item.Name, item.Price, item.DishType, item.CreatedAt, item.UpdatedAt);
+        
+        //private static MenuItemResponse MapToResponse(MenuItem[] items) =>
+            //TODO: Handle the case where mutliple items are returned. Probably should do some kind of batching. 
 
     }
 }

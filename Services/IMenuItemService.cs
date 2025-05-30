@@ -1,4 +1,5 @@
-﻿using static TheChienHouse.Models.MenuItemDTO;
+﻿using TheChienHouse.Models;
+using static TheChienHouse.Models.MenuItemDTO;
 
 namespace TheChienHouse.Services
 {
@@ -7,5 +8,7 @@ namespace TheChienHouse.Services
         Task<IEnumerable<MenuItemResponse>> GetMenuItemsAsync(); // TODO: Introduce parameters int page and int pagesize to allow for pagination
         Task<MenuItemResponse> CreateMenuItemAsync(MenuItemCreateRequest request);
         Task<MenuItemResponse?> GetMenuItemByIdAsync(long id);
+
+        Task<IEnumerable<MenuItemResponse>> GetMenuItemsByDishTypeAsync(DishType dishtype);
     }
 }
