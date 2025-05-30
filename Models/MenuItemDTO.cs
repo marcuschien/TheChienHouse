@@ -11,7 +11,8 @@ namespace TheChienHouse.Models
         public record MenuItemCreateRequest(
             string Name,
             [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
-            decimal Price
+            decimal Price,
+            DishType DishType
         );
 
         public record MenuItemGetRequest(
@@ -23,6 +24,7 @@ namespace TheChienHouse.Models
             string Name,
             [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
             decimal Price,
+            DishType DishType,
             DateTime CreatedAt,
             DateTime UpdatedAt
         );

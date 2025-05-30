@@ -4,7 +4,7 @@ namespace TheChienHouse.Models
 {
     public class MenuItem
     {
-        public long Id { get; set; } // Make me a UUID
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Item name is required")]
         [StringLength(100, ErrorMessage = "Menu item name cannot exceed 100 characters")]
@@ -18,6 +18,7 @@ namespace TheChienHouse.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // The timestamps are useful for tracing and debugging purposes 
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow; // Some customers find them useful as well
     }
+
     public enum DishType
     {
         Soup,

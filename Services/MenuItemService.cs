@@ -18,7 +18,8 @@ namespace TheChienHouse.Services
             var menuItem = new MenuItem
             {
                 Name = request.Name,
-                Price = request.Price
+                Price = request.Price,
+                DishType = request.DishType
             };
 
             _context.MenuItems.Add(menuItem);
@@ -55,7 +56,7 @@ namespace TheChienHouse.Services
         }
 
         private static MenuItemResponse MapToResponse(MenuItem item) =>
-            new(item.Id, item.Name, item.Price, item.CreatedAt, item.UpdatedAt);
+            new(item.Id, item.Name, item.Price, item.DishType, item.CreatedAt, item.UpdatedAt);
 
     }
 }

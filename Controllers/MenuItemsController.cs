@@ -24,7 +24,7 @@ namespace TheChienHouse.Controllers
             _menuItemService = menuItemService;
         }
 
-        // GET: api/Products
+        // GET: api/MenuItems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MenuItem>>> GetMenuItems()
         {
@@ -32,7 +32,7 @@ namespace TheChienHouse.Controllers
             return CreatedAtAction(nameof(GetMenuItems), response); // Response could possibly be null, how would we handle a product being null? 
         }
 
-        // GET: api/Products/5
+        // GET: api/MenuItems/{MenuItemId}
         [HttpGet("{id}")]
         public async Task<ActionResult<MenuItem>> GetMenuItem(long id)
         {
@@ -40,7 +40,11 @@ namespace TheChienHouse.Controllers
             return CreatedAtAction(nameof(GetMenuItem),response); // Response could possibly be null, need to handle this case. 
         }
 
-        // POST: api/Products
+        //TODO: Create a GET call by item category
+
+        //TODO: Create a Get call by item name 
+
+        // POST: api/MenuItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<MenuItem>> PostMenuItem(MenuItemCreateRequest request)
