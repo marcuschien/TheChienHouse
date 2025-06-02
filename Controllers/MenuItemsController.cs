@@ -28,7 +28,8 @@ namespace TheChienHouse.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MenuItem>>> GetMenuItems()
         {
-            IEnumerable<MenuItemResponse> response = await _menuItemService.GetMenuItemsAsync();
+            //TODO: Modify this so that no duplicate named dishes are returned and there is a count of how many are left of that dish name. 
+            IEnumerable<MenuItemResponse> response = await _menuItemService.GetMenuItemsAsync(); 
             return CreatedAtAction(nameof(GetMenuItems), response); // Response could possibly be null, how would we handle a product being null? 
         }
 

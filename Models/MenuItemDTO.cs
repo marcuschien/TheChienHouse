@@ -9,7 +9,7 @@ namespace TheChienHouse.Models
          * But for the scope of this assignment, I've just kept it as one for simplicity. 
          */
         public record MenuItemCreateRequest(
-            string Name,
+            DishName Name,
             [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
             decimal Price,
             DishType DishType
@@ -21,12 +21,13 @@ namespace TheChienHouse.Models
 
         public record MenuItemResponse(
             long Id,
-            string Name,
+            DishName Name,
             [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
             decimal Price,
             DishType DishType,
             DateTime CreatedAt,
-            DateTime UpdatedAt
+            DateTime UpdatedAt,
+            long? Count = null // Count is optional, used for aggregating dishes with the same name
         );
     }
 }

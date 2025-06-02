@@ -7,8 +7,7 @@ namespace TheChienHouse.Models
         public long Id { get; set; }
 
         [Required(ErrorMessage = "Item name is required")]
-        [StringLength(100, ErrorMessage = "Menu item name cannot exceed 100 characters")]
-        public string? Name { get; set; } = string.Empty;
+        public DishName Name { get; set; }
 
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
         public decimal Price { get; set; }
@@ -29,6 +28,20 @@ namespace TheChienHouse.Models
         Drink,
         Side,
         Shareable
+    }
+
+    public enum DishName
+    {
+        SpotPrawnCarpaccio,
+        SpotPrawnBisque,
+        SpotPrawnPaella,
+        BeefTartare,
+        KaleSalad,
+        ChocolateCake,
+        StickyToffeePudding
+        // Does it make sense to have a DishName enum?
+        // Would be safer for matching and avoiding typos, but would require updating the enum every time a new dish is added. 
+        // If we have a lot of dishes or the menu changes frequently, this could get unwieldy.
     }
 }
 
