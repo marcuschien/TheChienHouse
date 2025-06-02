@@ -1,6 +1,7 @@
 ﻿using TheChienHouse.Models;
 using Microsoft.EntityFrameworkCore;
 using static TheChienHouse.Models.MenuItemDTO;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace TheChienHouse.Services
 {
@@ -21,18 +22,17 @@ namespace TheChienHouse.Services
                 Price = request.Price,
                 DishType = request.DishType,
             };
-            // TODO: Write validation checks to see if the dish already exists in the system. If it does, just increase the count. 
+
             _context.MenuItems.Add(menuItem);
             await _context.SaveChangesAsync();
-
             _logger.LogInformation("Created menu item {MenuItemName}", menuItem.Name);
 
             return MapToResponse(menuItem);
         }
 
-        //TODO: Create a PUT route to update the number of dishes available
+        //TODO: Create a PUT route to update a dish given ID or Name or DishType. (Might want to update the price of all apps by $1 or something)
         
-        public async Task<IEnumerable<MenuItemResponse>> GetMenuItemsAsync() // TODO: Introduce parameters int page and int pagesize to allow for pagination
+        public async Task<IEnumerable<MenuItemResponse>> GetMenuItemsAsync(DishName? name = null, DishType? dishType = null) // TODO: Introduce parameters int page and int pagesize to allow for pagination
         {
             List<MenuItem> menuItems = await _context.MenuItems.ToListAsync();
             Dictionary<DishName, MenuItem[]> dishes = new Dictionary<DishName, MenuItem[]>();
@@ -45,7 +45,26 @@ namespace TheChienHouse.Services
                 }
                 else
                 {
-                    dishes.Add(menuItem.Name, new[] { menuItem });
+                    if (name != null)
+                    {
+                        if (menuItem.Name == name)
+                        {
+                            dishes.Add(menuItem.Name, [menuItem]);
+                        }
+                        else continue;
+                    }
+                    else if (dishType != null)
+                    {
+                        if (menuItem.DishType == dishType)
+                        {
+                            dishes.Add(menuItem.Name, [menuItem]);
+                        }
+                        else continue;
+                    }
+                    else
+                    {
+                        dishes.Add(menuItem.Name, [menuItem]);
+                    }
                 }
             }
             foreach (MenuItem[] dish in dishes.Values) 
@@ -56,7 +75,7 @@ namespace TheChienHouse.Services
             return response;
         }
 
-        public async Task<MenuItemResponse?> GetMenuItemByIdAsync(long id) // Change me to get by dishName instead. 
+        public async Task<MenuItemResponse?> GetMenuItemByIdAsync(long id)
         {
             var menuItem = await _context.MenuItems.FindAsync(id);
 
@@ -67,18 +86,6 @@ namespace TheChienHouse.Services
             }
 
             return MapToResponse(menuItem);
-        }
-
-        public async Task<IEnumerable<MenuItemResponse>> GetMenuItemsByDishTypeAsync(DishType dishType)
-        {
-            List<MenuItem> menuItems = await _context.MenuItems.ToListAsync();
-            List<MenuItemResponse> response = new List<MenuItemResponse>();
-            foreach (MenuItem menuItem in menuItems) //Is there a better way I can batch this or something?
-            { // If I had a relational database I could just write a SQL query to get the items by category.
-                if (menuItem.DishType != dishType) continue; // Filter by dish type 
-                response.Add(MapToResponse(menuItem));
-            }
-            return response;
         }
 
         private static MenuItemResponse MapToResponse(MenuItem item) =>
