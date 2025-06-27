@@ -34,6 +34,7 @@ C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Microsoft.EntityFrame
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Microsoft.Extensions.Caching.Abstractions.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Microsoft.Extensions.Configuration.Abstractions.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
@@ -51,6 +52,8 @@ C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Microsoft.VisualStudi
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Mono.TextTemplating.dll
+C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\MySqlConnector.dll
+C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\MySqlConnector.DependencyInjection.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Newtonsoft.Json.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\NuGet.Common.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\NuGet.Configuration.dll
@@ -61,6 +64,7 @@ C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\NuGet.Packaging.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\NuGet.ProjectModel.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\NuGet.Protocol.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\NuGet.Versioning.dll
+C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\Pomelo.EntityFrameworkCore.MySql.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\System.CodeDom.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\System.Composition.AttributedModel.dll
 C:\Users\marcu\source\repos\TheChienHouse\bin\Debug\net9.0\System.Composition.Convention.dll

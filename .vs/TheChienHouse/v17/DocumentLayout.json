@@ -7,24 +7,64 @@
       "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:thechienhouse.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\services\\menuitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:services\\menuitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\models\\menuitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:models\\menuitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\models\\menuitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:models\\menuitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\services\\menuitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:services\\menuitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\models\\retailcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:models\\retailcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\models\\saledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:models\\saledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\models\\lineitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:models\\lineitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\models\\lineitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:models\\lineitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\controllers\\menuitemscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:controllers\\menuitemscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\services\\imenuitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:services\\imenuitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\services\\saleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:services\\saleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\models\\menuitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:models\\menuitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\thechienhouse.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:thechienhouse.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\models\\sale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:models\\sale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|c:\\users\\marcu\\source\\repos\\thechienhouse\\controllers\\salescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28AADEE2-D958-47A7-90DD-D503A0ADA420}|TheChienHouse.csproj|solutionrelative:controllers\\salescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -33,12 +73,124 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 231,
-          "SelectedChildIndex": 1,
+          "DockedWidth": 91,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{66f449b5-c823-40bc-9016-02b4d06a1a8e}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 417,
+          "SelectedChildIndex": 9,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MenuItemService.cs",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Services\\MenuItemService.cs",
+              "RelativeDocumentMoniker": "Services\\MenuItemService.cs",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Services\\MenuItemService.cs",
+              "RelativeToolTip": "Services\\MenuItemService.cs",
+              "ViewState": "AgIAAGkAAAAAAAAAAAD4v4AAAABPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T20:53:12.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "IMenuItemService.cs",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Services\\IMenuItemService.cs",
+              "RelativeDocumentMoniker": "Services\\IMenuItemService.cs",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Services\\IMenuItemService.cs",
+              "RelativeToolTip": "Services\\IMenuItemService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T23:08:00.726Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MenuItemDTO.cs",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\MenuItemDTO.cs",
+              "RelativeDocumentMoniker": "Models\\MenuItemDTO.cs",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\MenuItemDTO.cs",
+              "RelativeToolTip": "Models\\MenuItemDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBwAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T20:53:12.354Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SaleService.cs",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Services\\SaleService.cs",
+              "RelativeDocumentMoniker": "Services\\SaleService.cs",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Services\\SaleService.cs",
+              "RelativeToolTip": "Services\\SaleService.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAiwCEAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T18:38:57.923Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T19:26:32.647Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "LineItem.cs",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\LineItem.cs",
+              "RelativeDocumentMoniker": "Models\\LineItem.cs",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\LineItem.cs",
+              "RelativeToolTip": "Models\\LineItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAoAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T18:57:35.86Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LineItemDTO.cs",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\LineItemDTO.cs",
+              "RelativeDocumentMoniker": "Models\\LineItemDTO.cs",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\LineItemDTO.cs",
+              "RelativeToolTip": "Models\\LineItemDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T00:07:42.951Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MenuItem.cs",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\MenuItem.cs",
+              "RelativeDocumentMoniker": "Models\\MenuItem.cs",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\MenuItem.cs",
+              "RelativeToolTip": "Models\\MenuItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBwAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T20:53:12.338Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -48,85 +200,98 @@
               "RelativeDocumentMoniker": "TheChienHouse.http",
               "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\TheChienHouse.http",
               "RelativeToolTip": "TheChienHouse.http",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2025-05-30T19:35:11.335Z",
+              "WhenOpened": "2025-06-10T22:09:03.191Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "MenuItemDTO.cs",
-              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\MenuItemDTO.cs",
-              "RelativeDocumentMoniker": "Models\\MenuItemDTO.cs",
-              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\MenuItemDTO.cs",
-              "RelativeToolTip": "Models\\MenuItemDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T19:31:14.599Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MenuItemService.cs",
-              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Services\\MenuItemService.cs",
-              "RelativeDocumentMoniker": "Services\\MenuItemService.cs",
-              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Services\\MenuItemService.cs",
-              "RelativeToolTip": "Services\\MenuItemService.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAADoAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T19:30:19.878Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MenuItem.cs",
-              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\MenuItem.cs",
-              "RelativeDocumentMoniker": "Models\\MenuItem.cs",
-              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\MenuItem.cs",
-              "RelativeToolTip": "Models\\MenuItem.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T19:29:20.045Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "MenuItemsController.cs",
               "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Controllers\\MenuItemsController.cs",
               "RelativeDocumentMoniker": "Controllers\\MenuItemsController.cs",
               "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Controllers\\MenuItemsController.cs",
               "RelativeToolTip": "Controllers\\MenuItemsController.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAADMAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAACIAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T19:26:12.173Z",
+              "WhenOpened": "2025-06-10T20:53:12.322Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAXAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T20:10:11.077Z",
-              "EditorCaption": ""
-            }
-          ]
-        },
-        {
-          "DockedWidth": 169,
-          "SelectedChildIndex": -1,
-          "Children": [
+              "DocumentIndex": 12,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-17T19:41:18.117Z"
+            },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "RetailContext.cs",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\RetailContext.cs",
+              "RelativeDocumentMoniker": "Models\\RetailContext.cs",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\RetailContext.cs",
+              "RelativeToolTip": "Models\\RetailContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T19:18:12.364Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SaleDTO.cs",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\SaleDTO.cs",
+              "RelativeDocumentMoniker": "Models\\SaleDTO.cs",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\SaleDTO.cs",
+              "RelativeToolTip": "Models\\SaleDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T22:43:49.226Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "TheChienHouse.csproj",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\TheChienHouse.csproj",
+              "RelativeDocumentMoniker": "TheChienHouse.csproj",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\TheChienHouse.csproj",
+              "RelativeToolTip": "TheChienHouse.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAABmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-06-20T19:25:07.912Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Sale.cs",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\Sale.cs",
+              "RelativeDocumentMoniker": "Models\\Sale.cs",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Models\\Sale.cs",
+              "RelativeToolTip": "Models\\Sale.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T19:27:14.044Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "SalesController.cs",
+              "DocumentMoniker": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Controllers\\SalesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\SalesController.cs",
+              "ToolTip": "C:\\Users\\marcu\\source\\repos\\TheChienHouse\\Controllers\\SalesController.cs",
+              "RelativeToolTip": "Controllers\\SalesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAwwCEAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T20:53:12.306Z"
             }
           ]
         }

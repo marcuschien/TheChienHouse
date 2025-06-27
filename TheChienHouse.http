@@ -4,15 +4,16 @@ POST {{TheChienHouse_HostAddress}}/api/menuitems
 Content-Type: application/json
 
 {
-    "name": "spot prawn carpaccio",
+    "name": "ChocolateCake",
     "price": 420,
-    "dishType": "Appetizer"
+    "dishType": "Dessert"
 }
 
 ###
 
 GET {{TheChienHouse_HostAddress}}/api/menuitems
-
+{
+}
 ###
 
 POST {{TheChienHouse_HostAddress}}/api/sales
@@ -22,11 +23,13 @@ Content-Type: application/json
   "LineItems": [
     {
       "ProductId": 1, 
-      "Quantity": 3
+      "Quantity": 1,
+      "MenuItemForSale": "ChocolateCake"
     },
     {
       "ProductId": 2, 
-      "Quantity": 2
+      "Quantity": 2,
+      "MenuItemForSale": "SpotPrawnBisque"
     }
   ]
 }
