@@ -47,6 +47,32 @@
   },
   {
     "ContainingType": "TheChienHouse.Controllers.MenuItemsController",
+    "Method": "UpdateMenuItem",
+    "RelativePath": "api/MenuItems",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "TheChienHouse.Models.MenuItemDTO\u002BMenuItemUpdateRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TheChienHouse.Models.MenuItem",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TheChienHouse.Controllers.MenuItemsController",
     "Method": "GetMenuItem",
     "RelativePath": "api/MenuItems/{id}",
     "HttpMethod": "GET",

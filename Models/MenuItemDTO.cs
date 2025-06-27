@@ -29,5 +29,13 @@ namespace TheChienHouse.Models
             DateTime UpdatedAt,
             long? Count = null // Count is optional, used for aggregating dishes with the same name
         );
+
+        public record MenuItemUpdateRequest(
+            string OldName,
+            string OldType,
+            decimal? NewPrice = null,
+            string? NewType = null,
+            string? NewName = null
+        );
     }
 }
