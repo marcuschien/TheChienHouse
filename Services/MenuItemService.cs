@@ -88,6 +88,43 @@ namespace TheChienHouse.Services
             return MapToResponse(menuItem);
         }
 
+        public async Task<MenuItemResponse> UpdateMenuItemAsync(MenuItemUpdateRequest request)
+        {
+            // Query all menu items with the specified old name and old dish type
+            var menuItems = await _context.MenuItems
+                .Where(mi => mi.Name == request.OldName && mi.DishType == request.OldType)
+                .ToListAsync();
+
+            if (menuItems == null || menuItems.Count == 0)
+            {
+                _logger.LogError("Menu Items with Name {MenuItemName} and DishType {DishType} not found", request.OldName, request.OldType);
+                throw new KeyNotFoundException($"Menu Items with Name {request.OldName} and Dish Type {request.OldType} not found.");
+            }
+
+            // Update all matching menu items
+            foreach (var menuItem in menuItems)
+            {
+                if (!string.IsNullOrEmpty(request.NewName))
+                {
+                    menuItem.Name = request.NewName;
+                }
+                if (request.NewPrice.HasValue)
+                {
+                    menuItem.Price = request.NewPrice.Value;
+                }
+                if (!string.IsNullOrWhiteSpace(request.NewType))
+                {
+                    menuItem.DishType = request.NewType;
+                }
+                menuItem.UpdatedAt = DateTime.UtcNow;
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Return the first updated item as a response (or adjust as needed)
+            return MapToResponse(menuItems.First());
+        }
+
         private static MenuItemResponse MapToResponse(MenuItem item) =>
             new(item.Id, item.Name, item.Price, item.DishType, item.CreatedAt, item.UpdatedAt);
         
