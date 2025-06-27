@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static LineItemDTO;
 
 namespace TheChienHouse.Models
 {
     public class SaleDTO
     {
         public record SaleCreateRequest(
-            List<LineItem> LineItems,
+            List<LineItemCreateRequest> LineItems,
             [Range(0.01, double.MaxValue, ErrorMessage = "Discount must be greater than 0")]
             decimal? SaleDiscount
         );

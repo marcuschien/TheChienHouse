@@ -9,10 +9,10 @@ namespace TheChienHouse.Models
          * But for the scope of this assignment, I've just kept it as one for simplicity. 
          */
         public record MenuItemCreateRequest(
-            DishName Name,
+            string Name,
             [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
             decimal Price,
-            DishType DishType
+            string DishType
         );
 
         public record MenuItemGetRequest(
@@ -20,13 +20,13 @@ namespace TheChienHouse.Models
         );
 
         public record MenuItemResponse(
-            long Id,
-            DishName Name,
+            string Id,
+            string Name,
             [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
             decimal Price,
-            DishType DishType,
+            string DishType,
             DateTime CreatedAt,
-            DateTime UpdatedAt,
+            DateTime? UpdatedAt,
             long? Count = null // Count is optional, used for aggregating dishes with the same name
         );
 

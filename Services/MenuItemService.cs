@@ -32,10 +32,10 @@ namespace TheChienHouse.Services
 
         //TODO: Create a PUT route to update a dish given ID or Name or DishType. (Might want to update the price of all apps by $1 or something)
         
-        public async Task<IEnumerable<MenuItemResponse>> GetMenuItemsAsync(DishName? name = null, DishType? dishType = null) // TODO: Introduce parameters int page and int pagesize to allow for pagination
+        public async Task<IEnumerable<MenuItemResponse>> GetMenuItemsAsync(string? name = null, string? dishType = null) // TODO: Introduce parameters int page and int pagesize to allow for pagination
         {
             List<MenuItem> menuItems = await _context.MenuItems.ToListAsync();
-            Dictionary<DishName, MenuItem[]> dishes = new Dictionary<DishName, MenuItem[]>();
+            Dictionary<string, MenuItem[]> dishes = new Dictionary<string, MenuItem[]>();
             List<MenuItemResponse> response = new List<MenuItemResponse>();
             foreach (MenuItem menuItem in menuItems)
             {

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TheChienHouse.Models;
 using TheChienHouse.Services;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +15,11 @@ builder.Services.AddControllers()
     });
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<RetailContext>(options =>
-    options.UseInMemoryDatabase("ProductList"));
-builder.Services.AddDbContext<RetailContext>(options =>
-    options.UseInMemoryDatabase("SaleList"));
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("Default"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("Default"))
+    )
+);
 builder.Services.AddScoped<IMenuItemService, MenuItemService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
 

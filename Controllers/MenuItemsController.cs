@@ -26,7 +26,7 @@ namespace TheChienHouse.Controllers
 
         // GET: api/MenuItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MenuItem>>> GetMenuItems(DishName? name = null, DishType? dishType = null)
+        public async Task<ActionResult<IEnumerable<MenuItem>>> GetMenuItems(string? name = null, string? dishType = null)
         {
             IEnumerable<MenuItemResponse> response = await _menuItemService.GetMenuItemsAsync(name, dishType); 
             return CreatedAtAction(nameof(GetMenuItems), response); // Response could possibly be null, how would we handle a product being null? 
@@ -47,6 +47,19 @@ namespace TheChienHouse.Controllers
         {
             MenuItemResponse response = await _menuItemService.CreateMenuItemAsync(request);
             return CreatedAtAction(nameof(PostMenuItem), new { id = response.Id }, response);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<MenuItem>> UpdateMenuItem(MenuItemUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            MenuItemResponse response = await _menuItemService.UpdateMenuItemAsync(request);
+            if (response == null)
+            {
+                return NotFound();
+            }
+            return CreatedAtAction(nameof(UpdateMenuItem), response); // Return the updated menu item
         }
     }
 }
