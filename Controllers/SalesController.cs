@@ -29,6 +29,8 @@ namespace TheChienHouse.Controllers
         [HttpPost]
         public async Task<ActionResult<Sale>> PostSale(SaleCreateRequest request)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             SaleCreateResponse response = await _saleService.CreateSaleAsync(request);
             return CreatedAtAction(nameof(PostSale), new { id = response.Id }, response);
         }
