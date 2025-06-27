@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TheChienHouse")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7abcd05d22ddf5f70e1ffd045948fa27e0e01a4b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+313e2ed62997ce9775178255a0a0ddedd89b3411")]
 [assembly: System.Reflection.AssemblyProductAttribute("TheChienHouse")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TheChienHouse")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
