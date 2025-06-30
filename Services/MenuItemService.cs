@@ -18,6 +18,7 @@ namespace TheChienHouse.Services
         {
             var menuItem = new MenuItem
             {
+                Id = Guid.NewGuid().ToString(), // Generate a new unique ID for the menu item
                 Name = request.Name,
                 Price = request.Price,
                 DishType = request.DishType,

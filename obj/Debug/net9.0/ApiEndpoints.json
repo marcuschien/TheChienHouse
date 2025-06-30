@@ -60,7 +60,7 @@
     "ContainingType": "TheChienHouse.Controllers.MenuItemsController",
     "Method": "UpdateMenuItem",
     "RelativePath": "api/MenuItems",
-    "HttpMethod": "POST",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
