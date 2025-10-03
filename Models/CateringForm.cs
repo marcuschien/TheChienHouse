@@ -20,6 +20,16 @@ namespace TheChienHouse.Models
         public string? ContactEmail { get; set; }
 
         public string? ContactPhoneNumber { get; set; }
+        public required string ClientName { get; set; }
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        public string? ClientEmail { get; set; }
+        [Required(ErrorMessage = "Phone number is required")]
+        [Phone(ErrorMessage = "Invalid phone number")]
+        public string? ClientPhoneNumber { get; set; }
+        public Status Status { get; set; } = Status.Pending;
+        public DateTime CreatedAt { get; init; }
+        public DateTime? UpdatedAt { get; init; }
 
     }
 
