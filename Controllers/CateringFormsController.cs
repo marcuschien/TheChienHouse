@@ -6,12 +6,10 @@ namespace TheChienHouse.Controllers
 {
     public class CateringFormsController:ControllerBase
     {
-        private readonly RetailContext _context;
         private readonly ICateringFormService _cateringFormService;
 
-        public CateringFormsController(RetailContext context, ICateringFormService cateringFormService)
+        public CateringFormsController(ICateringFormService cateringFormService)
         {
-            _context = context;
             _cateringFormService = cateringFormService;
         }
 
