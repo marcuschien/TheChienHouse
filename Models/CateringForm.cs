@@ -4,30 +4,20 @@ namespace TheChienHouse.Models
 {
     public class CateringForm
     {
-        public Guid Id { get; set; }
-
+        [Required(ErrorMessage = "CateringType is required")]
         public CateringType CateringType { get; set; }
-
-        public List<DietaryRestrictions> MenuItems { get; set; } = new List<DietaryRestrictions>();
-
-        public Guid? ClientId { get; set; }
-
+        [Required(ErrorMessage = "DietaryRestrictions is required")]
+        public List<DietaryRestrictions> DietaryRestrictions { get; set; } = new List<DietaryRestrictions>();
+        [Required(ErrorMessage = "Event Date is required")]
         public DateTime EventDate { get; set; }
-
-        [Required(ErrorMessage = "Contact name is required")]
-        public required string ContactName { get; set; }
-
-        public string? ContactEmail { get; set; }
-
-        public string? ContactPhoneNumber { get; set; }
+        [Required(ErrorMessage = "Client name is required")]
         public required string ClientName { get; set; }
-        [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage = "Invalid email address")]
-        public string? ClientEmail { get; set; }
-        [Required(ErrorMessage = "Phone number is required")]
-        [Phone(ErrorMessage = "Invalid phone number")]
-        public string? ClientPhoneNumber { get; set; }
+        [Required(ErrorMessage = "CateringForm Status is required")]
         public Status Status { get; set; } = Status.Pending;
+        public Guid Id { get; set; }
+        public Guid? ClientId { get; set; }
+        public string? ClientEmail { get; set; }
+        public string? ClientPhoneNumber { get; set; }
         public DateTime CreatedAt { get; init; }
         public DateTime? UpdatedAt { get; init; }
 
