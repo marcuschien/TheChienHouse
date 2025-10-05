@@ -18,9 +18,8 @@ namespace TheChienHouse.Controllers
         private readonly RetailContext _context; // Using in memory database
         private readonly IMenuItemService _menuItemService; // Utilizing the service layer to fetch requested data
 
-        public MenuItemsController(RetailContext context, IMenuItemService menuItemService)
+        public MenuItemsController(IMenuItemService menuItemService)
         {
-            _context = context;
             _menuItemService = menuItemService;
         }
 
@@ -49,7 +48,7 @@ namespace TheChienHouse.Controllers
             return CreatedAtAction(nameof(PostMenuItem), new { id = response.Id }, response);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<ActionResult<MenuItem>> UpdateMenuItem(MenuItemUpdateRequest request)
         {
             if (!ModelState.IsValid)

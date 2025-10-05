@@ -18,9 +18,8 @@ namespace TheChienHouse.Controllers
         private readonly RetailContext _context;
         private readonly ISaleService _saleService;
 
-        public SalesController(RetailContext context, ISaleService saleService)
+        public SalesController(ISaleService saleService)
         {
-            _context = context;
             _saleService = saleService;
         }
 
