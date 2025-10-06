@@ -11,14 +11,15 @@ namespace TheChienHouse.Models
 
         public DbSet<MenuItem> MenuItems { get; set; } = null!;
         public DbSet<Sale> Sales { get; set; } = null!;
+        public DbSet<CateringForm> CateringForms { get; set; } = null!;
 
+        // Creating the DB models so that API can map to it correctly
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Customizing the MenuItem table and columns
             modelBuilder.Entity<MenuItem>(entity =>
             {
                 entity.ToTable("MenuItems"); // Table name
-
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.Name).HasColumnName("dish_name");
                 entity.Property(e => e.Price).HasColumnName("price");
@@ -28,6 +29,7 @@ namespace TheChienHouse.Models
             });
 
             //Customizing the Sale table and columns
+            //TODO: Validate this is correct. Aren't there more properties?
             modelBuilder.Entity<Sale>(entity =>
             {
                 entity.ToTable("Sales");
@@ -35,6 +37,22 @@ namespace TheChienHouse.Models
                 // Add more property configurations as needed
             });
 
+            //Customizing the CateringForm table and columns
+            modelBuilder.Entity<CateringForm>(entity =>
+            {
+                entity.ToTable("CateringForms");
+                entity.Property(e => e.Id).HasColumnName("form_id");
+                entity.Property(e => e.ClientId).HasColumnName("client_id");
+                entity.Property(e => e.CateringType).HasColumnName("catering_type");
+                entity.Property(e => e.DietaryRestrictions).HasColumnName("dietary_restrictions");
+                entity.Property(e => e.EventDate).HasColumnName("event_date");
+                entity.Property(e => e.ClientName).HasColumnName("client_name");
+                entity.Property(e => e.ClientEmail).HasColumnName("client_email");
+                entity.Property(e => e.ClientPhoneNumber).HasColumnName("client_phone_number");
+                entity.Property(e => e.Status).HasColumnName("status");
+                entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+                entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
+            });
             // Add additional configurations here
         }
     }
