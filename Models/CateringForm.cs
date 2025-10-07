@@ -19,7 +19,7 @@ namespace TheChienHouse.Models
         public string? ClientEmail { get; set; }
         public string? ClientPhoneNumber { get; set; }
         public DateTime CreatedAt { get; init; }
-        public DateTime? UpdatedAt { get; init; }
+        public DateTime? UpdatedAt { get; set; }
 
     }
 
