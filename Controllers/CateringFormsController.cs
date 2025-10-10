@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TheChienHouse.Services;
 using TheChienHouse.Models;
+using static TheChienHouse.Models.CateringFormDTO;
 
 namespace TheChienHouse.Controllers
 {
@@ -15,7 +16,7 @@ namespace TheChienHouse.Controllers
 
         //GET: api/CateringForms/{id}
         //TODO: Implement/Fix Me
-        [HttpGet("{id}")]
+        [HttpGet("form/{id}")]
         public async Task<ActionResult<CateringForm>> GetCateringForm(Guid id)
         {
             CateringForm? response = await _cateringFormService.GetCateringFormByIdAsync(id);
@@ -28,18 +29,17 @@ namespace TheChienHouse.Controllers
 
         //GET: api/CateringForms?clientId={clientId}&status={status}&startDate={startDate}&endDate={endDate}
         //TODO: Implement/Fix Me
-        [HttpGet("client/{clientId}")]
-        public async Task<ActionResult<IEnumerable<CateringForm>>> GetCateringFormsByClientId(Guid clientId, Status? status = null, DateTime? startDate = null, DateTime? endDate = null)
+        [HttpGet("forms/{clientId}&{status}&{startDate}&{endDate}")]
+        public async Task<ActionResult<IEnumerable<CateringForm>>> GetCateringForms(Guid? clientId = null, Status? status = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            IEnumerable<CateringForm> response = await _cateringFormService.GetCateringFormsByClientIdAsync(clientId);
-            return CreatedAtAction(nameof(GetCateringFormsByClientId), response);
+            IEnumerable<CateringForm> response = await _cateringFormService.GetCateringFormsAsync(clientId, status, startDate, endDate);
+            return CreatedAtAction(nameof(GetCateringForms), response);
         }
-
 
         //POST: api/CateringForms
         //TODO: Implement/Fix Me
         [HttpPost]
-        public async Task<ActionResult<CateringForm>> UpdateCateringForm(CateringFormDTO.CateringFormCreateRequest request)
+        public async Task<ActionResult<CateringForm>> UpdateCateringForm(CateringFormCreateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -50,7 +50,7 @@ namespace TheChienHouse.Controllers
         //PUT: api/CateringForms
         //TODO: Implement/Fix Me
         [HttpPut]
-        public async Task<ActionResult<CateringForm>> PostCateringForm(CateringFormDTO.CateringFormCreateRequest request)
+        public async Task<ActionResult<CateringForm>> PostCateringForm(CateringFormCreateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

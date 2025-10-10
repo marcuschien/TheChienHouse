@@ -67,42 +67,31 @@ namespace TheChienHouse.Services
             }
         }
 
-        public async Task<IEnumerable<CateringForm>> GetCateringFormsByClientIdAsync(Guid clientId) // Why do I want this to be async?
+        public async Task<IEnumerable<CateringForm>> GetCateringFormsAsync(Guid? clientId, Status? status, DateTime? startDate, DateTime? endDate) // Why do I want this to be async?
         {
-            List<CateringForm> cateringForms = await _context.CateringForms.ToListAsync(); //Optimization: Filter at the database level instead of in-memory.
-            return cateringForms.Where(cf => cf.ClientId == clientId);
-        }
-
-        public async Task<IEnumerable<CateringForm>> GetCateringFormsByDateRangeAsync(DateTime startDate, DateTime endDate, Guid? clientId = null)
-        {
-            if (startDate > endDate)
-            {
-                throw new ArgumentException("Start date must be earlier than or equal to end date.");
-            }
+            List<CateringForm> cateringForms = await _context.CateringForms.ToListAsync();
             if (clientId.HasValue)
             {
-                List<CateringForm> cateringForms = GetCateringFormsByClientIdAsync(clientId.Value).Result.ToList();
-                return cateringForms.Where(cf => cf.EventDate >= startDate && cf.EventDate <= endDate);
+                cateringForms = (List<CateringForm>)cateringForms.Where(cf => cf.ClientId == clientId);
             }
-            else
+            if (status.HasValue)
             {
-                List<CateringForm> cateringForms = await _context.CateringForms.ToListAsync();
-                return cateringForms.Where(cf => cf.EventDate >= startDate && cf.EventDate <= endDate);
+                cateringForms = (List<CateringForm>)cateringForms.Where(cf => cf.Status == status);
             }
-        }
-
-        public async Task<IEnumerable<CateringForm>> GetCateringFormsByStatusAsync(Status status, Guid? clientId = null)
-        {
-            if (clientId.HasValue)
+            if (startDate.HasValue || endDate.HasValue)
             {
-                List<CateringForm> cateringForms = GetCateringFormsByClientIdAsync(clientId.Value).Result.ToList();
-                return cateringForms.Where(cf => cf.Status == status);
+                if (!startDate.HasValue || !endDate.HasValue)
+                {
+                    throw new ArgumentException("Both start date and end date must be provided for date range filtering.");
+                }
+                if (startDate > endDate)
+                {
+                    throw new ArgumentException("Start date must be earlier than or equal to end date.");
+                }
+                cateringForms = (List<CateringForm>)cateringForms.Where(cf => cf.EventDate >= startDate && cf.EventDate <= endDate);
             }
-            else
-            {
-                List<CateringForm> cateringForms = await _context.CateringForms.ToListAsync();
-                return cateringForms.Where(cf => cf.Status == status);
-            }
+            return cateringForms;
+            //Optimization?: Would it be better to filter at the database level instead of in-memory? i.e. write a different query for each filter type?
         }
 
         public async Task<CateringFormCreateResponse?> UpdateCateringFormAsync(CateringFormCreateRequest request)
