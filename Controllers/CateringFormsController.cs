@@ -36,15 +36,13 @@ namespace TheChienHouse.Controllers
             return CreatedAtAction(nameof(GetCateringForms), response);
         }
 
-        //POST: api/CateringForms
-        //TODO: Implement/Fix Me
         [HttpPost]
         public async Task<ActionResult<CateringForm>> UpdateCateringForm(CateringFormCreateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            CateringFormDTO.CateringFormCreateResponse response = await _cateringFormService.CreateCateringFormAsync(request);
-            return CreatedAtAction(nameof(PostCateringForm), new { id = response.Id }, response);
+            CateringFormCreateResponse response = await _cateringFormService.UpdateCateringFormAsync(request);
+            return CreatedAtAction(nameof(UpdateCateringForm), new { id = response.Id }, response);
         }
 
         //PUT: api/CateringForms
