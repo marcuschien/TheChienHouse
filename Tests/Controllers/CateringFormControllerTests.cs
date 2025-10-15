@@ -50,6 +50,17 @@ namespace TheChienHouse.Tests.Controllers
             _testCateringForm.UpdatedAt
         );
         private static readonly CateringFormCreateRequest _testCreateRequest = new CateringFormCreateRequest(
+                _testCateringForm.CateringType,
+                _testCateringForm.DietaryRestrictions,
+                _testCateringForm.ClientId,
+                _testCateringForm.EventDate,
+                _testCateringForm.ClientName,
+                _testCateringForm.ClientEmail,
+                _testCateringForm.ClientPhoneNumber,
+                _testCateringForm.Status
+        );
+
+        private static readonly CateringFormUpdateRequest _testUpdateRequest = new CateringFormUpdateRequest(
                 _testCateringForm.Id,
                 _testCateringForm.CateringType,
                 _testCateringForm.DietaryRestrictions,
@@ -58,10 +69,8 @@ namespace TheChienHouse.Tests.Controllers
                 _testCateringForm.ClientName,
                 _testCateringForm.ClientEmail,
                 _testCateringForm.ClientPhoneNumber,
-                _testCateringForm.Status,
-                _testCateringForm.CreatedAt,
-                _testCateringForm.UpdatedAt
-        );
+                _testCateringForm.Status
+            );
 
         public CateringFormControllerTests()
         {
@@ -277,7 +286,6 @@ namespace TheChienHouse.Tests.Controllers
                 .ThrowsAsync(new ArgumentException("Missing required fields."));
 
             var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringController.PostCateringForm(new CateringFormCreateRequest( //How would this gracefully handle null arguments/missing fields instead of throwing an exception? Can we use the Front End to guarantee these parameters are always provided?
-                _testCateringForm.Id,
                 _testCateringForm.CateringType,
                 [],
                 _testCateringForm.ClientId,
@@ -285,9 +293,7 @@ namespace TheChienHouse.Tests.Controllers
                 _testCateringForm.ClientName,
                 _testCateringForm.ClientEmail,
                 _testCateringForm.ClientPhoneNumber,
-                _testCateringForm.Status,
-                _testCateringForm.CreatedAt,
-                _testCateringForm.UpdatedAt
+                _testCateringForm.Status
             )));
 
             Assert.Equal("Missing required fields.", result.Message);
@@ -303,7 +309,6 @@ namespace TheChienHouse.Tests.Controllers
                 .ThrowsAsync(new Exception("Duplicate submission found. Catering form not created"));
 
             var result = await Assert.ThrowsAsync<Exception>(() => _cateringController.PostCateringForm(new CateringFormCreateRequest(
-                cateringform.Id,
                 cateringform.CateringType,
                 cateringform.DietaryRestrictions,
                 cateringform.ClientId,
@@ -311,9 +316,7 @@ namespace TheChienHouse.Tests.Controllers
                 cateringform.ClientName,
                 cateringform.ClientEmail,
                 cateringform.ClientPhoneNumber,
-                cateringform.Status,
-                cateringform.CreatedAt,
-                cateringform.UpdatedAt
+                cateringform.Status
             )));
 
             Assert.Equal("Duplicate submission found. Catering form not created", result.Message);
@@ -322,9 +325,9 @@ namespace TheChienHouse.Tests.Controllers
         [Fact]
         public async Task UpdateCateringForm_Success()
         {
-            _mockCateringService.Setup(service => service.UpdateCateringFormAsync(It.IsAny<CateringFormCreateRequest>()))
+            _mockCateringService.Setup(service => service.UpdateCateringFormAsync(It.IsAny<CateringFormUpdateRequest>()))
                 .ReturnsAsync(_testCreateResponse);
-            var result = await _cateringController.UpdateCateringForm(_testCreateRequest);
+            var result = await _cateringController.UpdateCateringForm(_testUpdateRequest);
             Assert.IsType<CreatedAtActionResult>(result.Result);
             var actionResult = Assert.IsType<ActionResult<CateringForm>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
@@ -335,9 +338,9 @@ namespace TheChienHouse.Tests.Controllers
         [Fact]
         public async Task UpdateCateringForm_InvalidId()
         {
-            _mockCateringService.Setup(service => service.UpdateCateringFormAsync(It.IsAny<CateringFormCreateRequest>()))
+            _mockCateringService.Setup(service => service.UpdateCateringFormAsync(It.IsAny<CateringFormUpdateRequest>()))
                 .ThrowsAsync(new ArgumentException("Catering form with the provided ID does not exist."));
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringController.UpdateCateringForm(_testCreateRequest));
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringController.UpdateCateringForm(_testUpdateRequest));
             //TODO: Figure out how to handle this more gracefully. Currently throws an NRE instead of an ArgumentException. Also this should not throw an ArgumentException, but something more specific to invalid Id.
             //Assert.Equal("Catering form with the provided ID does not exist.", result.Message);
         }
@@ -346,18 +349,18 @@ namespace TheChienHouse.Tests.Controllers
         public async Task UpdateCateringForm_InvalidData()
         {
             //TODO: Figure out how to handle this more gracefully. Currently throws an NRE instead of an ArgumentException. Also this should not throw an ArgumentException, but something more specific to invalid data.
-            _mockCateringService.Setup(service => service.UpdateCateringFormAsync(It.IsAny<CateringFormCreateRequest>()))
+            _mockCateringService.Setup(service => service.UpdateCateringFormAsync(It.IsAny<CateringFormUpdateRequest>()))
                 .ThrowsAsync(new ArgumentException("Invalid data provided for update."));
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringController.UpdateCateringForm(_testCreateRequest));
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringController.UpdateCateringForm(_testUpdateRequest));
             //Assert.Equal("Invalid data provided for update.", result.Message);
         }
 
         [Fact]
         public async Task UpdateCateringForm_TrivialUpdate()
         {
-            _mockCateringService.Setup(service => service.UpdateCateringFormAsync(It.IsAny<CateringFormCreateRequest>()))
+            _mockCateringService.Setup(service => service.UpdateCateringFormAsync(It.IsAny<CateringFormUpdateRequest>()))
                 .ThrowsAsync(new ArgumentException("No changes detected in the update request."));
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringController.UpdateCateringForm(_testCreateRequest));
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringController.UpdateCateringForm(_testUpdateRequest));
             //TODO: Figure out how to handle this more gracefully. Currently throws an NRE instead of an ArgumentException. Also this should not throw an ArgumentException, but something more specific to trivial update.
             //Assert.Equal("No changes detected in the update request.", result.Message);
         }

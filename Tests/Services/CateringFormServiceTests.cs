@@ -8,6 +8,8 @@ using TheChienHouse.Services;
 using Xunit;
 using static TheChienHouse.Models.CateringFormDTO;
 
+
+//TODO: FIX ME. Currently these tests are failing because the same catering form is trying to be added to the in-memory DB multiple times (on each test run).
 namespace TheChienHouse.Tests.Services
 {
     public class CateringFormServiceTests
@@ -15,7 +17,7 @@ namespace TheChienHouse.Tests.Services
         private readonly CateringFormService _cateringService;
         private readonly RetailContext _context;
         private readonly Mock<ILogger<CateringFormService>> _mockLogger;
-        //TODO: Eventually I should migrate these to a test database seeding strategy.
+        //TODO: Eventually I should migrate these to a test database. 
         private static readonly Guid _testClientId = Guid.NewGuid();
         private static readonly CateringForm _testCateringForm = new CateringForm
         {
@@ -35,6 +37,17 @@ namespace TheChienHouse.Tests.Services
             new CateringForm { Id = Guid.NewGuid(), CateringType = CateringType.Delivery, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "NotKennedy", ClientId = Guid.NewGuid(), Status = Status.Cancelled }
         };
         private static readonly CateringFormCreateRequest _testCreateRequest = new CateringFormCreateRequest(
+                _testCateringForm.CateringType,
+                _testCateringForm.DietaryRestrictions,
+                _testCateringForm.ClientId,
+                _testCateringForm.EventDate,
+                _testCateringForm.ClientName,
+                _testCateringForm.ClientEmail,
+                _testCateringForm.ClientPhoneNumber,
+                _testCateringForm.Status
+        );
+
+        private static readonly CateringFormUpdateRequest _testUpdateRequest = new CateringFormUpdateRequest(
                 _testCateringForm.Id,
                 _testCateringForm.CateringType,
                 _testCateringForm.DietaryRestrictions,
@@ -43,10 +56,8 @@ namespace TheChienHouse.Tests.Services
                 _testCateringForm.ClientName,
                 _testCateringForm.ClientEmail,
                 _testCateringForm.ClientPhoneNumber,
-                _testCateringForm.Status,
-                _testCateringForm.CreatedAt,
-                _testCateringForm.UpdatedAt
-        );
+                _testCateringForm.Status
+            );
 
         public CateringFormServiceTests() //TODO: Figure out how to populate DB context with test data just ONCE so that duplicate items aren't trying to be added. 
         {
@@ -190,7 +201,6 @@ namespace TheChienHouse.Tests.Services
         public async Task CreateCateringForm_MissingRequiredFields()
         {
             var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringService.CreateCateringFormAsync(new CateringFormCreateRequest( //How would this gracefully handle null arguments/missing fields instead of throwing an exception? Can we use the Front End to guarantee these parameters are always provided?
-                _testCateringForm.Id,
                 _testCateringForm.CateringType,
                 [],
                 _testCateringForm.ClientId,
@@ -198,9 +208,7 @@ namespace TheChienHouse.Tests.Services
                 _testCateringForm.ClientName,
                 _testCateringForm.ClientEmail,
                 _testCateringForm.ClientPhoneNumber,
-                _testCateringForm.Status,
-                _testCateringForm.CreatedAt,
-                _testCateringForm.UpdatedAt
+                _testCateringForm.Status
             )));
 
             Assert.Equal("Missing required fields.", result.Message);
@@ -210,7 +218,6 @@ namespace TheChienHouse.Tests.Services
         public async Task CreateCateringForm_DuplicateSubmission()
         {
             var result = await Assert.ThrowsAsync<Exception>(() => _cateringService.CreateCateringFormAsync(new CateringFormCreateRequest(
-                _testCateringForm.Id,
                 _testCateringForm.CateringType,
                 _testCateringForm.DietaryRestrictions,
                 _testCateringForm.ClientId,
@@ -218,9 +225,7 @@ namespace TheChienHouse.Tests.Services
                 _testCateringForm.ClientName,
                 _testCateringForm.ClientEmail,
                 _testCateringForm.ClientPhoneNumber,
-                _testCateringForm.Status,
-                _testCateringForm.CreatedAt,
-                _testCateringForm.UpdatedAt
+                _testCateringForm.Status
             )));
 
             Assert.Equal("Duplicate submission found. Catering form not created", result.Message);
@@ -229,14 +234,14 @@ namespace TheChienHouse.Tests.Services
         [Fact]
         public async Task UpdateCateringForm_Success()
         {
-            var result = await _cateringService.UpdateCateringFormAsync(_testCreateRequest);
+            var result = await _cateringService.UpdateCateringFormAsync(_testUpdateRequest);
             Assert.True(ValidateCateringForm(ConvertResponseToForm(result), _testCateringForm));
         }
 
         [Fact]
         public async Task UpdateCateringForm_InvalidId()
         {
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringService.UpdateCateringFormAsync(_testCreateRequest));
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringService.UpdateCateringFormAsync(_testUpdateRequest));
             //TODO: Figure out how to handle this more gracefully. Currently throws an NRE instead of an ArgumentException. Also this should not throw an ArgumentException, but something more specific to invalid Id.
             //Assert.Equal("Catering form with the provided ID does not exist.", result.Message);
         }
@@ -245,14 +250,14 @@ namespace TheChienHouse.Tests.Services
         public async Task UpdateCateringForm_InvalidData()
         {
             //TODO: Figure out how to handle this more gracefully. Currently throws an NRE instead of an ArgumentException. Also this should not throw an ArgumentException, but something more specific to invalid data.
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringService.UpdateCateringFormAsync(_testCreateRequest));
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringService.UpdateCateringFormAsync(_testUpdateRequest));
             //Assert.Equal("Invalid data provided for update.", result.Message);
         }
 
         [Fact]
         public async Task UpdateCateringForm_TrivialUpdate()
         {
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringService.UpdateCateringFormAsync(_testCreateRequest));
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringService.UpdateCateringFormAsync(_testUpdateRequest));
             //TODO: Figure out how to handle this more gracefully. Currently throws an NRE instead of an ArgumentException. Also this should not throw an ArgumentException, but something more specific to trivial update.
             //Assert.Equal("No changes detected in the update request.", result.Message);
         }

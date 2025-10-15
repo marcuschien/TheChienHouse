@@ -4,7 +4,7 @@ namespace TheChienHouse.Models
 {
     public class MenuItem
     {
-        public string Id { get; set; } // TO DO: Make me a Guid. Currently a string because it matches with what the database expects. 
+        public string Id { get; set; } // TO DO: Make me a Guid. 
 
         [Required(ErrorMessage = "Item name is required")]
         public required string Name { get; set; }

@@ -33,5 +33,25 @@ Content-Type: application/json
     }
   ]
 }
+###
+
+POST {{TheChienHouse_HostAddress}}/api/cateringforms
+Content-Type: application/json
+{
+    "CateringType": "Onsite",
+    "DietaryRestrictions": ["None"],
+    "ClientId": "b1a7c8e2-1234-4cde-9abc-1234567890ab",
+    "EventDate": "2026-02-02T22:00:00",
+    "ClientName": "Marcus",
+    "ClientEmail": "TestEmail@Test.Com",
+    "ClientPhoneNumber": "4165127176",
+    "Status": "Confirmed"
+}
 
 ###
+
+GET {{TheChienHouse_HostAddress}}/api/cateringforms/form/{id}
+Content-Type: application/json
+{
+    "Id": ""
+}
