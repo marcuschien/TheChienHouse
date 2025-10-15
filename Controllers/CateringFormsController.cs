@@ -5,6 +5,8 @@ using static TheChienHouse.Models.CateringFormDTO;
 
 namespace TheChienHouse.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class CateringFormsController:ControllerBase
     {
         private readonly ICateringFormService _cateringFormService;
@@ -36,8 +38,8 @@ namespace TheChienHouse.Controllers
             return CreatedAtAction(nameof(GetCateringForms), response);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<CateringForm>> UpdateCateringForm(CateringFormCreateRequest request)
+        [HttpPut]
+        public async Task<ActionResult<CateringForm>> UpdateCateringForm(CateringFormUpdateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -46,13 +48,12 @@ namespace TheChienHouse.Controllers
         }
 
         //PUT: api/CateringForms
-        //TODO: Implement/Fix Me
-        [HttpPut]
+        [HttpPost]
         public async Task<ActionResult<CateringForm>> PostCateringForm(CateringFormCreateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            CateringFormDTO.CateringFormCreateResponse response = await _cateringFormService.CreateCateringFormAsync(request);
+            CateringFormCreateResponse response = await _cateringFormService.CreateCateringFormAsync(request);
             return CreatedAtAction(nameof(UpdateCateringForm), new { id = response.Id }, response);
         }
 

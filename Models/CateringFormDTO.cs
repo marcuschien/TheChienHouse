@@ -6,7 +6,6 @@ namespace TheChienHouse.Models
     {
         public record CateringFormCreateRequest
         (
-            Guid Id,
             CateringType CateringType,
             List<DietaryRestrictions> DietaryRestrictions,
             Guid? ClientId,
@@ -14,9 +13,7 @@ namespace TheChienHouse.Models
             string ClientName,
             string? ClientEmail,
             string? ClientPhoneNumber,
-            Status Status,
-            DateTime CreatedAt,
-            DateTime? UpdatedAt
+            Status Status
         );
         public record CateringFormCreateResponse( // These will be used as part of the success confirmation pop up after submission.
             Guid Id,
@@ -30,6 +27,18 @@ namespace TheChienHouse.Models
             Status Status,
             DateTime CreatedAt,
             DateTime? UpdatedAt
+        );
+        public record CateringFormUpdateRequest
+        (
+            Guid Id,
+            CateringType CateringType,
+            List<DietaryRestrictions> DietaryRestrictions,
+            Guid? ClientId,
+            DateTime EventDate,
+            string ClientName,
+            string? ClientEmail,
+            string? ClientPhoneNumber,
+            Status Status
         );
     }
 }

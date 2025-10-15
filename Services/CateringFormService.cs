@@ -94,7 +94,7 @@ namespace TheChienHouse.Services
             //Optimization?: Would it be better to filter at the database level instead of in-memory? i.e. write a different query for each filter type?
         }
 
-        public async Task<CateringFormCreateResponse> UpdateCateringFormAsync(CateringFormCreateRequest request)
+        public async Task<CateringFormCreateResponse> UpdateCateringFormAsync(CateringFormUpdateRequest request)
         {
             CateringForm? form = await _context.CateringForms.FindAsync(request.Id);
             if (form == null)
