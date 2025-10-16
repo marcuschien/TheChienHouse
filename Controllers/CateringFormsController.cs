@@ -43,7 +43,9 @@ namespace TheChienHouse.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            CateringFormCreateResponse response = await _cateringFormService.UpdateCateringFormAsync(request);
+            CateringFormCreateResponse? response = await _cateringFormService.UpdateCateringFormAsync(request);
+            if (response == null)
+                return NotFound(new { message = $"Catering form with ID '{request.Id}' was not found." });
             return CreatedAtAction(nameof(UpdateCateringForm), new { id = response.Id }, response);
         }
 

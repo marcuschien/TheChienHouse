@@ -340,9 +340,7 @@ namespace TheChienHouse.Tests.Controllers
         {
             _mockCateringService.Setup(service => service.UpdateCateringFormAsync(It.IsAny<CateringFormUpdateRequest>()))
                 .ThrowsAsync(new ArgumentException("Catering form with the provided ID does not exist."));
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringController.UpdateCateringForm(_testUpdateRequest));
-            //TODO: Figure out how to handle this more gracefully. Currently throws an NRE instead of an ArgumentException. Also this should not throw an ArgumentException, but something more specific to invalid Id.
-            //Assert.Equal("Catering form with the provided ID does not exist.", result.Message);
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => _cateringController.UpdateCateringForm(_testUpdateRequest)); //TODO: Update me. Should return 404 with message "Catering form with ID '{id}' was not found."
         }
 
         [Fact]
