@@ -2,17 +2,17 @@
 
 namespace TheChienHouse.Models
 {
-    public class CateringForm
+    public class EventForm
     {
-        [Required(ErrorMessage = "CateringType is required")]
-        public CateringType CateringType { get; set; }
+        [Required(ErrorMessage = "EventType is required")]
+        public EventType EventType { get; set; }
         [Required(ErrorMessage = "DietaryRestrictions is required")]
         public List<DietaryRestrictions> DietaryRestrictions { get; set; } = new List<DietaryRestrictions>();
         [Required(ErrorMessage = "Event Date is required")]
         public DateTime EventDate { get; set; }
         [Required(ErrorMessage = "Client name is required")]
         public required string ClientName { get; set; }
-        [Required(ErrorMessage = "CateringForm Status is required")]
+        [Required(ErrorMessage = "EventForm Status is required")]
         public Status Status { get; set; } = Status.Pending;
         public Guid Id { get; set; }
         public Guid? ClientId { get; set; }
@@ -39,12 +39,10 @@ namespace TheChienHouse.Models
         Egg,
         None
     }
-    public enum CateringType
+    public enum EventType
     {
-        Onsite,
-        Offsite,
-        Pickup,
-        Delivery,
+        PrivateDinner,
+        Party
     }
 
     public enum Status

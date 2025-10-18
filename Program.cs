@@ -35,7 +35,7 @@ builder.Services.AddDbContext<RetailContext>(options =>
 );
 builder.Services.AddScoped<IMenuItemService, MenuItemService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
-builder.Services.AddScoped<ICateringFormService, CateringFormService>();
+builder.Services.AddScoped<IEventFormService, EventFormService>();
 // Add more services here as needed
 
 var app = builder.Build();

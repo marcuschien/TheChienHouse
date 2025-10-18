@@ -35,10 +35,10 @@ Content-Type: application/json
 }
 ###
 
-POST {{TheChienHouse_HostAddress}}/api/cateringforms
+POST {{TheChienHouse_HostAddress}}/api/eventforms
 Content-Type: application/json
 {
-    "CateringType": "Onsite",
+    "EventType": "Party",
     "DietaryRestrictions": ["None"],
     "ClientId": "b1a7c8e2-1234-4cde-9abc-1234567890ab",
     "EventDate": "2026-02-02T22:00:00",
@@ -50,7 +50,7 @@ Content-Type: application/json
 
 ###
 
-GET {{TheChienHouse_HostAddress}}/api/cateringforms/form/{id}
+GET {{TheChienHouse_HostAddress}}/api/eventforms/form/{id}
 Content-Type: application/json
 {
     "Id": ""

@@ -2,11 +2,11 @@
 
 namespace TheChienHouse.Models
 {
-    public class CateringFormDTO
+    public class EventFormDTO
     {
-        public record CateringFormCreateRequest
+        public record EventFormCreateRequest
         (
-            CateringType CateringType,
+            EventType EventType,
             List<DietaryRestrictions> DietaryRestrictions,
             Guid? ClientId,
             DateTime EventDate,
@@ -15,9 +15,9 @@ namespace TheChienHouse.Models
             string? ClientPhoneNumber,
             Status Status
         );
-        public record CateringFormCreateResponse( // These will be used as part of the success confirmation pop up after submission.
+        public record EventFormCreateResponse( // These will be used as part of the success confirmation pop up after submission.
             Guid Id,
-            CateringType CateringType,
+            EventType EventType,
             List<DietaryRestrictions> DietaryRestrictions,
             Guid? ClientId,
             DateTime EventDate,
@@ -28,10 +28,10 @@ namespace TheChienHouse.Models
             DateTime CreatedAt,
             DateTime? UpdatedAt
         );
-        public record CateringFormUpdateRequest
+        public record EventFormUpdateRequest
         (
             Guid Id,
-            CateringType CateringType,
+            EventType EventType,
             List<DietaryRestrictions> DietaryRestrictions,
             Guid? ClientId,
             DateTime EventDate,

@@ -11,7 +11,7 @@ namespace TheChienHouse.Models
 
         public DbSet<MenuItem> MenuItems { get; set; } = null!;
         public DbSet<Sale> Sales { get; set; } = null!;
-        public DbSet<CateringForm> CateringForms { get; set; } = null!;
+        public DbSet<EventForm> EventForms { get; set; } = null!;
 
         // Creating the DB models so that API can map to it correctly
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -37,13 +37,13 @@ namespace TheChienHouse.Models
                 // Add more property configurations as needed
             });
 
-            //Customizing the CateringForm table and columns
-            modelBuilder.Entity<CateringForm>(entity =>
+            //Customizing the EventForm table and columns
+            modelBuilder.Entity<EventForm>(entity =>
             {
-                entity.ToTable("CateringForms");
+                entity.ToTable("EventForms");
                 entity.Property(e => e.Id).HasColumnName("form_id");
                 entity.Property(e => e.ClientId).HasColumnName("client_id");
-                entity.Property(e => e.CateringType).HasColumnName("catering_type").HasConversion<string>(); // Need to convert cause this is an enum
+                entity.Property(e => e.EventType).HasColumnName("event_type").HasConversion<string>(); // Need to convert cause this is an enum
                 entity.Property(e => e.DietaryRestrictions).HasColumnName("dietary_restrictions");
                 entity.Property(e => e.EventDate).HasColumnName("event_date");
                 entity.Property(e => e.ClientName).HasColumnName("client_name");
