@@ -13,7 +13,11 @@ namespace TheChienHouse.Models
             string ClientName,
             string? ClientEmail,
             string? ClientPhoneNumber,
-            Status Status
+            Status Status,
+            string Location,
+            decimal BudgetPerPerson,
+            int NumberOfGuests,
+            string? ExtraNotes
         );
         public record EventFormCreateResponse( // These will be used as part of the success confirmation pop up after submission.
             Guid Id,
@@ -26,7 +30,11 @@ namespace TheChienHouse.Models
             string? ClientPhoneNumber,
             Status Status,
             DateTime CreatedAt,
-            DateTime? UpdatedAt
+            DateTime? UpdatedAt,
+            string Location,
+            decimal BudgetPerPerson,
+            int NumberOfGuests,
+            string? ExtraNotes
         );
         public record EventFormUpdateRequest
         (
@@ -38,7 +46,11 @@ namespace TheChienHouse.Models
             string ClientName,
             string? ClientEmail,
             string? ClientPhoneNumber,
-            Status Status
+            Status Status,
+            string Location,
+            decimal BudgetPerPerson,
+            int NumberOfGuests,
+            string? ExtraNotes
         );
     }
 }

@@ -27,24 +27,33 @@ namespace TheChienHouse.Tests.Services
             EventDate = new DateTime(2025, 10, 9),
             ClientName = "Kennedy",
             ClientId = Guid.NewGuid(),
-            Status = Status.Pending
+            Status = Status.Pending,
+            Location = "TheChienHouse",
+            BudgetPerPerson = 22.22m,
+            NumberOfGuests = 2,
+            ExtraNotes = "Test Notes"
         };
         private static readonly List<EventForm> _testEventForms = new List<EventForm>
         {
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Completed },
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Pending },
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 6), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Confirmed },
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "NotKennedy", ClientId = Guid.NewGuid(), Status = Status.Cancelled }
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Completed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 6), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2},
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "NotKennedy", ClientId = Guid.NewGuid(), Status = Status.Cancelled, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 }
         };
         private static readonly EventFormCreateRequest _testCreateRequest = new EventFormCreateRequest(
-                _testEventForm.EventType,
-                _testEventForm.DietaryRestrictions,
-                _testEventForm.ClientId,
-                _testEventForm.EventDate,
-                _testEventForm.ClientName,
-                _testEventForm.ClientEmail,
-                _testEventForm.ClientPhoneNumber,
-                _testEventForm.Status
+            _testEventForm.EventType,
+            _testEventForm.DietaryRestrictions,
+            _testEventForm.ClientId,
+            _testEventForm.EventDate,
+            _testEventForm.ClientName,
+            _testEventForm.ClientEmail,
+            _testEventForm.ClientPhoneNumber,
+            _testEventForm.Status, 
+            _testEventForm.Location,
+            _testEventForm.BudgetPerPerson,
+            _testEventForm.NumberOfGuests,
+            _testEventForm.ExtraNotes
+
         );
 
         private static readonly EventFormUpdateRequest _testUpdateRequest = new EventFormUpdateRequest(
@@ -56,7 +65,11 @@ namespace TheChienHouse.Tests.Services
                 _testEventForm.ClientName,
                 _testEventForm.ClientEmail,
                 _testEventForm.ClientPhoneNumber,
-                _testEventForm.Status
+                _testEventForm.Status,
+                _testEventForm.Location,
+                _testEventForm.BudgetPerPerson,
+                _testEventForm.NumberOfGuests,
+                _testEventForm.ExtraNotes
             );
 
         public EventFormServiceTests() //TODO: Figure out how to populate DB context with test data just ONCE so that duplicate items aren't trying to be added. 
@@ -208,7 +221,11 @@ namespace TheChienHouse.Tests.Services
                 _testEventForm.ClientName,
                 _testEventForm.ClientEmail,
                 _testEventForm.ClientPhoneNumber,
-                _testEventForm.Status
+                _testEventForm.Status, 
+                _testEventForm.Location,
+                _testEventForm.BudgetPerPerson,
+                _testEventForm.NumberOfGuests,
+                _testEventForm.ExtraNotes
             )));
 
             Assert.Equal("Missing required fields.", result.Message);
@@ -225,7 +242,11 @@ namespace TheChienHouse.Tests.Services
                 _testEventForm.ClientName,
                 _testEventForm.ClientEmail,
                 _testEventForm.ClientPhoneNumber,
-                _testEventForm.Status
+                _testEventForm.Status,
+                _testEventForm.Location,
+                _testEventForm.BudgetPerPerson,
+                _testEventForm.NumberOfGuests,
+                _testEventForm.ExtraNotes
             )));
 
             Assert.Equal("Duplicate submission found. Event form not created", result.Message);
@@ -290,7 +311,11 @@ namespace TheChienHouse.Tests.Services
                 ClientPhoneNumber = response.ClientPhoneNumber,
                 Status = response.Status,
                 CreatedAt = response.CreatedAt,
-                UpdatedAt = response.UpdatedAt
+                UpdatedAt = response.UpdatedAt,
+                Location = response.Location,
+                BudgetPerPerson = response.BudgetPerPerson,
+                NumberOfGuests = response.NumberOfGuests,
+                ExtraNotes = response.ExtraNotes
             };
         }
     }

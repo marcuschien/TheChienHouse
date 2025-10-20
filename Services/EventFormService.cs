@@ -27,7 +27,11 @@ namespace TheChienHouse.Services
                 ClientEmail = request.ClientEmail,
                 ClientPhoneNumber = request.ClientPhoneNumber,
                 Status = request.Status,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                Location = request.Location,
+                BudgetPerPerson = request.BudgetPerPerson,
+                NumberOfGuests = request.NumberOfGuests,
+                ExtraNotes = request.ExtraNotes
             };
             _context.EventForms.Add(newEventForm);
             await _context.SaveChangesAsync();
@@ -120,6 +124,6 @@ namespace TheChienHouse.Services
             }
         }
 
-        private static EventFormCreateResponse MapToResponse(EventForm eventForm) => new(eventForm.Id, eventForm.EventType, eventForm.DietaryRestrictions, eventForm.ClientId, eventForm.EventDate, eventForm.ClientName, eventForm.ClientEmail, eventForm.ClientPhoneNumber, eventForm.Status, eventForm.CreatedAt, eventForm.UpdatedAt);
+        private static EventFormCreateResponse MapToResponse(EventForm eventForm) => new(eventForm.Id, eventForm.EventType, eventForm.DietaryRestrictions, eventForm.ClientId, eventForm.EventDate, eventForm.ClientName, eventForm.ClientEmail, eventForm.ClientPhoneNumber, eventForm.Status, eventForm.CreatedAt, eventForm.UpdatedAt, eventForm.Location, eventForm.BudgetPerPerson, eventForm.NumberOfGuests, eventForm.ExtraNotes);
     }
 }

@@ -14,13 +14,17 @@ namespace TheChienHouse.Models
         public required string ClientName { get; set; }
         [Required(ErrorMessage = "EventForm Status is required")]
         public Status Status { get; set; } = Status.Pending;
+        [Required(ErrorMessage = "Event Location is required")]
+        public required string Location { get; set; }
         public Guid Id { get; set; }
         public Guid? ClientId { get; set; }
         public string? ClientEmail { get; set; }
         public string? ClientPhoneNumber { get; set; }
         public DateTime CreatedAt { get; init; }
         public DateTime? UpdatedAt { get; set; }
-
+        public decimal BudgetPerPerson { get; set; }
+        public int NumberOfGuests { get; set; }
+        public string? ExtraNotes { get; set; }
     }
 
     public enum DietaryRestrictions
