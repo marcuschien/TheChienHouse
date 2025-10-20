@@ -23,7 +23,8 @@ namespace TheChienHouse.Services
                 DietaryRestrictions = request.DietaryRestrictions,
                 ClientId = request.ClientId,
                 EventDate = request.EventDate,
-                ClientName = request.ClientName,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
                 ClientEmail = request.ClientEmail,
                 ClientPhoneNumber = request.ClientPhoneNumber,
                 Status = request.Status,
@@ -112,7 +113,8 @@ namespace TheChienHouse.Services
                 form.DietaryRestrictions = request.DietaryRestrictions;
                 form.ClientId = request.ClientId;
                 form.EventDate = request.EventDate;
-                form.ClientName = request.ClientName;
+                form.FirstName = request.FirstName;
+                form.LastName = request.LastName;
                 form.ClientEmail = request.ClientEmail;
                 form.ClientPhoneNumber = request.ClientPhoneNumber;
                 form.Status = request.Status;
@@ -124,6 +126,6 @@ namespace TheChienHouse.Services
             }
         }
 
-        private static EventFormCreateResponse MapToResponse(EventForm eventForm) => new(eventForm.Id, eventForm.EventType, eventForm.DietaryRestrictions, eventForm.ClientId, eventForm.EventDate, eventForm.ClientName, eventForm.ClientEmail, eventForm.ClientPhoneNumber, eventForm.Status, eventForm.CreatedAt, eventForm.UpdatedAt, eventForm.Location, eventForm.BudgetPerPerson, eventForm.NumberOfGuests, eventForm.ExtraNotes);
+        private static EventFormCreateResponse MapToResponse(EventForm eventForm) => new(eventForm.Id, eventForm.EventType, eventForm.DietaryRestrictions, eventForm.ClientId, eventForm.EventDate, eventForm.FirstName, eventForm.LastName, eventForm.ClientEmail, eventForm.ClientPhoneNumber, eventForm.Status, eventForm.CreatedAt, eventForm.UpdatedAt, eventForm.Location, eventForm.BudgetPerPerson, eventForm.NumberOfGuests, eventForm.ExtraNotes);
     }
 }

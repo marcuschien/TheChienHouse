@@ -10,15 +10,17 @@ namespace TheChienHouse.Models
         public List<DietaryRestrictions> DietaryRestrictions { get; set; } = new List<DietaryRestrictions>();
         [Required(ErrorMessage = "Event Date is required")]
         public DateTime EventDate { get; set; }
-        [Required(ErrorMessage = "Client name is required")]
-        public required string ClientName { get; set; }
+        [Required(ErrorMessage = "First name is required")]
+        public required string FirstName { get; set; }
+        public string? LastName { get; set; }
         [Required(ErrorMessage = "EventForm Status is required")]
         public Status Status { get; set; } = Status.Pending;
         [Required(ErrorMessage = "Event Location is required")]
         public required string Location { get; set; }
         public Guid Id { get; set; }
         public Guid? ClientId { get; set; }
-        public string? ClientEmail { get; set; }
+        [Required(ErrorMessage = "Client email is required")]
+        public required string ClientEmail { get; set; }
         public string? ClientPhoneNumber { get; set; }
         public DateTime CreatedAt { get; init; }
         public DateTime? UpdatedAt { get; set; }
