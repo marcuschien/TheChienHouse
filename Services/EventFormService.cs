@@ -96,7 +96,7 @@ namespace TheChienHouse.Services
                 eventForms = (List<EventForm>)eventForms.Where(cf => cf.EventDate >= startDate && cf.EventDate <= endDate);
             }
             return eventForms;
-            //Optimization?: Would it be better to filter at the database level instead of in-memory? i.e. write a different query for each filter type?
+            //Optimization?: Would it be better to filter at the database level instead of in-memory? i.e. write a different query for each filter type? It would certainly mean we're not fetching the entire forms table every time.
         }
 
         public async Task<EventFormCreateResponse?> UpdateEventFormAsync(EventFormUpdateRequest request)
