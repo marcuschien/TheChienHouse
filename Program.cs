@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using TheChienHouse.Middleware;
 using TheChienHouse.Models;
 using TheChienHouse.Services;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the DI container.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
@@ -34,10 +35,16 @@ builder.Services.AddDbContext<RetailContext>(options =>
 );
 builder.Services.AddScoped<IMenuItemService, MenuItemService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<IEventFormService, EventFormService>();
+// Add more services here as needed
 
 var app = builder.Build();
 
+// Enable CORS for the frontend
 app.UseCors("AllowFrontend");
+
+// Register global exception middleware early in the pipeline
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

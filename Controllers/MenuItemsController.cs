@@ -15,7 +15,6 @@ namespace TheChienHouse.Controllers
     [ApiController] // This attribute indicates that the controller responds to web API requests
     public class MenuItemsController : ControllerBase
     {
-        private readonly RetailContext _context; // Using in memory database
         private readonly IMenuItemService _menuItemService; // Utilizing the service layer to fetch requested data
 
         public MenuItemsController(IMenuItemService menuItemService)

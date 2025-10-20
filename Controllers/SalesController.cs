@@ -15,7 +15,6 @@ namespace TheChienHouse.Controllers
     [ApiController]
     public class SalesController : ControllerBase
     {
-        private readonly RetailContext _context;
         private readonly ISaleService _saleService;
 
         public SalesController(ISaleService saleService)

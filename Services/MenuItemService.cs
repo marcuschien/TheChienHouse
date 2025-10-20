@@ -33,9 +33,9 @@ namespace TheChienHouse.Services
 
         //TODO: Create a PUT route to update a dish given ID or Name or DishType. (Might want to update the price of all apps by $1 or something)
         
-        public async Task<IEnumerable<MenuItemResponse>> GetMenuItemsAsync(string? name = null, string? dishType = null) // TODO: Introduce parameters int page and int pagesize to allow for pagination
+        public async Task<IEnumerable<MenuItemResponse>> GetMenuItemsAsync(string? name = null, string? dishType = null) // TODO: Introduce parameters int page and int pagesize to allow for pagination. Why do I want this to be async?
         {
-            List<MenuItem> menuItems = await _context.MenuItems.ToListAsync();
+            List<MenuItem> menuItems = await _context.MenuItems.ToListAsync(); //Optimization: If name or dishType is provided, filter at the database level instead of in-memory. 
             Dictionary<string, MenuItem[]> dishes = new Dictionary<string, MenuItem[]>();
             List<MenuItemResponse> response = new List<MenuItemResponse>();
             foreach (MenuItem menuItem in menuItems)
