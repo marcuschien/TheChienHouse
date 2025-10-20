@@ -12,6 +12,7 @@ namespace TheChienHouse.Models
         public DbSet<MenuItem> MenuItems { get; set; } = null!;
         public DbSet<Sale> Sales { get; set; } = null!;
         public DbSet<EventForm> EventForms { get; set; } = null!;
+        public DbSet<ContactForm> ContactForms { get; set; } = null!;
 
         // Creating the DB models so that API can map to it correctly
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,6 +53,20 @@ namespace TheChienHouse.Models
                 entity.Property(e => e.Status).HasColumnName("status");
                 entity.Property(e => e.CreatedAt).HasColumnName("created_at");
                 entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
+            });
+
+            modelBuilder.Entity<ContactForm>(entity =>
+            {
+                entity.ToTable("ContactForms");
+                entity.Property(e => e.Id).HasColumnName("form_id");
+                entity.Property(e => e.ClientId).HasColumnName("client_id");
+                entity.Property(e => e.FirstName).HasColumnName("first_name");
+                entity.Property(e => e.LastName).HasColumnName("last_name");
+                entity.Property(e => e.Email).HasColumnName("email");
+                entity.Property(e => e.PhoneNumber).HasColumnName("phone_number");
+                entity.Property(e => e.Subject).HasColumnName("subject");
+                entity.Property(e => e.Message).HasColumnName("message");
+                entity.Property(e => e.CreatedAt).HasColumnName("created_at");
             });
             // Add additional configurations here
         }
