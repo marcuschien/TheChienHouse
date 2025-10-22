@@ -25,8 +25,10 @@ namespace TheChienHouse.Tests.Controllers
             EventType = EventType.Party,
             DietaryRestrictions = [DietaryRestrictions.None],
             EventDate = new DateTime(2025, 10, 9),
-            ClientName = "Kennedy",
+            FirstName = "Kennedy",
+            LastName = "Irving",
             ClientId = Guid.NewGuid(),
+            ClientEmail = "Test@Email.com",
             Status = Status.Pending,
             Location = "TheChienHouse",
             BudgetPerPerson = 22.22m,
@@ -35,10 +37,10 @@ namespace TheChienHouse.Tests.Controllers
         };
         private static readonly List<EventForm> _testEventForms = new List<EventForm>
         {
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 6), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "NotKennedy", ClientId = Guid.NewGuid(), Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 }
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 6), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), FirstName = "NotKennedy", LastName = "NotIrving", ClientEmail = "Test@Email.com", ClientId = Guid.NewGuid(), Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 }
         };
         private static readonly EventFormCreateResponse _testCreateResponse = new EventFormCreateResponse(
             _testEventForm.Id,
@@ -46,7 +48,8 @@ namespace TheChienHouse.Tests.Controllers
             _testEventForm.DietaryRestrictions,
             _testEventForm.ClientId,
             _testEventForm.EventDate,
-            _testEventForm.ClientName,
+            _testEventForm.FirstName,
+            _testEventForm.LastName,
             _testEventForm.ClientEmail,
             _testEventForm.ClientPhoneNumber,
             _testEventForm.Status,
@@ -62,7 +65,8 @@ namespace TheChienHouse.Tests.Controllers
             _testEventForm.DietaryRestrictions,
             _testEventForm.ClientId,
             _testEventForm.EventDate,
-            _testEventForm.ClientName,
+            _testEventForm.FirstName,
+            _testEventForm.LastName,
             _testEventForm.ClientEmail,
             _testEventForm.ClientPhoneNumber,
             _testEventForm.Status,
@@ -78,7 +82,8 @@ namespace TheChienHouse.Tests.Controllers
                 _testEventForm.DietaryRestrictions,
                 _testEventForm.ClientId,
                 _testEventForm.EventDate,
-                _testEventForm.ClientName,
+                _testEventForm.FirstName,
+                _testEventForm.LastName,
                 _testEventForm.ClientEmail,
                 _testEventForm.ClientPhoneNumber,
                 _testEventForm.Status,
@@ -249,10 +254,10 @@ namespace TheChienHouse.Tests.Controllers
             //Arrange;
             var eventForms = new List<EventForm>
             {
-                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
-                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
-                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 6), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Cancelled, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2},
-                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Completed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 }
+                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com",ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 6), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com",ClientId = _testClientId, Status = Status.Cancelled, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2},
+                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com",ClientId = _testClientId, Status = Status.Completed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 }
                 //Add new Status types here if more are added to the enum.
             };
             _mockEventFormService.Setup(service => service.GetEventFormsAsync(null, Status.Confirmed, null, null))
@@ -297,7 +302,7 @@ namespace TheChienHouse.Tests.Controllers
         [Fact]
         public async Task CreateEventForm_MissingRequiredFields()
         {
-            EventForm EventForm = new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate = new DateTime(), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 };
+            EventForm EventForm = new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate = new DateTime(), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 };
             _mockEventFormService.Setup(service => service.CreateEventFormAsync(It.IsAny<EventFormCreateRequest>()))
                 .ThrowsAsync(new ArgumentException("Missing required fields."));
 
@@ -306,7 +311,8 @@ namespace TheChienHouse.Tests.Controllers
                 [],
                 _testEventForm.ClientId,
                 _testEventForm.EventDate,
-                _testEventForm.ClientName,
+                _testEventForm.FirstName,
+                _testEventForm.LastName,
                 _testEventForm.ClientEmail,
                 _testEventForm.ClientPhoneNumber,
                 _testEventForm.Status,
@@ -323,7 +329,7 @@ namespace TheChienHouse.Tests.Controllers
         public async Task CreateEventForm_DuplicateSubmission()
         {
 
-            EventForm eventForm = new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate = new DateTime(2025, 10, 9), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 };
+            EventForm eventForm = new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate = new DateTime(2025, 10, 9), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 };
 
             _mockEventFormService.Setup(service => service.CreateEventFormAsync(It.IsAny<EventFormCreateRequest>()))
                 .ThrowsAsync(new Exception("Duplicate submission found. Event form not created"));
@@ -333,7 +339,8 @@ namespace TheChienHouse.Tests.Controllers
                 eventForm.DietaryRestrictions,
                 eventForm.ClientId,
                 eventForm.EventDate,
-                eventForm.ClientName,
+                eventForm.FirstName,
+                eventForm.LastName,
                 eventForm.ClientEmail,
                 eventForm.ClientPhoneNumber,
                 eventForm.Status,
@@ -394,7 +401,8 @@ namespace TheChienHouse.Tests.Controllers
                    returnValue.DietaryRestrictions.SequenceEqual(expectedForm.DietaryRestrictions) &&
                    returnValue.ClientId == expectedForm.ClientId &&
                    returnValue.EventDate == expectedForm.EventDate &&
-                   returnValue.ClientName == expectedForm.ClientName &&
+                   returnValue.FirstName == expectedForm.FirstName &&
+                   returnValue.LastName == expectedForm.LastName &&
                    returnValue.ClientEmail == expectedForm.ClientEmail &&
                    returnValue.ClientPhoneNumber == expectedForm.ClientPhoneNumber &&
                    returnValue.Status == expectedForm.Status &&
@@ -411,7 +419,8 @@ namespace TheChienHouse.Tests.Controllers
                 DietaryRestrictions = response.DietaryRestrictions,
                 ClientId = response.ClientId,
                 EventDate = response.EventDate,
-                ClientName = response.ClientName,
+                FirstName = response.FirstName,
+                LastName = response.LastName,
                 ClientEmail = response.ClientEmail,
                 ClientPhoneNumber = response.ClientPhoneNumber,
                 Status = response.Status,
