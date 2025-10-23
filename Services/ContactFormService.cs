@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TheChienHouse.Models;
 using static TheChienHouse.Models.ContactFormDTO;
-using static TheChienHouse.Models.EventFormDTO;
 
 namespace TheChienHouse.Services
 {
@@ -15,7 +14,7 @@ namespace TheChienHouse.Services
             _context = context;
             _logger = logger;
         }
-        public async Task<ContactFormDTO.ContactFormCreateResponse> CreateContactFormAsync(ContactFormDTO.ContactFormCreateRequest request)
+        public async Task<ContactFormCreateResponse> CreateContactFormAsync(ContactFormCreateRequest request)
         {
             ContactForm contactForm = new ContactForm
             {
