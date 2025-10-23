@@ -39,7 +39,7 @@ namespace TheChienHouse.Controllers
 
         //POST: api/ContactForms
         [HttpPost]
-        public async Task<ActionResult<ContactForm>> PostContactForm(ContactFormCreateRequest request)
+        public async Task<ActionResult<ContactForm>> CreateContactForm(ContactFormCreateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
