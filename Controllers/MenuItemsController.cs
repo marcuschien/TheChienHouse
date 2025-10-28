@@ -24,40 +24,60 @@ namespace TheChienHouse.Controllers
 
         // GET: api/MenuItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MenuItem>>> GetMenuItems(string? name = null, string? dishType = null)
+        public async Task<ActionResult<MenuItemsResponse>> GetMenuItems(string? name = null, DishType? dishType = null)
         {
-            IEnumerable<MenuItemResponse> response = await _menuItemService.GetMenuItemsAsync(name, dishType); 
+            IEnumerable<MenuItem> menuItems = await _menuItemService.GetMenuItemsAsync(name, dishType);
+            MenuItemsResponse response = new MenuItemsResponse(menuItems);
             return CreatedAtAction(nameof(GetMenuItems), response); // Response could possibly be null, how would we handle a product being null? 
         }
 
         // GET: api/MenuItems/{MenuItemId}
         [HttpGet("{id}")]
-        public async Task<ActionResult<MenuItem>> GetMenuItem(long id)
+        public async Task<ActionResult<MenuItemResponse>> GetMenuItem(Guid id)
         {
-            MenuItemResponse? response = await _menuItemService.GetMenuItemByIdAsync(id);
+            MenuItem? menuItem = await _menuItemService.GetMenuItemByIdAsync(id);
+            MenuItemResponse response = MapToResponse(menuItem);
             return CreatedAtAction(nameof(GetMenuItem),response); // Response could possibly be null, need to handle this case. 
         }
 
         // POST: api/MenuItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<MenuItem>> PostMenuItem(MenuItemCreateRequest request)
+        public async Task<ActionResult<MenuItemResponse>> PostMenuItem(MenuItemCreateRequest request)
         {
-            MenuItemResponse response = await _menuItemService.CreateMenuItemAsync(request);
+            MenuItem menuItem = await _menuItemService.CreateMenuItemAsync(request);
+            MenuItemResponse response = MapToResponse(menuItem);
             return CreatedAtAction(nameof(PostMenuItem), new { id = response.Id }, response);
         }
 
         [HttpPut]
-        public async Task<ActionResult<MenuItem>> UpdateMenuItem(MenuItemUpdateRequest request)
+        public async Task<ActionResult<MenuItemsResponse>> UpdateMenuItems(MenuItemUpdateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            MenuItemResponse response = await _menuItemService.UpdateMenuItemAsync(request);
-            if (response == null)
+            IEnumerable<MenuItem> menuItems = await _menuItemService.UpdateMenuItemsAsync(request);
+            MenuItemsResponse response = new MenuItemsResponse(menuItems);
+            return CreatedAtAction(nameof(UpdateMenuItems), response); 
+        }
+
+        private static MenuItemResponse MapToResponse(MenuItem? item)
+        {
+            if(item != null)
             {
-                return NotFound();
+                return new MenuItemResponse(
+                    item.Id,
+                    item.Name,
+                    item.Price,
+                    item.DishType,
+                    item.ExpiryDate,
+                    item.CreatedAt,
+                    item.UpdatedAt
+                );
             }
-            return CreatedAtAction(nameof(UpdateMenuItem), response); // Return the updated menu item
+            else
+            {
+                throw new KeyNotFoundException("Menu Item not found.");
+            }
         }
     }
 }

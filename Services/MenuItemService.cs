@@ -14,11 +14,11 @@ namespace TheChienHouse.Services
             _context = context;
             _logger = logger;
         }
-        public async Task<MenuItemResponse> CreateMenuItemAsync(MenuItemCreateRequest request)
+        public async Task<MenuItem> CreateMenuItemAsync(MenuItemCreateRequest request)
         {
             var menuItem = new MenuItem
             {
-                Id = Guid.NewGuid().ToString(), // Generate a new unique ID for the menu item
+                Id = Guid.NewGuid(), // Generate a new unique ID for the menu item
                 Name = request.Name,
                 Price = request.Price,
                 DishType = request.DishType,
@@ -28,55 +28,26 @@ namespace TheChienHouse.Services
             await _context.SaveChangesAsync();
             _logger.LogInformation("Created menu item {MenuItemName}", menuItem.Name);
 
-            return MapToResponse(menuItem);
+            return menuItem;
         }
 
         //TODO: Create a PUT route to update a dish given ID or Name or DishType. (Might want to update the price of all apps by $1 or something)
         
-        public async Task<IEnumerable<MenuItemResponse>> GetMenuItemsAsync(string? name = null, string? dishType = null) // TODO: Introduce parameters int page and int pagesize to allow for pagination. Why do I want this to be async?
+        public async Task<IEnumerable<MenuItem>> GetMenuItemsAsync(string? name = null, DishType? dishType = null) // TODO: Introduce parameters int page and int pagesize to allow for pagination. Why do I want this to be async?
         {
-            List<MenuItem> menuItems = await _context.MenuItems.ToListAsync(); //Optimization: If name or dishType is provided, filter at the database level instead of in-memory. 
-            Dictionary<string, MenuItem[]> dishes = new Dictionary<string, MenuItem[]>();
-            List<MenuItemResponse> response = new List<MenuItemResponse>();
-            foreach (MenuItem menuItem in menuItems)
+            IEnumerable<MenuItem> menuItems = await _context.MenuItems.ToListAsync(); //Optimization: If name or dishType is provided, filter at the database level instead of in-memory. 
+            if (name != null)
             {
-                if (dishes.ContainsKey(menuItem.Name))
-                {
-                    dishes[menuItem.Name] = dishes[menuItem.Name].Append(menuItem).ToArray();
-                }
-                else
-                {
-                    if (name != null)
-                    {
-                        if (menuItem.Name == name)
-                        {
-                            dishes.Add(menuItem.Name, [menuItem]);
-                        }
-                        else continue;
-                    }
-                    else if (dishType != null)
-                    {
-                        if (menuItem.DishType == dishType)
-                        {
-                            dishes.Add(menuItem.Name, [menuItem]);
-                        }
-                        else continue;
-                    }
-                    else
-                    {
-                        dishes.Add(menuItem.Name, [menuItem]);
-                    }
-                }
+                menuItems = menuItems.Where(mi => mi.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             }
-            foreach (MenuItem[] dish in dishes.Values) 
+            if (dishType != null)
             {
-                MenuItem firstItem = dish.First();
-                response.Add(new MenuItemResponse(firstItem.Id, firstItem.Name, firstItem.Price, firstItem.DishType, firstItem.CreatedAt, firstItem.UpdatedAt, dish.Length));
+                menuItems = menuItems.Where(mi => mi.DishType == dishType);
             }
-            return response;
+            return menuItems;
         }
 
-        public async Task<MenuItemResponse?> GetMenuItemByIdAsync(long id)
+        public async Task<MenuItem?> GetMenuItemByIdAsync(Guid id)
         {
             var menuItem = await _context.MenuItems.FindAsync(id);
 
@@ -86,10 +57,10 @@ namespace TheChienHouse.Services
                 return null; //Add some exception here. Response should throw a different error code, depending on what we want the response to be. 
             }
 
-            return MapToResponse(menuItem);
+            return menuItem;
         }
 
-        public async Task<MenuItemResponse> UpdateMenuItemAsync(MenuItemUpdateRequest request)
+        public async Task<IEnumerable<MenuItem>> UpdateMenuItemsAsync(MenuItemUpdateRequest request)
         {
             // Query all menu items with the specified old name and old dish type
             var menuItems = await _context.MenuItems
@@ -113,24 +84,16 @@ namespace TheChienHouse.Services
                 {
                     menuItem.Price = request.NewPrice.Value;
                 }
-                if (!string.IsNullOrWhiteSpace(request.NewType))
+                if (request.NewType.HasValue)
                 {
-                    menuItem.DishType = request.NewType;
+                    menuItem.DishType = request.NewType.Value;
                 }
                 menuItem.UpdatedAt = DateTime.UtcNow;
             }
 
             await _context.SaveChangesAsync();
-
-            // Return the first updated item as a response (or adjust as needed)
-            return MapToResponse(menuItems.First());
+            _logger.LogInformation("Updated {Count} menu items with Name {MenuItemName} and DishType {DishType}", menuItems.Count, request.OldName, request.OldType);
+            return menuItems;
         }
-
-        private static MenuItemResponse MapToResponse(MenuItem item) =>
-            new(item.Id, item.Name, item.Price, item.DishType, item.CreatedAt, item.UpdatedAt);
-        
-        //private static MenuItemResponse MapToResponse(MenuItem[] items) =>
-            //TODO: Handle the case where mutliple items are returned. Probably should do some kind of batching. 
-
     }
 }

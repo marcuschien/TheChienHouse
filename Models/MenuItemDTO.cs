@@ -12,7 +12,7 @@ namespace TheChienHouse.Models
             string Name,
             [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
             decimal Price,
-            string DishType
+            DishType DishType
         );
 
         public record MenuItemGetRequest(
@@ -20,21 +20,25 @@ namespace TheChienHouse.Models
         );
 
         public record MenuItemResponse(
-            string Id,
+            Guid Id,
             string Name,
             [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
             decimal Price,
-            string DishType,
+            DishType DishType,
+            DateTime? ExpiryDate,
             DateTime CreatedAt,
-            DateTime? UpdatedAt,
-            long? Count = null // Count is optional, used for aggregating dishes with the same name
+            DateTime? UpdatedAt
+        );
+
+        public record MenuItemsResponse(
+            IEnumerable<MenuItem> MenuItems
         );
 
         public record MenuItemUpdateRequest(
             string OldName,
-            string OldType,
+            DishType OldType,
             decimal? NewPrice = null,
-            string? NewType = null,
+            DishType? NewType = null,
             string? NewName = null
         );
     }
