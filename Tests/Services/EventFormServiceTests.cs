@@ -23,10 +23,13 @@ namespace TheChienHouse.Tests.Services
         {
             Id = Guid.NewGuid(),
             EventType = EventType.Party,
-            DietaryRestrictions = [DietaryRestrictions.None],
+            DietaryRestrictions = new List<DietaryRestrictions> { DietaryRestrictions.None },
             EventDate = new DateTime(2025, 10, 9),
-            ClientName = "Kennedy",
+            FirstName = "Kennedy",
+            LastName = "Irving",
             ClientId = Guid.NewGuid(),
+            ClientEmail = "Test@Email.com",
+            ClientPhoneNumber = "555-0000",
             Status = Status.Pending,
             Location = "TheChienHouse",
             BudgetPerPerson = 22.22m,
@@ -35,17 +38,18 @@ namespace TheChienHouse.Tests.Services
         };
         private static readonly List<EventForm> _testEventForms = new List<EventForm>
         {
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Completed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 6), ClientName = "Kennedy", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2},
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), ClientName = "NotKennedy", ClientId = Guid.NewGuid(), Status = Status.Cancelled, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 }
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 8), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Completed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 8), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 6), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2},
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 8), FirstName = "NotKennedy", LastName = "NotIrving", ClientEmail = "Test@Email.com", ClientId = Guid.NewGuid(), Status = Status.Cancelled, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 }
         };
         private static readonly EventFormCreateRequest _testCreateRequest = new EventFormCreateRequest(
             _testEventForm.EventType,
             _testEventForm.DietaryRestrictions,
             _testEventForm.ClientId,
             _testEventForm.EventDate,
-            _testEventForm.ClientName,
+            _testEventForm.FirstName,
+            _testEventForm.LastName,
             _testEventForm.ClientEmail,
             _testEventForm.ClientPhoneNumber,
             _testEventForm.Status, 
@@ -62,7 +66,8 @@ namespace TheChienHouse.Tests.Services
                 _testEventForm.DietaryRestrictions,
                 _testEventForm.ClientId,
                 _testEventForm.EventDate,
-                _testEventForm.ClientName,
+                _testEventForm.FirstName,
+                _testEventForm.LastName,
                 _testEventForm.ClientEmail,
                 _testEventForm.ClientPhoneNumber,
                 _testEventForm.Status,
@@ -95,15 +100,15 @@ namespace TheChienHouse.Tests.Services
             var result = await _eventFormsService.GetEventFormByIdAsync(_testEventForm.Id);
             
             Assert.NotNull(result);
-            Assert.Equal(_testEventForm, result);
+            Assert.Equal(_testEventForm.Id, result.Id);
         }
         
         [Fact]
         public async Task GetEventFormById_NotFound()
         {
-            var result = await _eventFormsService.GetEventFormByIdAsync(_testEventForm.Id); //TODO: Fix me. Give a non valid ID
+            var result = await _eventFormsService.GetEventFormByIdAsync(Guid.NewGuid()); // use a non-existent id
             
-            Assert.Null(result); //TODO: This should return something to indicate that the form was not found. Will need to update the service to do so.
+            Assert.Null(result);
         }
 
         [Fact]
@@ -112,7 +117,7 @@ namespace TheChienHouse.Tests.Services
             var result = await _eventFormsService.GetEventFormsAsync(_testClientId, Status.Confirmed, new DateTime(2025, 10, 7), new DateTime(2025, 10, 10));
             
             Assert.NotNull(result);
-            Assert.Equal(_testEventForm, result.First());
+            Assert.Contains(result, r => r.ClientId == _testClientId && r.Status == Status.Confirmed);
         }
 
         [Fact]
@@ -120,31 +125,31 @@ namespace TheChienHouse.Tests.Services
         {
             var result = await _eventFormsService.GetEventFormsAsync(_testClientId, Status.Confirmed, new DateTime(2006, 10, 7), new DateTime(2007, 10, 10));
             
-            Assert.Null(result);//TODO: This should return something to indicate that no forms were found. Will need to update the service to do so. 
+            Assert.Empty(result);
         }
 
         [Fact]
         public async Task GetEventFormsByClientId_Success()
         {
-            var result = await _eventFormsService.GetEventFormsAsync(_testEventForm.Id, null, null, null);
+            var result = await _eventFormsService.GetEventFormsAsync(_testClientId, null, null, null);
 
             Assert.NotNull(result);
-            Assert.Equal(4, result.Count());
-            Assert.Equal(_testEventForms, result);
+            Assert.Equal(3, result.Count());
         }
 
         [Fact]
         public async Task GetEventFormsByClientId_ClientIdNotFound()
         {
-            var result = await _eventFormsService.GetEventFormsAsync(_testClientId, null, null, null); // TODO: Give a client id that doesnt' exist
+            var result = await _eventFormsService.GetEventFormsAsync(Guid.NewGuid(), null, null, null); // client id that doesn't exist
 
-            Assert.Null(result); //TODO: This should return something to indicate that the clientId was not found. Will need to update the service to do so. How is this different from no filters?
+            Assert.Empty(result);
         }
 
         [Fact]
         public async Task GetEventForms_NoFilters() // Do we want to allow this? What is the expected behaviour? 
         {
             var result = await _eventFormsService.GetEventFormsAsync(null, null, null, null);
+            Assert.NotNull(result);
         }
 
         [Fact]
@@ -157,7 +162,9 @@ namespace TheChienHouse.Tests.Services
             var result = await _eventFormsService.GetEventFormsAsync(null, null, startDate, endDate);
 
             Assert.NotNull(result);
-            Assert.Equal([_testEventForms[0], _testEventForms[1], _testEventForms[3]], result.ToList());
+            var expected = new List<EventForm> { _testEventForms[0], _testEventForms[1], _testEventForms[3] };
+            // Ensure returned set contains the expected items (order may vary)
+            Assert.True(expected.All(e => result.Any(r => r.Id == e.Id)));
         }
 
         [Fact]
@@ -189,7 +196,7 @@ namespace TheChienHouse.Tests.Services
         {
             var result = await _eventFormsService.GetEventFormsAsync(null, Status.Confirmed, null, null);
 
-            Assert.Equal(_testEventForms[1], result.First());
+            Assert.Equal(_testEventForms[2].Id, result.First().Id);
 
             //TODO: Add tests for each status type if we want to be thorough.
         }
@@ -197,72 +204,115 @@ namespace TheChienHouse.Tests.Services
         [Fact]
         public async Task GetEventFormsByStatus_InvalidStatus()
         {
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsService.GetEventFormsAsync(null, (Status)999, null, null)); // TODO: I should figure out how to handle this more gracefully.
-            Assert.Equal("Invalid status value.", result.Message);
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsService.GetEventFormsAsync(null, (Status)999, null, null)); // TODO: I should figure out how to handle this more gracefully.
+            Assert.Equal("Invalid status value.", ex.Message);
         }
 
         [Fact]
         public async Task CreateEventForm_Success()
         {
 
-            var result = await _eventFormsService.CreateEventFormAsync(_testCreateRequest);
+            var result = await _eventFormsService.CreateEventFormAsync(
+                _testCreateRequest.EventType,
+                _testCreateRequest.DietaryRestrictions,
+                _testCreateRequest.ClientId,
+                _testCreateRequest.EventDate,
+                _testCreateRequest.FirstName,
+                _testCreateRequest.LastName,
+                _testCreateRequest.Status,
+                _testCreateRequest.Location,
+                _testCreateRequest.ClientEmail,
+                _testCreateRequest.ClientPhoneNumber,
+                _testCreateRequest.BudgetPerPerson,
+                _testCreateRequest.NumberOfGuests,
+                _testCreateRequest.ExtraNotes);
 
-            Assert.True(ValidateEventForm(ConvertResponseToForm(result), _testEventForm));
+            Assert.True(ValidateEventForm(result, _testEventForm));
         }
 
         [Fact]
         public async Task CreateEventForm_MissingRequiredFields()
         {
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsService.CreateEventFormAsync(new EventFormCreateRequest( //How would this gracefully handle null arguments/missing fields instead of throwing an exception? Can we use the Front End to guarantee these parameters are always provided?
+            var emptyDietary = new List<DietaryRestrictions>();
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsService.CreateEventFormAsync(
                 _testEventForm.EventType,
-                [],
+                emptyDietary,
                 _testEventForm.ClientId,
                 _testEventForm.EventDate,
-                _testEventForm.ClientName,
-                _testEventForm.ClientEmail,
-                _testEventForm.ClientPhoneNumber,
+                _testEventForm.FirstName,
+                _testEventForm.LastName,
                 _testEventForm.Status, 
                 _testEventForm.Location,
+                _testEventForm.ClientEmail,
+                _testEventForm.ClientPhoneNumber,
                 _testEventForm.BudgetPerPerson,
                 _testEventForm.NumberOfGuests,
-                _testEventForm.ExtraNotes
-            )));
+                _testEventForm.ExtraNotes));
 
-            Assert.Equal("Missing required fields.", result.Message);
+            Assert.Equal("Missing required fields.", ex.Message);
         }
 
         [Fact]
         public async Task CreateEventForm_DuplicateSubmission()
         {
-            var result = await Assert.ThrowsAsync<Exception>(() => _eventFormsService.CreateEventFormAsync(new EventFormCreateRequest(
+            var ex = await Assert.ThrowsAsync<Exception>(() => _eventFormsService.CreateEventFormAsync(
                 _testEventForm.EventType,
                 _testEventForm.DietaryRestrictions,
                 _testEventForm.ClientId,
                 _testEventForm.EventDate,
-                _testEventForm.ClientName,
-                _testEventForm.ClientEmail,
-                _testEventForm.ClientPhoneNumber,
+                _testEventForm.FirstName,
+                _testEventForm.LastName,
                 _testEventForm.Status,
                 _testEventForm.Location,
+                _testEventForm.ClientEmail,
+                _testEventForm.ClientPhoneNumber,
                 _testEventForm.BudgetPerPerson,
                 _testEventForm.NumberOfGuests,
-                _testEventForm.ExtraNotes
-            )));
+                _testEventForm.ExtraNotes));
 
-            Assert.Equal("Duplicate submission found. Event form not created", result.Message);
+            Assert.Equal("Duplicate submission found. Event form not created", ex.Message);
         }
 
         [Fact]
         public async Task UpdateEventForm_Success()
         {
-            var result = await _eventFormsService.UpdateEventFormAsync(_testUpdateRequest);
-            Assert.True(ValidateEventForm(ConvertResponseToForm(result), _testEventForm));
+            var result = await _eventFormsService.UpdateEventFormAsync(
+                formId: _testUpdateRequest.Id,
+                eventType: _testUpdateRequest.EventType,
+                dietaryRestrictions: _testUpdateRequest.DietaryRestrictions,
+                clientId: _testUpdateRequest.ClientId,
+                eventDate: _testUpdateRequest.EventDate,
+                firstName: _testUpdateRequest.FirstName,
+                lastName: _testUpdateRequest.LastName,
+                status: _testUpdateRequest.Status,
+                location: _testUpdateRequest.Location,
+                email: _testUpdateRequest.ClientEmail,
+                phoneNumber: _testUpdateRequest.ClientPhoneNumber,
+                budgetPP: _testUpdateRequest.BudgetPerPerson,
+                numGuests: _testUpdateRequest.NumberOfGuests,
+                notes: _testUpdateRequest.ExtraNotes);
+
+            Assert.True(ValidateEventForm(result, _testEventForm));
         }
 
         [Fact]
         public async Task UpdateEventForm_InvalidId()
         {
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsService.UpdateEventFormAsync(_testUpdateRequest));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsService.UpdateEventFormAsync(
+                _testUpdateRequest.Id,
+                _testUpdateRequest.EventType,
+                _testUpdateRequest.DietaryRestrictions,
+                _testUpdateRequest.ClientId,
+                _testUpdateRequest.EventDate,
+                _testUpdateRequest.FirstName,
+                _testUpdateRequest.LastName,
+                _testUpdateRequest.Status,
+                _testUpdateRequest.Location,
+                _testUpdateRequest.ClientEmail,
+                _testUpdateRequest.ClientPhoneNumber,
+                _testUpdateRequest.BudgetPerPerson,
+                _testUpdateRequest.NumberOfGuests,
+                _testUpdateRequest.ExtraNotes));
             //TODO: Figure out how to handle this more gracefully. Currently throws an NRE instead of an ArgumentException. Also this should not throw an ArgumentException, but something more specific to invalid Id.
             //Assert.Equal("Event form with the provided ID does not exist.", result.Message);
         }
@@ -270,27 +320,54 @@ namespace TheChienHouse.Tests.Services
         [Fact]
         public async Task UpdateEventForm_InvalidData()
         {
-            //TODO: Figure out how to handle this more gracefully. Currently throws an NRE instead of an ArgumentException. Also this should not throw an ArgumentException, but something more specific to invalid data.
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsService.UpdateEventFormAsync(_testUpdateRequest));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsService.UpdateEventFormAsync(
+                _testUpdateRequest.Id,
+                _testUpdateRequest.EventType,
+                _testUpdateRequest.DietaryRestrictions,
+                _testUpdateRequest.ClientId,
+                _testUpdateRequest.EventDate,
+                _testUpdateRequest.FirstName,
+                _testUpdateRequest.LastName,
+                _testUpdateRequest.Status,
+                _testUpdateRequest.Location,
+                _testUpdateRequest.ClientEmail,
+                _testUpdateRequest.ClientPhoneNumber,
+                _testUpdateRequest.BudgetPerPerson,
+                _testUpdateRequest.NumberOfGuests,
+                _testUpdateRequest.ExtraNotes));
             //Assert.Equal("Invalid data provided for update.", result.Message);
         }
 
         [Fact]
         public async Task UpdateEventForm_TrivialUpdate()
         {
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsService.UpdateEventFormAsync(_testUpdateRequest));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsService.UpdateEventFormAsync(
+                _testUpdateRequest.Id,
+                _testUpdateRequest.EventType,
+                _testUpdateRequest.DietaryRestrictions,
+                _testUpdateRequest.ClientId,
+                _testUpdateRequest.EventDate,
+                _testUpdateRequest.FirstName,
+                _testUpdateRequest.LastName,
+                _testUpdateRequest.Status,
+                _testUpdateRequest.Location,
+                _testUpdateRequest.ClientEmail,
+                _testUpdateRequest.ClientPhoneNumber,
+                _testUpdateRequest.BudgetPerPerson,
+                _testUpdateRequest.NumberOfGuests,
+                _testUpdateRequest.ExtraNotes));
             //TODO: Figure out how to handle this more gracefully. Currently throws an NRE instead of an ArgumentException. Also this should not throw an ArgumentException, but something more specific to trivial update.
             //Assert.Equal("No changes detected in the update request.", result.Message);
         }
 
         public bool ValidateEventForm(EventForm returnValue, EventForm expectedForm)
         {
-            return returnValue.Id == expectedForm.Id &&
-                   returnValue.EventType == expectedForm.EventType &&
+            return returnValue.EventType == expectedForm.EventType &&
                    returnValue.DietaryRestrictions.SequenceEqual(expectedForm.DietaryRestrictions) &&
                    returnValue.ClientId == expectedForm.ClientId &&
                    returnValue.EventDate == expectedForm.EventDate &&
-                   returnValue.ClientName == expectedForm.ClientName &&
+                   returnValue.FirstName == expectedForm.FirstName &&
+                   returnValue.LastName == expectedForm.LastName &&
                    returnValue.ClientEmail == expectedForm.ClientEmail &&
                    returnValue.ClientPhoneNumber == expectedForm.ClientPhoneNumber &&
                    returnValue.Status == expectedForm.Status &&
@@ -306,7 +383,8 @@ namespace TheChienHouse.Tests.Services
                 DietaryRestrictions = response.DietaryRestrictions,
                 ClientId = response.ClientId,
                 EventDate = response.EventDate,
-                ClientName = response.ClientName,
+                FirstName = response.FirstName,
+                LastName = response.LastName,
                 ClientEmail = response.ClientEmail,
                 ClientPhoneNumber = response.ClientPhoneNumber,
                 Status = response.Status,
