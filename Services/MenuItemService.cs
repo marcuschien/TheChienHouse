@@ -14,14 +14,14 @@ namespace TheChienHouse.Services
             _context = context;
             _logger = logger;
         }
-        public async Task<MenuItem> CreateMenuItemAsync(MenuItemCreateRequest request)
+        public async Task<MenuItem> CreateMenuItemAsync(string name, decimal price, DishType dishType)
         {
             var menuItem = new MenuItem
             {
                 Id = Guid.NewGuid(), // Generate a new unique ID for the menu item
-                Name = request.Name,
-                Price = request.Price,
-                DishType = request.DishType,
+                Name = name,
+                Price = price,
+                DishType = dishType,
             };
 
             _context.MenuItems.Add(menuItem);
@@ -60,40 +60,54 @@ namespace TheChienHouse.Services
             return menuItem;
         }
 
-        public async Task<IEnumerable<MenuItem>> UpdateMenuItemsAsync(MenuItemUpdateRequest request)
+        public async Task<IEnumerable<MenuItem>> UpdateMenuItemsAsync(string oldName, DishType oldType, decimal? newPrice = null, DishType? newType = null, string? newName = null)
         {
             // Query all menu items with the specified old name and old dish type
             var menuItems = await _context.MenuItems
-                .Where(mi => mi.Name == request.OldName && mi.DishType == request.OldType)
+                .Where(mi => mi.Name == oldName && mi.DishType == oldType)
                 .ToListAsync();
 
             if (menuItems == null || menuItems.Count == 0)
             {
-                _logger.LogError("Menu Items with Name {MenuItemName} and DishType {DishType} not found", request.OldName, request.OldType);
-                throw new KeyNotFoundException($"Menu Items with Name {request.OldName} and Dish Type {request.OldType} not found.");
+                _logger.LogError("Menu Items with Name {MenuItemName} and DishType {DishType} not found", oldName, oldType);
+                throw new KeyNotFoundException($"Menu Items with Name {oldName} and Dish Type {oldType} not found.");
             }
 
             // Update all matching menu items
             foreach (var menuItem in menuItems)
             {
-                if (!string.IsNullOrEmpty(request.NewName))
+                if (!string.IsNullOrEmpty(newName))
                 {
-                    menuItem.Name = request.NewName;
+                    menuItem.Name = newName;
                 }
-                if (request.NewPrice.HasValue)
+                if (newPrice.HasValue)
                 {
-                    menuItem.Price = request.NewPrice.Value;
+                    menuItem.Price = newPrice.Value;
                 }
-                if (request.NewType.HasValue)
+                if (newType.HasValue)
                 {
-                    menuItem.DishType = request.NewType.Value;
+                    menuItem.DishType = newType.Value;
                 }
                 menuItem.UpdatedAt = DateTime.UtcNow;
             }
 
             await _context.SaveChangesAsync();
-            _logger.LogInformation("Updated {Count} menu items with Name {MenuItemName} and DishType {DishType}", menuItems.Count, request.OldName, request.OldType);
+            _logger.LogInformation("Updated {Count} menu items with Name {MenuItemName} and DishType {DishType}", menuItems.Count, oldName, oldType);
             return menuItems;
+        }
+    
+        public async Task<bool> DeleteMenuItemAsync(Guid id)
+        {
+            var menuItem = await _context.MenuItems.FindAsync(id);
+            if (menuItem == null)
+            {
+                _logger.LogError("Menu Item {MenuItemId} not found for deletion", id);
+                return false; // Or throw an exception if preferred
+            }
+            _context.MenuItems.Remove(menuItem);
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("Deleted menu item {MenuItemId}", id);
+            return true;
         }
     }
 }
