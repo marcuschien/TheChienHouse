@@ -4,6 +4,7 @@ using TheChienHouse.Controllers;
 using TheChienHouse.Models;
 using TheChienHouse.Services;
 using Xunit;
+using static TheChienHouse.Models.MenuItemDTO;
 
 namespace TheChienHouse.Tests.Controllers
 {
@@ -23,6 +24,7 @@ namespace TheChienHouse.Tests.Controllers
             Price = 9.99M,
             DishType = DishType.Main
         };
+        
 
         [Fact]
         public async Task GetMenuItemById_Success()
@@ -31,7 +33,7 @@ namespace TheChienHouse.Tests.Controllers
             _mockMenuItemService.Setup(service => service.GetMenuItemByIdAsync(_testItem.Id))
                 .ReturnsAsync(_testItem);
             // Act
-            var result = await _controller.GetMenuItem(_testItem.Id);
+            var result = await _controller.GetMenuItem(new MenuItemRequest(_testItem.Id));
             // Assert
             var actionResult = Assert.IsType<ActionResult<MenuItem>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
@@ -45,7 +47,7 @@ namespace TheChienHouse.Tests.Controllers
             _mockMenuItemService.Setup(service => service.GetMenuItemByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((MenuItem?)null);
 
-            var result = await _controller.GetMenuItem(Guid.NewGuid());
+            var result = await _controller.GetMenuItem(new MenuItemRequest(Guid.NewGuid()));
 
             var actionResult = Assert.IsType<ActionResult<MenuItem>>(result);
             var notFoundResult = Assert.IsType<NotFoundResult>(actionResult.Result);

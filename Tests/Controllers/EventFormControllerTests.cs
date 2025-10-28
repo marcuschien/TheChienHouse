@@ -460,16 +460,16 @@ namespace TheChienHouse.Tests.Controllers
                 _testUpdateRequest.Id,
                 _testUpdateRequest.EventType,
                 _testUpdateRequest.DietaryRestrictions,
-                _testUpdate_request.ClientId,
+                _testUpdateRequest.ClientId,
                 _testUpdateRequest.EventDate,
                 _testUpdateRequest.FirstName,
                 _testUpdateRequest.LastName,
                 _testUpdateRequest.Status,
                 _testUpdateRequest.Location,
-                _testUpdate_request.ClientEmail,
+                _testUpdateRequest.ClientEmail,
                 _testUpdateRequest.ClientPhoneNumber,
                 _testUpdateRequest.BudgetPerPerson,
-                _testUpdate_request.NumberOfGuests,
+                _testUpdateRequest.NumberOfGuests,
                 _testUpdateRequest.ExtraNotes))
                 .ThrowsAsync(new ArgumentException("Invalid data provided for update."));
 
