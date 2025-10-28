@@ -23,7 +23,7 @@ namespace TheChienHouse.Tests.Controllers
         {
             Id = Guid.NewGuid(),
             EventType = EventType.Party,
-            DietaryRestrictions = [DietaryRestrictions.None],
+            DietaryRestrictions = new List<DietaryRestrictions> { DietaryRestrictions.None },
             EventDate = new DateTime(2025, 10, 9),
             FirstName = "Kennedy",
             LastName = "Irving",
@@ -37,10 +37,10 @@ namespace TheChienHouse.Tests.Controllers
         };
         private static readonly List<EventForm> _testEventForms = new List<EventForm>
         {
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 6), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
-            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 8), FirstName = "NotKennedy", LastName = "NotIrving", ClientEmail = "Test@Email.com", ClientId = Guid.NewGuid(), Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 }
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 8), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 8), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 6), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+            new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 8), FirstName = "NotKennedy", LastName = "NotIrving", ClientEmail = "Test@Email.com", ClientId = Guid.NewGuid(), Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 }
         };
         private static readonly EventFormCreateResponse _testCreateResponse = new EventFormCreateResponse(
             _testEventForm.Id,
@@ -104,14 +104,14 @@ namespace TheChienHouse.Tests.Controllers
         {
             // Arrange
             _mockEventFormService.Setup(service => service.GetEventFormByIdAsync(_testEventForm.Id))
-                .ReturnsAsync(_testEventForm); 
+                .ReturnsAsync(_testEventForm);
             // Act
             var result = await _eventFormsController.GetEventForm(_testEventForm.Id);
             // Assert
-            var actionResult = Assert.IsType<ActionResult<EventForm>>(result);
+            var actionResult = Assert.IsType<ActionResult<EventFormResponse>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-            var returnValue = Assert.IsType<EventForm>(createdAtActionResult.Value);
-            Assert.Equal(_testEventForm, returnValue);
+            var returnValue = Assert.IsAssignableFrom<EventFormResponse>(createdAtActionResult.Value);
+            Assert.Equal(_testEventForm.Id, returnValue.Id);
         }
 
         [Fact]
@@ -124,7 +124,7 @@ namespace TheChienHouse.Tests.Controllers
             // Act
             var result = await _eventFormsController.GetEventForm(EventFormId); //TODO: This should return something to indicate that the form was not found. Will need to update the service to do so.
             // Assert
-            var actionResult = Assert.IsType<ActionResult<EventForm>>(result);
+            var actionResult = Assert.IsType<ActionResult<EventFormResponse>>(result);
             var notFoundResult = Assert.IsType<NotFoundResult>(actionResult.Result);
             Assert.Equal(404, notFoundResult.StatusCode);
         }
@@ -135,13 +135,14 @@ namespace TheChienHouse.Tests.Controllers
             _mockEventFormService.Setup(service => service.GetEventFormsAsync(_testClientId, Status.Confirmed, new DateTime(2025, 10, 7), new DateTime(2025, 10, 10)))
                 .ReturnsAsync(_testEventForms.Where(cf => cf.ClientId == _testClientId && cf.Status == Status.Confirmed && cf.EventDate >= new DateTime(2025, 10, 7) && cf.EventDate <= new DateTime(2025, 10, 10)).ToList());
 
-            var result = await _eventFormsController.GetEventForms(_testClientId, Status.Confirmed, new DateTime(2025, 10, 7), new DateTime(2025, 10, 10));
+            var result = await _eventFormsController.GetEventForms(new EventFormRequest(null, _testClientId, Status.Confirmed, new DateTime(2025, 10, 7), new DateTime(2025, 10, 10)));
 
-            var actionResult = Assert.IsType<ActionResult<IEnumerable<EventForm>>>(result);
+            var actionResult = Assert.IsType<ActionResult<EventFormsResponse>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-            var returnValue = Assert.IsAssignableFrom<IEnumerable<EventForm>>(createdAtActionResult.Value);
-            Assert.Single(returnValue);
-            Assert.Equal(_testEventForms[0], returnValue.First());
+            var returnValue = Assert.IsAssignableFrom<EventFormsResponse>(createdAtActionResult.Value);
+            var forms = returnValue.EventForms;
+            Assert.Single(forms);
+            Assert.Equal(_testEventForms[0].Id, forms.First().Id);
         }
 
         [Fact]
@@ -153,12 +154,12 @@ namespace TheChienHouse.Tests.Controllers
             _mockEventFormService.Setup(service => service.GetEventFormsAsync(_testClientId, Status.Confirmed, startDate, endDate))
                 .ReturnsAsync(new List<EventForm>());
             //Act
-            var result = await _eventFormsController.GetEventForms(null, null, startDate, endDate);
+            var result = await _eventFormsController.GetEventForms(new EventFormRequest(null, null, null, startDate, endDate));
             //Assert
-            var actionResult = Assert.IsType<ActionResult<IEnumerable<EventForm>>>(result);
+            var actionResult = Assert.IsType<ActionResult<EventFormsResponse>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-            var returnValue = Assert.IsAssignableFrom<IEnumerable<EventForm>>(createdAtActionResult.Value);
-            Assert.Empty(returnValue); //TODO: This should return something to indicate that no forms were found. Will need to update the service to do so. 
+            var returnValue = Assert.IsAssignableFrom<EventFormsResponse>(createdAtActionResult.Value);
+            Assert.Empty(returnValue.EventForms); //TODO: This should return something to indicate that no forms were found. Will need to update the service to do so. 
         }
 
         [Fact]
@@ -169,13 +170,12 @@ namespace TheChienHouse.Tests.Controllers
                 .ReturnsAsync(_testEventForms);
 
             // Act
-            var result = await _eventFormsController.GetEventForms(_testClientId);
+            var result = await _eventFormsController.GetEventForms(new EventFormRequest(null, _testClientId));
             // Assert
-            var actionResult = Assert.IsType<ActionResult<IEnumerable<EventForm>>>(result);
+            var actionResult = Assert.IsType<ActionResult<EventFormsResponse>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-            var returnValue = Assert.IsAssignableFrom<IEnumerable<EventForm>>(createdAtActionResult.Value);
-            Assert.Equal(4, returnValue.Count());
-            Assert.Equal(_testEventForms, returnValue);
+            var returnValue = Assert.IsAssignableFrom<EventFormsResponse>(createdAtActionResult.Value);
+            Assert.Equal(4, returnValue.EventForms.Count());
         }
 
         [Fact]
@@ -185,12 +185,12 @@ namespace TheChienHouse.Tests.Controllers
             _mockEventFormService.Setup(service => service.GetEventFormsAsync(_testClientId, null, null, null))
                 .ReturnsAsync(new List<EventForm>());
             //Act
-            var result = await _eventFormsController.GetEventForms(_testClientId);
+            var result = await _eventFormsController.GetEventForms(new EventFormRequest(null, _testClientId));
             //Assert
-            var actionResult = Assert.IsType<ActionResult<IEnumerable<EventForm>>>(result);
+            var actionResult = Assert.IsType<ActionResult<EventFormsResponse>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-            var returnValue = Assert.IsAssignableFrom<IEnumerable<EventForm>>(createdAtActionResult.Value);
-            Assert.Empty(returnValue); //TODO: This should return something to indicate that the clientId was not found. Will need to update the service to do so. How is this different from no filters?
+            var returnValue = Assert.IsAssignableFrom<EventFormsResponse>(createdAtActionResult.Value);
+            Assert.Empty(returnValue.EventForms); //TODO: This should return something to indicate that the clientId was not found. Will need to update the service to do so. How is this different from no filters?
         }
 
         [Fact]
@@ -200,11 +200,11 @@ namespace TheChienHouse.Tests.Controllers
             _mockEventFormService.Setup(service => service.GetEventFormsAsync(null,null,null,null))
                 .ReturnsAsync(new List<EventForm>());
             //Act
-            var result = await _eventFormsController.GetEventForms();
+            var result = await _eventFormsController.GetEventForms(new EventFormRequest());
             //Assert
-            var actionResult = Assert.IsType<ActionResult<IEnumerable<EventForm>>>(result);
+            var actionResult = Assert.IsType<ActionResult<EventFormsResponse>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-            var returnValue = Assert.IsAssignableFrom<IEnumerable<EventForm>>(createdAtActionResult.Value);
+            var returnValue = Assert.IsAssignableFrom<EventFormsResponse>(createdAtActionResult.Value);
         }
 
         [Fact]
@@ -217,7 +217,7 @@ namespace TheChienHouse.Tests.Controllers
             _mockEventFormService.Setup(service => service.GetEventFormsAsync(null, null, startDate, endDate))
                 .ReturnsAsync(_testEventForms);
             //Act
-            var result = await _eventFormsController.GetEventForms(null, null, startDate, endDate); 
+            var result = await _eventFormsController.GetEventForms(new EventFormRequest(null, null, null, startDate, endDate)); 
         }
 
         [Fact]
@@ -229,7 +229,7 @@ namespace TheChienHouse.Tests.Controllers
             _mockEventFormService.Setup(service => service.GetEventFormsAsync(null, null, startDate, endDate))
                 .ThrowsAsync(new ArgumentException("Start date must be earlier than or equal to end date."));
             //Act
-            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.GetEventForms(null, null, startDate, endDate));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.GetEventForms(new EventFormRequest(null, null, null, startDate, endDate)));
             //Assert
             Assert.Equal("Start date must be earlier than or equal to end date.", exception.Message);
         }
@@ -243,7 +243,7 @@ namespace TheChienHouse.Tests.Controllers
             _mockEventFormService.Setup(service => service.GetEventFormsAsync(null, null, startDate, endDate))
                 .ThrowsAsync(new ArgumentException("Both start date and end date must be provided for date range filtering."));
             //Act
-            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.GetEventForms(null, null, startDate, endDate)); 
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.GetEventForms(new EventFormRequest(null, null, null, startDate, endDate))); 
             //Assert
             Assert.Equal("Both start date and end date must be provided for date range filtering.", exception.Message);
         }
@@ -254,22 +254,23 @@ namespace TheChienHouse.Tests.Controllers
             //Arrange;
             var eventForms = new List<EventForm>
             {
-                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
-                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com",ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
-                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(2025, 10, 6), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com",ClientId = _testClientId, Status = Status.Cancelled, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2},
-                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate=new DateTime(), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com",ClientId = _testClientId, Status = Status.Completed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 }
+                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com",ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
+                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 6), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com",ClientId = _testClientId, Status = Status.Cancelled, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2},
+                new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com",ClientId = _testClientId, Status = Status.Completed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 }
                 //Add new Status types here if more are added to the enum.
             };
             _mockEventFormService.Setup(service => service.GetEventFormsAsync(null, Status.Confirmed, null, null))
                 .ReturnsAsync(eventForms.Where(cf => cf.Status == Status.Confirmed).ToList());
 
-            var result = await _eventFormsController.GetEventForms(null, Status.Confirmed, null, null);
+            var result = await _eventFormsController.GetEventForms(new EventFormRequest(null, null, Status.Confirmed, null, null));
 
-            var actionResult = Assert.IsType<ActionResult<IEnumerable<EventForm>>>(result);
+            var actionResult = Assert.IsType<ActionResult<EventFormsResponse>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-            var returnValue = Assert.IsAssignableFrom<IEnumerable<EventForm>>(createdAtActionResult.Value);
-            Assert.Single(returnValue);
-            Assert.Equal(eventForms[1], returnValue.First());
+            var returnValue = Assert.IsAssignableFrom<EventFormsResponse>(createdAtActionResult.Value);
+            var forms = returnValue.EventForms;
+            Assert.Single(forms);
+            Assert.Equal(eventForms[1].Id, forms.First().Id);
 
             //TODO: Add tests for each status type if we want to be thorough.
         }
@@ -280,35 +281,64 @@ namespace TheChienHouse.Tests.Controllers
             _mockEventFormService.Setup(service => service.GetEventFormsAsync(null, (Status)999, null, null))
                 .ThrowsAsync(new ArgumentException("Invalid status value."));
 
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.GetEventForms(null, (Status)999, null, null)); // TODO: I should figure out how to handle this more gracefully.
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.GetEventForms(new EventFormRequest(null, null, (Status)999, null, null))); // TODO: I should figure out how to handle this more gracefully.
             Assert.Equal("Invalid status value.", result.Message);
         }
 
         [Fact]
         public async Task CreateEventForm_Success()
         {
-            _mockEventFormService.Setup(service => service.CreateEventFormAsync(It.IsAny<EventFormCreateRequest>()))
-                .ReturnsAsync(_testCreateResponse);
+            // Arrange
+            _mockEventFormService.Setup(service => service.CreateEventFormAsync(
+                _testCreateRequest.EventType,
+                _testCreateRequest.DietaryRestrictions,
+                _testCreateRequest.ClientId,
+                _testCreateRequest.EventDate,
+                _testCreateRequest.FirstName,
+                _testCreateRequest.LastName,
+                _testCreateRequest.Status,
+                _testCreateRequest.Location,
+                _testCreateRequest.ClientEmail,
+                _testCreateRequest.ClientPhoneNumber,
+                _testCreateRequest.BudgetPerPerson,
+                _testCreateRequest.NumberOfGuests,
+                _testCreateRequest.ExtraNotes))
+                .ReturnsAsync(_testEventForm);
 
+            // Act
             var result = await _eventFormsController.PostEventForm(_testCreateRequest);
 
-            var actionResult = Assert.IsType<ActionResult<EventForm>>(result);
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<EventFormCreateResponse>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
             var returnValue = Assert.IsAssignableFrom<EventFormCreateResponse>(createdAtActionResult.Value);
-            EventForm returnForm = ConvertResponseToForm(returnValue);
             Assert.True(ValidateEventForm(ConvertResponseToForm(returnValue), _testEventForm));
         }
 
         [Fact]
         public async Task CreateEventForm_MissingRequiredFields()
         {
-            EventForm EventForm = new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate = new DateTime(), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 };
-            _mockEventFormService.Setup(service => service.CreateEventFormAsync(It.IsAny<EventFormCreateRequest>()))
+            // Arrange
+            var emptyDietary = new List<DietaryRestrictions>();
+            _mockEventFormService.Setup(service => service.CreateEventFormAsync(
+                _testEventForm.EventType,
+                emptyDietary,
+                _testEventForm.ClientId,
+                _testEventForm.EventDate,
+                _testEventForm.FirstName,
+                _testEventForm.LastName,
+                _testEventForm.Status,
+                _testEventForm.Location,
+                _testEventForm.ClientEmail,
+                _testEventForm.ClientPhoneNumber,
+                _testEventForm.BudgetPerPerson,
+                _testEventForm.NumberOfGuests,
+                _testEventForm.ExtraNotes))
                 .ThrowsAsync(new ArgumentException("Missing required fields."));
 
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.PostEventForm(new EventFormCreateRequest( //How would this gracefully handle null arguments/missing fields instead of throwing an exception? Can we use the Front End to guarantee these parameters are always provided?
+            var createRequest = new EventFormCreateRequest(
                 _testEventForm.EventType,
-                [],
+                emptyDietary,
                 _testEventForm.ClientId,
                 _testEventForm.EventDate,
                 _testEventForm.FirstName,
@@ -320,47 +350,78 @@ namespace TheChienHouse.Tests.Controllers
                 _testEventForm.BudgetPerPerson,
                 _testEventForm.NumberOfGuests,
                 _testEventForm.ExtraNotes
-            )));
+            );
 
-            Assert.Equal("Missing required fields.", result.Message);
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.PostEventForm(createRequest));
+            Assert.Equal("Missing required fields.", exception.Message);
         }
 
         [Fact]
         public async Task CreateEventForm_DuplicateSubmission()
         {
-
-            EventForm eventForm = new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = [DietaryRestrictions.None], EventDate = new DateTime(2025, 10, 9), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 };
-
-            _mockEventFormService.Setup(service => service.CreateEventFormAsync(It.IsAny<EventFormCreateRequest>()))
+            // Arrange
+            _mockEventFormService.Setup(service => service.CreateEventFormAsync(
+                _testEventForm.EventType,
+                _testEventForm.DietaryRestrictions,
+                _testEventForm.ClientId,
+                _testEventForm.EventDate,
+                _testEventForm.FirstName,
+                _testEventForm.LastName,
+                _testEventForm.Status,
+                _testEventForm.Location,
+                _testEventForm.ClientEmail,
+                _testEventForm.ClientPhoneNumber,
+                _testEventForm.BudgetPerPerson,
+                _testEventForm.NumberOfGuests,
+                _testEventForm.ExtraNotes))
                 .ThrowsAsync(new Exception("Duplicate submission found. Event form not created"));
 
-            var result = await Assert.ThrowsAsync<Exception>(() => _eventFormsController.PostEventForm(new EventFormCreateRequest(
-                eventForm.EventType,
-                eventForm.DietaryRestrictions,
-                eventForm.ClientId,
-                eventForm.EventDate,
-                eventForm.FirstName,
-                eventForm.LastName,
-                eventForm.ClientEmail,
-                eventForm.ClientPhoneNumber,
-                eventForm.Status,
-                eventForm.Location,
-                eventForm.BudgetPerPerson,
-                eventForm.NumberOfGuests,
-                eventForm.ExtraNotes
-            )));
+            var createRequest = new EventFormCreateRequest(
+                _testEventForm.EventType,
+                _testEventForm.DietaryRestrictions,
+                _testEventForm.ClientId,
+                _testEventForm.EventDate,
+                _testEventForm.FirstName,
+                _testEventForm.LastName,
+                _testEventForm.ClientEmail,
+                _testEventForm.ClientPhoneNumber,
+                _testEventForm.Status,
+                _testEventForm.Location,
+                _testEventForm.BudgetPerPerson,
+                _testEventForm.NumberOfGuests,
+                _testEventForm.ExtraNotes
+            );
 
-            Assert.Equal("Duplicate submission found. Event form not created", result.Message);
+            var exception = await Assert.ThrowsAsync<Exception>(() => _eventFormsController.PostEventForm(createRequest));
+            Assert.Equal("Duplicate submission found. Event form not created", exception.Message);
         }
 
         [Fact]
         public async Task UpdateEventForm_Success()
         {
-            _mockEventFormService.Setup(service => service.UpdateEventFormAsync(It.IsAny<EventFormUpdateRequest>()))
-                .ReturnsAsync(_testCreateResponse);
+            // Arrange
+            _mockEventFormService.Setup(service => service.UpdateEventFormAsync(
+                _testUpdateRequest.Id,
+                _testUpdateRequest.EventType,
+                _testUpdateRequest.DietaryRestrictions,
+                _testUpdateRequest.ClientId,
+                _testUpdateRequest.EventDate,
+                _testUpdateRequest.FirstName,
+                _testUpdateRequest.LastName,
+                _testUpdateRequest.Status,
+                _testUpdateRequest.Location,
+                _testUpdateRequest.ClientEmail,
+                _testUpdateRequest.ClientPhoneNumber,
+                _testUpdateRequest.BudgetPerPerson,
+                _testUpdateRequest.NumberOfGuests,
+                _testUpdateRequest.ExtraNotes))
+                .ReturnsAsync(_testEventForm);
+
+            // Act
             var result = await _eventFormsController.UpdateEventForm(_testUpdateRequest);
-            Assert.IsType<CreatedAtActionResult>(result.Result);
-            var actionResult = Assert.IsType<ActionResult<EventForm>>(result);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<EventFormCreateResponse>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
             var returnValue = Assert.IsAssignableFrom<EventFormCreateResponse>(createdAtActionResult.Value);
             Assert.True(ValidateEventForm(ConvertResponseToForm(returnValue), _testEventForm));
@@ -369,29 +430,76 @@ namespace TheChienHouse.Tests.Controllers
         [Fact]
         public async Task UpdateEventForm_InvalidId()
         {
-            _mockEventFormService.Setup(service => service.UpdateEventFormAsync(It.IsAny<EventFormUpdateRequest>()))
+            // Arrange
+            _mockEventFormService.Setup(service => service.UpdateEventFormAsync(
+                _testUpdateRequest.Id,
+                _testUpdateRequest.EventType,
+                _testUpdateRequest.DietaryRestrictions,
+                _testUpdateRequest.ClientId,
+                _testUpdateRequest.EventDate,
+                _testUpdateRequest.FirstName,
+                _testUpdateRequest.LastName,
+                _testUpdateRequest.Status,
+                _testUpdateRequest.Location,
+                _testUpdateRequest.ClientEmail,
+                _testUpdateRequest.ClientPhoneNumber,
+                _testUpdateRequest.BudgetPerPerson,
+                _testUpdateRequest.NumberOfGuests,
+                _testUpdateRequest.ExtraNotes))
                 .ThrowsAsync(new ArgumentException("Event form with the provided ID does not exist."));
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.UpdateEventForm(_testUpdateRequest)); //TODO: Update me. Should return 404 with message "Event form with ID '{id}' was not found."
+
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.UpdateEventForm(_testUpdateRequest));
+            Assert.Equal("Event form with the provided ID does not exist.", exception.Message);
         }
 
         [Fact]
         public async Task UpdateEventForm_InvalidData()
         {
-            //TODO: Figure out how to handle this more gracefully. Currently throws an NRE instead of an ArgumentException. Also this should not throw an ArgumentException, but something more specific to invalid data.
-            _mockEventFormService.Setup(service => service.UpdateEventFormAsync(It.IsAny<EventFormUpdateRequest>()))
+            // Arrange
+            _mockEventFormService.Setup(service => service.UpdateEventFormAsync(
+                _testUpdateRequest.Id,
+                _testUpdateRequest.EventType,
+                _testUpdateRequest.DietaryRestrictions,
+                _testUpdate_request.ClientId,
+                _testUpdateRequest.EventDate,
+                _testUpdateRequest.FirstName,
+                _testUpdateRequest.LastName,
+                _testUpdateRequest.Status,
+                _testUpdateRequest.Location,
+                _testUpdate_request.ClientEmail,
+                _testUpdateRequest.ClientPhoneNumber,
+                _testUpdateRequest.BudgetPerPerson,
+                _testUpdate_request.NumberOfGuests,
+                _testUpdateRequest.ExtraNotes))
                 .ThrowsAsync(new ArgumentException("Invalid data provided for update."));
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.UpdateEventForm(_testUpdateRequest));
-            //Assert.Equal("Invalid data provided for update.", result.Message);
+
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.UpdateEventForm(_testUpdateRequest));
+            Assert.Equal("Invalid data provided for update.", exception.Message);
         }
 
         [Fact]
         public async Task UpdateEventForm_TrivialUpdate()
         {
-            _mockEventFormService.Setup(service => service.UpdateEventFormAsync(It.IsAny<EventFormUpdateRequest>()))
+            // Arrange
+            _mockEventFormService.Setup(service => service.UpdateEventFormAsync(
+                _testUpdateRequest.Id,
+                _testUpdateRequest.EventType,
+                _testUpdateRequest.DietaryRestrictions,
+                _testUpdateRequest.ClientId,
+                _testUpdateRequest.EventDate,
+                _testUpdateRequest.FirstName,
+                _testUpdateRequest.LastName,
+                _testUpdateRequest.Status,
+                _testUpdateRequest.Location,
+                _testUpdateRequest.ClientEmail,
+                _testUpdateRequest.ClientPhoneNumber,
+                _testUpdateRequest.BudgetPerPerson,
+                _testUpdateRequest.NumberOfGuests,
+                _testUpdateRequest.ExtraNotes))
                 .ThrowsAsync(new ArgumentException("No changes detected in the update request."));
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.UpdateEventForm(_testUpdateRequest));
-            //TODO: Figure out how to handle this more gracefully. Currently throws an NRE instead of an ArgumentException. Also this should not throw an ArgumentException, but something more specific to trivial update.
-            //Assert.Equal("No changes detected in the update request.", result.Message);
+
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _eventFormsController.UpdateEventForm(_testUpdateRequest));
+            Assert.Equal("No changes detected in the update request.", exception.Message);
         }
 
         public bool ValidateEventForm(EventForm returnValue, EventForm expectedForm)

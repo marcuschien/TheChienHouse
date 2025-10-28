@@ -14,31 +14,31 @@ namespace TheChienHouse.Services
             _context = context;
             _logger = logger;
         }
-        public async Task<EventFormCreateResponse> CreateEventFormAsync(EventFormCreateRequest request)
+        public async Task<EventForm> CreateEventFormAsync(EventType eventType, List<DietaryRestrictions> dietaryRestrictions, Guid? clientId, DateTime eventDate, string firstName, string? lastName, Status status, string location, string email, string? phoneNumber, decimal budgetPP, int numGuests, string? notes)
         {
             var newEventForm = new EventForm
             {
                 Id = Guid.NewGuid(),
-                EventType = request.EventType,
-                DietaryRestrictions = request.DietaryRestrictions,
-                ClientId = request.ClientId,
-                EventDate = request.EventDate,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                ClientEmail = request.ClientEmail,
-                ClientPhoneNumber = request.ClientPhoneNumber,
-                Status = request.Status,
+                EventType = eventType,
+                DietaryRestrictions = dietaryRestrictions,
+                ClientId = clientId,
+                EventDate = eventDate,
+                FirstName = firstName,
+                LastName = lastName,
+                ClientEmail = email,
+                ClientPhoneNumber = phoneNumber,
+                Status = status,
                 CreatedAt = DateTime.UtcNow,
-                Location = request.Location,
-                BudgetPerPerson = request.BudgetPerPerson,
-                NumberOfGuests = request.NumberOfGuests,
-                ExtraNotes = request.ExtraNotes
+                Location = location,
+                BudgetPerPerson = budgetPP,
+                NumberOfGuests =numGuests,
+                ExtraNotes = notes
             };
             _context.EventForms.Add(newEventForm);
             await _context.SaveChangesAsync();
             _logger.LogInformation("Created new event form with ID: {EventFormId}", newEventForm.Id);
 
-            return MapToResponse(newEventForm);
+            return newEventForm;
         }
 
         public async Task<bool> DeleteEventFormAsync(Guid id)
@@ -99,33 +99,37 @@ namespace TheChienHouse.Services
             //Optimization?: Would it be better to filter at the database level instead of in-memory? i.e. write a different query for each filter type? It would certainly mean we're not fetching the entire forms table every time.
         }
 
-        public async Task<EventFormCreateResponse?> UpdateEventFormAsync(EventFormUpdateRequest request)
+        public async Task<EventForm?> UpdateEventFormAsync(Guid formId, EventType eventType, List<DietaryRestrictions> dietaryRestrictions, Guid? clientId, DateTime eventDate, string firstName, string? lastName, Status status, string location, string email, string? phoneNumber, decimal budgetPP, int numGuests, string? notes)
         {
-            EventForm? form = await _context.EventForms.FindAsync(request.Id);
+            EventForm? form = await _context.EventForms.FindAsync(formId);
             if (form == null)
             {
-                _logger.LogWarning("Event form with ID: {EventFormId} not found for update", request.Id);
+                _logger.LogWarning("Event form with ID: {EventFormId} not found for update", formId);
                 return null;
             }
             else
             {
-                form.EventType = request.EventType;
-                form.DietaryRestrictions = request.DietaryRestrictions;
-                form.ClientId = request.ClientId;
-                form.EventDate = request.EventDate;
-                form.FirstName = request.FirstName;
-                form.LastName = request.LastName;
-                form.ClientEmail = request.ClientEmail;
-                form.ClientPhoneNumber = request.ClientPhoneNumber;
-                form.Status = request.Status;
+                form.EventType = eventType;
+                form.DietaryRestrictions = dietaryRestrictions;
+                form.ClientId = clientId;
+                form.EventDate = eventDate;
+                form.FirstName = firstName;
+                form.LastName = lastName;
+                form.ClientEmail = email;
+                form.ClientPhoneNumber = phoneNumber;
+                form.Status = status;
                 form.UpdatedAt = DateTime.UtcNow;
+                form.Location = location;
+                form.BudgetPerPerson = budgetPP;
+                form.NumberOfGuests = numGuests;
+                form.ExtraNotes = notes;
                 _context.EventForms.Update(form);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("Updated event form with ID: {EventFormId}", request.Id);
-                return MapToResponse(form);
+                _logger.LogInformation("Updated event form with ID: {EventFormId}", formId);
+                return form;
             }
         }
 
-        private static EventFormCreateResponse MapToResponse(EventForm eventForm) => new(eventForm.Id, eventForm.EventType, eventForm.DietaryRestrictions, eventForm.ClientId, eventForm.EventDate, eventForm.FirstName, eventForm.LastName, eventForm.ClientEmail, eventForm.ClientPhoneNumber, eventForm.Status, eventForm.CreatedAt, eventForm.UpdatedAt, eventForm.Location, eventForm.BudgetPerPerson, eventForm.NumberOfGuests, eventForm.ExtraNotes);
+        
     }
 }
