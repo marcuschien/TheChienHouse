@@ -8,15 +8,20 @@ namespace TheChienHouse.Models
          * CreateRequest, ProductCreateResponse, ProductGetRequest, ProductGetResponse, etc. 
          * But for the scope of this assignment, I've just kept it as one for simplicity. 
          */
-        public record MenuItemCreateRequest(
+        public record CreateMenuItemRequest(
             string Name,
             [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
             decimal Price,
             DishType DishType
         );
 
-        public record MenuItemGetRequest(
-            long? Id
+        public record MenuItemRequest(
+            Guid Id
+        );
+
+        public record GetMenuItemsRequest (
+            string? Name = null,
+            DishType? DishType = null
         );
 
         public record MenuItemResponse(
@@ -34,7 +39,7 @@ namespace TheChienHouse.Models
             IEnumerable<MenuItem> MenuItems
         );
 
-        public record MenuItemUpdateRequest(
+        public record UpdateMenuItemRequest(
             string OldName,
             DishType OldType,
             decimal? NewPrice = null,
