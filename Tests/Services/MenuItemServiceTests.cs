@@ -22,7 +22,7 @@ namespace TheChienHouse.Tests.Services
         public MenuItemServiceTests()
         {
             var options = new DbContextOptionsBuilder<RetailContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: $"MenuItemTestDb_{Guid.NewGuid()}")
                 .Options;
             _context = new RetailContext(options);
             _mockLogger = new Mock<ILogger<MenuItemService>>();

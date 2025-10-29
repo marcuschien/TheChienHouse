@@ -80,7 +80,7 @@ namespace TheChienHouse.Tests.Services
         public EventFormServiceTests() //TODO: Figure out how to populate DB context with test data just ONCE so that duplicate items aren't trying to be added. 
         {
             var options = new DbContextOptionsBuilder<RetailContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: $"EventFormTestDb_{Guid.NewGuid()}")
                 .Options;
             _context = new RetailContext(options);
             _mockLogger = new Mock<ILogger<EventFormService>>();
