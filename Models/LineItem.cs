@@ -4,14 +4,19 @@ namespace TheChienHouse.Models
 {
     public class LineItem
     {
-        public long Id { get; set; } // Make me a UUID
+        public Guid Id { get; set; }
+        public Guid SaleId { get; set; }
         [Required(ErrorMessage = "Item name is required")]
-        public string? MenuItemForSale { get; set; } // Using this to pull the Product from the DB. We should fetch the earliest created one
+        public required Guid MenuItemForSale { get; set; }
         [Range(1, long.MaxValue, ErrorMessage = "Quantity must be greater than 0")]
         public required long Quantity { get; set; }
-        public decimal TotalCost { get; set; }
-        public decimal LineItemDiscount { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // The timestamps are useful for tracing and debugging purposes 
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow; // Some customers find them useful as well
+        public decimal PricePerItem { get; set; }
+        public decimal SubTotal => PricePerItem * Quantity;
+        public decimal Discount { get; set; } = 0; // This is x percent off. 
+        public decimal TotalCost => SubTotal - (SubTotal*Discount);
+        public DateTime CreatedAt { get; init; }
+        public DateTime? UpdatedAt { get; set; } = null;
+
+        //Do I want to add an expiry date here?
     }
 }
