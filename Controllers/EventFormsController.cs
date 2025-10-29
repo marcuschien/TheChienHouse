@@ -19,10 +19,18 @@ namespace TheChienHouse.Controllers
         //GET: api/EventForms/{id}
         //TODO: Implement/Fix Me
         [HttpGet("form/{id}")]
-        public async Task<ActionResult<EventForm>> GetEventForm(Guid id)
+        public async Task<ActionResult<EventFormResponse>> GetEventForm(EventFormRequest request)
         {
-            EventForm? response = await _eventFormService.GetEventFormByIdAsync(id);
-            if (response == null)
+            EventForm ? eventForm = null;
+            if (request.Id.HasValue)
+            {
+                eventForm = await _eventFormService.GetEventFormByIdAsync(request.Id.Value);
+            }
+            else
+            {
+                return BadRequest(new { message = "Event Form ID is required." });
+            }
+            if (eventForm == null)
             {
                 return NotFound();
             }
@@ -58,10 +66,5 @@ namespace TheChienHouse.Controllers
             EventFormCreateResponse response = await _eventFormService.CreateEventFormAsync(request);
             return CreatedAtAction(nameof(UpdateEventForm), new { id = response.Id }, response);
         }
-
-        
-
-
-
     }
 }

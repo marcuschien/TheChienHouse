@@ -101,7 +101,7 @@ namespace TheChienHouse.Tests.Controllers
             _mockEventFormService.Setup(service => service.GetEventFormByIdAsync(_testEventForm.Id))
                 .ReturnsAsync(_testEventForm); 
             // Act
-            var result = await _eventFormsController.GetEventForm(_testEventForm.Id);
+            var result = await _eventFormsController.GetEventForm(new EventFormRequest(_testEventForm.Id));
             // Assert
             var actionResult = Assert.IsType<ActionResult<EventForm>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
@@ -113,11 +113,11 @@ namespace TheChienHouse.Tests.Controllers
         public async Task GetEventFormById_NotFound()
         {
             // Arrange
-            var EventFormId = Guid.NewGuid();
-            _mockEventFormService.Setup(service => service.GetEventFormByIdAsync(EventFormId))
+            var eventFormId = Guid.NewGuid();
+            _mockEventFormService.Setup(service => service.GetEventFormByIdAsync(eventFormId))
                 .ReturnsAsync((EventForm?)null); // Simulate not found
             // Act
-            var result = await _eventFormsController.GetEventForm(EventFormId); //TODO: This should return something to indicate that the form was not found. Will need to update the service to do so.
+            var result = await _eventFormsController.GetEventForm(new EventFormRequest(eventFormId)); //TODO: This should return something to indicate that the form was not found. Will need to update the service to do so.
             // Assert
             var actionResult = Assert.IsType<ActionResult<EventForm>>(result);
             var notFoundResult = Assert.IsType<NotFoundResult>(actionResult.Result);
