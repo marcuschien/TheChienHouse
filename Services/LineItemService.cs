@@ -17,40 +17,30 @@ namespace TheChienHouse.Services
             _menuItemService = menuItemService;
         }
 
-        public async Task<LineItem> CreateLineItemAsync(LineItemCreateRequest lineItemRequest)
+        public async Task<LineItem> CreateLineItemAsync(Guid menuItem, int quantity, decimal discount)
         {
             LineItem lineItem = new LineItem
             {
                 Id = Guid.NewGuid(),
-                MenuItemForSale = lineItemRequest.MenuItemForSale,
-                Quantity = lineItemRequest.Quantity,
-                Discount = lineItemRequest.Discount,
+                MenuItemForSale = menuItem,
+                Quantity = quantity,
+                Discount = discount,
                 CreatedAt = DateTime.UtcNow
             };
-            _context.LineItems.Add(lineItem);
-            await _context.SaveChangesAsync();
+            await SetPricePerItem(lineItem);
             _logger.LogInformation("Created line item {LineItem}", lineItem);
             return lineItem;
         }
 
-        public async Task<List<LineItem>> CreateLineItemsAsync(List<LineItemCreateRequest> lineItemRequests)
+        public async Task<List<LineItem>> CreateLineItemsAsync(Dictionary<Guid, Tuple<int, decimal>> dictItems)
         {
             List<LineItem> lineItems = new List<LineItem>();
-            foreach (var request in lineItemRequests)
+            foreach (var dictItem in dictItems)
             {
-                var lineItem = new LineItem
-                {
-                    Id = Guid.NewGuid(),
-                    MenuItemForSale = request.MenuItemForSale,
-                    Quantity = request.Quantity,
-                    Discount = request.Discount,
-                    CreatedAt = DateTime.UtcNow
-                };
-                await SetPricePerItem(lineItem);
+                LineItem lineItem = await CreateLineItemAsync(dictItem.Key, dictItem.Value.Item1, dictItem.Value.Item2);
                 lineItems.Add(lineItem);
             }
             _logger.LogInformation("Created line items {LineItems}", lineItems);
-
             return lineItems;
         }
 
