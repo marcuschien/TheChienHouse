@@ -19,13 +19,17 @@ namespace TheChienHouse.Controllers
         //GET: api/EventForms/{id}
         //TODO: Implement/Fix Me
         [HttpGet("form/{id}")]
-        public async Task<ActionResult<EventFormResponse>> GetEventForm(Guid id)
+        public async Task<ActionResult<EventFormResponse>> GetEventForm(EventFormRequest request)
         {
-            if (id == Guid.Empty)
+            EventForm ? eventForm = null;
+            if (request.Id.HasValue)
             {
-                return BadRequest();
+                eventForm = await _eventFormService.GetEventFormByIdAsync(request.Id.Value);
             }
-            EventForm? eventForm = await _eventFormService.GetEventFormByIdAsync(id);
+            else
+            {
+                return BadRequest(new { message = "Event Form ID is required." });
+            }
             if (eventForm == null)
             {
                 return NotFound();
@@ -70,8 +74,5 @@ namespace TheChienHouse.Controllers
         private static EventFormResponse MapToResponse(EventForm eventForm) => new(eventForm.Id, eventForm.EventType, eventForm.DietaryRestrictions, eventForm.ClientId, eventForm.EventDate, eventForm.FirstName, eventForm.LastName, eventForm.ClientEmail, eventForm.ClientPhoneNumber, eventForm.Status, eventForm.Location, eventForm.BudgetPerPerson, eventForm.NumberOfGuests, eventForm.ExtraNotes, eventForm.CreatedAt, eventForm.UpdatedAt);
 
         private static EventFormCreateResponse MapToCreateResponse(EventForm eventForm) => new(eventForm.Id, eventForm.EventType, eventForm.DietaryRestrictions, eventForm.ClientId, eventForm.EventDate, eventForm.FirstName, eventForm.LastName, eventForm.ClientEmail, eventForm.ClientPhoneNumber, eventForm.Status, eventForm.CreatedAt, eventForm.UpdatedAt, eventForm.Location, eventForm.BudgetPerPerson, eventForm.NumberOfGuests, eventForm.ExtraNotes);
-
-
-
     }
 }
