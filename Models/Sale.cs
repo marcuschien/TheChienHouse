@@ -4,13 +4,13 @@ namespace TheChienHouse.Models
 {
     public class Sale
     {
-        public long Id { get; set; } // Make me a UUID
+        public Guid Id { get; set; }
         public required List<LineItem> LineItems {get; set;}
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
-        public decimal Total {get; set;}
+        public decimal Discount { get; set; } = 0; //This is x percent off. 
+        public decimal Total => LineItems.Sum(li => li.TotalCost) - Discount;
         [Range(0.01, double.MaxValue, ErrorMessage = "Discount must be greater than 0")]
-        public decimal? SaleDiscount { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // The timestamps are useful for tracing and debugging purposes 
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow; // Some customers find them useful as well
+        public DateTime CreatedAt { get; init; } 
+        public DateTime? UpdatedAt { get; set; } = null;
     }
 }
