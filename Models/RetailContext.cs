@@ -63,7 +63,8 @@ namespace TheChienHouse.Models
                 entity.Property(e => e.EventType).HasColumnName("event_type").HasConversion<string>(); // Need to convert cause this is an enum
                 entity.Property(e => e.DietaryRestrictions).HasColumnName("dietary_restrictions");
                 entity.Property(e => e.EventDate).HasColumnName("event_date");
-                entity.Property(e => e.ClientName).HasColumnName("client_name");
+                entity.Property(e => e.FirstName).HasColumnName("first_name");
+                entity.Property(e => e.LastName).HasColumnName("last_name");
                 entity.Property(e => e.ClientEmail).HasColumnName("client_email");
                 entity.Property(e => e.ClientPhoneNumber).HasColumnName("client_phone_number");
                 entity.Property(e => e.Status).HasColumnName("status");
