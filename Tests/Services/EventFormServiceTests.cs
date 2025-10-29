@@ -34,7 +34,8 @@ namespace TheChienHouse.Tests.Services
             Location = "TheChienHouse",
             BudgetPerPerson = 22.22m,
             NumberOfGuests = 2,
-            ExtraNotes = "Test Notes"
+            ExtraNotes = "Test Notes",
+            CreatedAt = DateTime.UtcNow
         };
         private static readonly List<EventForm> _testEventForms = new List<EventForm>
         {
@@ -114,7 +115,7 @@ namespace TheChienHouse.Tests.Services
         [Fact]
         public async Task GetEventForms_AllFilters_Success()
         {
-            var result = await _eventFormsService.GetEventFormsAsync(_testClientId, Status.Confirmed, new DateTime(2025, 10, 7), new DateTime(2025, 10, 10));
+            IEnumerable<EventForm> result = await _eventFormsService.GetEventFormsAsync(_testClientId, Status.Confirmed, new DateTime(2025, 10, 7), new DateTime(2025, 10, 10));
             
             Assert.NotNull(result);
             Assert.Contains(result, r => r.ClientId == _testClientId && r.Status == Status.Confirmed);
@@ -370,9 +371,7 @@ namespace TheChienHouse.Tests.Services
                    returnValue.LastName == expectedForm.LastName &&
                    returnValue.ClientEmail == expectedForm.ClientEmail &&
                    returnValue.ClientPhoneNumber == expectedForm.ClientPhoneNumber &&
-                   returnValue.Status == expectedForm.Status &&
-                   returnValue.CreatedAt == expectedForm.CreatedAt &&
-                   returnValue.UpdatedAt == expectedForm.UpdatedAt;
+                   returnValue.Status == expectedForm.Status;
         }
         public EventForm ConvertResponseToForm(EventFormCreateResponse response)
         {

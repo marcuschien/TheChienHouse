@@ -74,14 +74,14 @@ namespace TheChienHouse.Services
 
         public async Task<IEnumerable<EventForm>> GetEventFormsAsync(Guid? clientId, Status? status, DateTime? startDate, DateTime? endDate) // Why do I want this to be async?
         {
-            List<EventForm> eventForms = await _context.EventForms.ToListAsync();
+            IEnumerable<EventForm> eventForms = await _context.EventForms.ToListAsync();
             if (clientId.HasValue)
             {
-                eventForms = (List<EventForm>)eventForms.Where(cf => cf.ClientId == clientId);
+                eventForms = eventForms.Where(cf => cf.ClientId == clientId); //TODO: Fix me. I'm not filtering properly.
             }
             if (status.HasValue)
             {
-                eventForms = (List<EventForm>)eventForms.Where(cf => cf.Status == status);
+                eventForms = eventForms.Where(cf => cf.Status == status);
             }
             if (startDate.HasValue || endDate.HasValue)
             {
@@ -93,7 +93,7 @@ namespace TheChienHouse.Services
                 {
                     throw new ArgumentException("Start date must be earlier than or equal to end date.");
                 }
-                eventForms = (List<EventForm>)eventForms.Where(cf => cf.EventDate >= startDate && cf.EventDate <= endDate);
+                eventForms = eventForms.Where(cf => cf.EventDate >= startDate && cf.EventDate <= endDate);
             }
             return eventForms;
             //Optimization?: Would it be better to filter at the database level instead of in-memory? i.e. write a different query for each filter type? It would certainly mean we're not fetching the entire forms table every time.
