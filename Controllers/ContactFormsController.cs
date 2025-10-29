@@ -17,45 +17,48 @@ namespace TheChienHouse.Controllers
         }
 
         //Get all forms by client id and/or within a date range
-        //GET: api/ContactForms?clientId={clientId}&startDate={startDate}&endDate={endDate}
-        [HttpGet("forms/{clientId}&{startDate}&{endDate}")]
-        public async Task<ActionResult<IEnumerable<ContactForm>>> GetContactForms(Guid? clientId = null, DateTime? startDate = null, DateTime? endDate = null)
+        //GET: api/ContactForms/forms?clientId={clientId}&startDate={startDate}&endDate={endDate}
+        [HttpGet("forms")]
+        public async Task<ActionResult<ContactFormsResponse>> GetContactForms([FromQuery] ContactFormsQueryRequest? request = null)
         {
-            IEnumerable<ContactForm> response = await _contactFormService.GetContactFormsAsync(clientId, startDate, endDate);
-            return CreatedAtAction(nameof(GetContactForms), response);
+            var forms = await _contactFormService.GetContactFormsAsync(request?.ClientId, request?.StartDate, request?.EndDate);
+            
+            return Ok(new ContactFormsResponse(forms));
         }
 
-        //GET: api/ContactForms/{id}
+        //GET: api/ContactForms/form/{id}
         [HttpGet("form/{id}")]
-        public async Task<ActionResult<ContactForm>> GetContactForm(Guid id)
+        public async Task<ActionResult<ContactFormResponse>> GetContactForm([FromRoute] ContactFormRequest request)
         {
-            ContactForm? response = await _contactFormService.GetContactFormByIdAsync(id);
-            if (response == null)
+            ContactForm? form = await _contactFormService.GetContactFormByIdAsync(request.Id);
+            if (form == null)
             {
                 return NotFound();
             }
-            return CreatedAtAction(nameof(GetContactForm), response);
+
+            return Ok(MapToResponse(form));
         }
 
         //POST: api/ContactForms
         [HttpPost]
-        public async Task<ActionResult<ContactForm>> CreateContactForm(ContactFormCreateRequest request)
+        public async Task<ActionResult<ContactFormResponse>> CreateContactForm(ContactFormCreateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            ContactFormCreateResponse response = await _contactFormService.CreateContactFormAsync(request);
-            return CreatedAtAction(nameof(GetContactForm), new { id = response.Id }, response);
+            
+            ContactForm form = await _contactFormService.CreateContactFormAsync(request.ClientId, request.FirstName, request.LastName, request.ClientEmail, request.ClientPhoneNumber, request.Subject, request.Message);
+            return CreatedAtAction(nameof(GetContactForm), MapToResponse(form));
         }
 
         //Delete contact form by id
-        //DELETE: api/ContactForms/{id}
+        //DELETE: api/ContactForms/form/{id}
         [HttpDelete("form/{id}")]
-        public async Task<IActionResult> DeleteContactForm(Guid id)
+        public async Task<IActionResult> DeleteContactForm([FromRoute] ContactFormRequest request)
         {
-            bool isDeleted = await _contactFormService.DeleteContactFormAsync(id);
+            bool isDeleted = await _contactFormService.DeleteContactFormAsync(request.Id);
             if (!isDeleted)
             {
-                return NotFound(new { message = $"Contact form with ID '{id}' was not found." });
+                return NotFound(new { message = $"Contact form with ID '{request.Id}' was not found." });
             }
             return NoContent();
         }
@@ -63,14 +66,29 @@ namespace TheChienHouse.Controllers
         //Delete contact forms by client id
         //DELETE: api/ContactForms/client/{clientId}
         [HttpDelete("client/{clientId}")]
-        public async Task<IActionResult> DeleteContactFormsByClientId(Guid clientId)
+        public async Task<IActionResult> DeleteContactFormsByClientId([FromRoute] ContactFormsDeleteByClientIdRequest request)
         {
-            bool isDeleted = await _contactFormService.DeleteContactFormsByClientIdAsync(clientId);
+            bool isDeleted = await _contactFormService.DeleteContactFormsByClientIdAsync(request.ClientId);
             if (!isDeleted)
             {
-                return NotFound(new { message = $"No contact forms found for client ID '{clientId}'." });
+                return NotFound(new { message = $"No contact forms found for client ID '{request.ClientId}'." });
             }
             return NoContent();
+        }
+
+        public ContactFormResponse MapToResponse(ContactForm contactForm)
+        {
+            return new ContactFormResponse(
+                contactForm.Id,
+                contactForm.ClientId,
+                contactForm.FirstName,
+                contactForm.LastName,
+                contactForm.Email,
+                contactForm.PhoneNumber,
+                contactForm.Subject,
+                contactForm.Message,
+                contactForm.CreatedAt
+            );
         }
     }
 }

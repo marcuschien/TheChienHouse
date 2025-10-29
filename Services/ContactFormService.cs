@@ -14,25 +14,25 @@ namespace TheChienHouse.Services
             _context = context;
             _logger = logger;
         }
-        public async Task<ContactFormCreateResponse> CreateContactFormAsync(ContactFormCreateRequest request)
+        public async Task<ContactForm> CreateContactFormAsync(Guid? clientId, string firstName, string? lastName, string email, string? phoneNumber, string subject, string message)
         {
             ContactForm contactForm = new ContactForm
             {
                 Id = Guid.NewGuid(),
-                ClientId = request.ClientId,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Email = request.ClientEmail,
-                PhoneNumber = request.ClientPhoneNumber,
-                Subject = request.Subject,
-                Message = request.Message,
+                ClientId = clientId,
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                PhoneNumber = phoneNumber,
+                Subject = subject,
+                Message = message,
                 CreatedAt = DateTime.UtcNow
             };
             _context.ContactForms.Add(contactForm);
             await _context.SaveChangesAsync();
             _logger.LogInformation("Created new contact form with ID: {ContactFormId}", contactForm.Id);
 
-            return MapToResponse(contactForm);
+            return contactForm;
         }
 
         public async Task<bool> DeleteContactFormAsync(Guid id)
@@ -103,21 +103,6 @@ namespace TheChienHouse.Services
                 contactForms = contactForms.Where(cf => cf.CreatedAt >= startDate && cf.CreatedAt <= endDate);
             }
             return contactForms;
-        }
-
-        private static ContactFormCreateResponse MapToResponse(ContactForm contactForm)
-        {
-            return new ContactFormCreateResponse(
-                contactForm.Id,
-                contactForm.ClientId,
-                contactForm.FirstName,
-                contactForm.LastName,
-                contactForm.Email,
-                contactForm.PhoneNumber,
-                contactForm.Subject,
-                contactForm.Message,
-                contactForm.CreatedAt
-            );
         }
     }
 }

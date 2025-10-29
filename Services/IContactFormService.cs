@@ -5,7 +5,7 @@ namespace TheChienHouse.Services
 {
     public interface IContactFormService
     {
-        Task<ContactFormCreateResponse> CreateContactFormAsync(ContactFormCreateRequest request);
+        Task<ContactForm> CreateContactFormAsync(Guid? clientId, string firstName, string? lastName, string email, string? phoneNumber, string subject, string message);
         Task<bool> DeleteContactFormAsync(Guid id);
         Task<bool> DeleteContactFormsByClientIdAsync(Guid clientId);
         Task<ContactForm?> GetContactFormByIdAsync(Guid id);
