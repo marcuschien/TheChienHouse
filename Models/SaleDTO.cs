@@ -8,18 +8,18 @@ namespace TheChienHouse.Models
         public record SaleCreateRequest(
             List<LineItemCreateRequest> LineItems,
             [Range(0.01, double.MaxValue, ErrorMessage = "Discount must be greater than 0")]
-            decimal? SaleDiscount
+            decimal SaleDiscount = 0
         );
 
         public record SaleCreateResponse(
-            long Id,
+            Guid Id,
             List<LineItem> LineItems,
             [Range(0.01, double.MaxValue, ErrorMessage = "Sale total must be greater than 0")]
             decimal Total,
             [Range(0.01, double.MaxValue, ErrorMessage = "Discount must be greater than 0")]
             decimal? Discount,
             DateTime CreatedAt,
-            DateTime UpdatedAt
+            DateTime? UpdatedAt
         );
     }
 }

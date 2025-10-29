@@ -10,8 +10,26 @@ namespace TheChienHouse.Models
             List<DietaryRestrictions> DietaryRestrictions,
             Guid? ClientId,
             DateTime EventDate,
-            string ClientName,
-            string? ClientEmail,
+            string FirstName,
+            string? LastName,
+            string ClientEmail,
+            string? ClientPhoneNumber,
+            Status Status,
+            string Location,
+            decimal BudgetPerPerson,
+            int NumberOfGuests,
+            string? ExtraNotes
+        );
+        public record EventFormUpdateRequest
+        (
+            Guid Id,
+            EventType EventType,
+            List<DietaryRestrictions> DietaryRestrictions,
+            Guid? ClientId,
+            DateTime EventDate,
+            string FirstName,
+            string? LastName,
+            string ClientEmail,
             string? ClientPhoneNumber,
             Status Status,
             string Location,
@@ -25,8 +43,9 @@ namespace TheChienHouse.Models
             List<DietaryRestrictions> DietaryRestrictions,
             Guid? ClientId,
             DateTime EventDate,
-            string ClientName,
-            string? ClientEmail,
+            string FirstName,
+            string? LastName,
+            string ClientEmail,
             string? ClientPhoneNumber,
             Status Status,
             DateTime CreatedAt,
@@ -36,21 +55,36 @@ namespace TheChienHouse.Models
             int NumberOfGuests,
             string? ExtraNotes
         );
-        public record EventFormUpdateRequest
-        (
+        
+        public record EventFormRequest(
+            Guid? Id = null,
+            Guid? ClientId = null,
+            Status? Status = null,
+            DateTime? StartDate = null,
+            DateTime? EndDate = null
+        );
+
+        public record EventFormResponse(
             Guid Id,
             EventType EventType,
             List<DietaryRestrictions> DietaryRestrictions,
             Guid? ClientId,
             DateTime EventDate,
-            string ClientName,
-            string? ClientEmail,
+            string FirstName,
+            string? LastName,
+            string ClientEmail,
             string? ClientPhoneNumber,
             Status Status,
             string Location,
             decimal BudgetPerPerson,
             int NumberOfGuests,
-            string? ExtraNotes
+            string? ExtraNotes,
+            DateTime CreatedAt,
+            DateTime? UpdatedAt
+        );
+
+        public record EventFormsResponse(
+            IEnumerable<EventForm> EventForms
         );
     }
 }

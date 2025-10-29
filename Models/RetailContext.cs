@@ -13,6 +13,7 @@ namespace TheChienHouse.Models
         public DbSet<Sale> Sales { get; set; } = null!;
         public DbSet<EventForm> EventForms { get; set; } = null!;
         public DbSet<ContactForm> ContactForms { get; set; } = null!;
+        public DbSet<LineItem> LineItems { get; set; } = null!;
 
         // Creating the DB models so that API can map to it correctly
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,6 +39,22 @@ namespace TheChienHouse.Models
                 // Add more property configurations as needed
             });
 
+            //Customizing the LineItem table and columns
+            modelBuilder.Entity<LineItem>(entity =>
+            {
+                entity.ToTable("LineItems");
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.SaleId).HasColumnName("sale_id");
+                entity.Property(e => e.MenuItemForSale).HasColumnName("menu_item_id");
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
+                entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+                entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
+                entity.Property(e => e.Discount).HasColumnName("discount");
+                entity.Property(e => e.PricePerItem).HasColumnName("price_per_item");
+                entity.Property(e => e.SubTotal).HasColumnName("sub_total");
+                entity.Property(e => e.TotalCost).HasColumnName("total_cost");
+            });
+
             //Customizing the EventForm table and columns
             modelBuilder.Entity<EventForm>(entity =>
             {
@@ -47,7 +64,8 @@ namespace TheChienHouse.Models
                 entity.Property(e => e.EventType).HasColumnName("event_type").HasConversion<string>(); // Need to convert cause this is an enum
                 entity.Property(e => e.DietaryRestrictions).HasColumnName("dietary_restrictions");
                 entity.Property(e => e.EventDate).HasColumnName("event_date");
-                entity.Property(e => e.ClientName).HasColumnName("client_name");
+                entity.Property(e => e.FirstName).HasColumnName("first_name");
+                entity.Property(e => e.LastName).HasColumnName("last_name");
                 entity.Property(e => e.ClientEmail).HasColumnName("client_email");
                 entity.Property(e => e.ClientPhoneNumber).HasColumnName("client_phone_number");
                 entity.Property(e => e.Status).HasColumnName("status");

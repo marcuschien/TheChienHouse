@@ -4,7 +4,7 @@ namespace TheChienHouse.Models
 {
     public class MenuItem
     {
-        public string Id { get; set; } // TO DO: Make me a Guid. 
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Item name is required")]
         public required string Name { get; set; }
@@ -12,10 +12,12 @@ namespace TheChienHouse.Models
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
         public decimal Price { get; set; }
 
-        public required string DishType { get; set; }
+        public required DishType DishType { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // The timestamps are useful for tracing and debugging purposes 
-        public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow; // Some customers find them useful as well
+        public DateTime? ExpiryDate { get; set; }
+
+        public DateTime CreatedAt { get; init; }
+        public DateTime? UpdatedAt { get; set; }
     }
 
     public enum DishType

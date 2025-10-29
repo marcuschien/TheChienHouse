@@ -8,33 +8,42 @@ namespace TheChienHouse.Models
          * CreateRequest, ProductCreateResponse, ProductGetRequest, ProductGetResponse, etc. 
          * But for the scope of this assignment, I've just kept it as one for simplicity. 
          */
-        public record MenuItemCreateRequest(
+        public record CreateMenuItemRequest(
             string Name,
             [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
             decimal Price,
-            string DishType
+            DishType DishType
         );
 
-        public record MenuItemGetRequest(
-            long? Id
+        public record MenuItemRequest(
+            Guid Id
+        );
+
+        public record GetMenuItemsRequest (
+            string? Name = null,
+            DishType? DishType = null
         );
 
         public record MenuItemResponse(
-            string Id,
+            Guid Id,
             string Name,
             [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
             decimal Price,
-            string DishType,
+            DishType DishType,
+            DateTime? ExpiryDate,
             DateTime CreatedAt,
-            DateTime? UpdatedAt,
-            long? Count = null // Count is optional, used for aggregating dishes with the same name
+            DateTime? UpdatedAt
         );
 
-        public record MenuItemUpdateRequest(
+        public record MenuItemsResponse(
+            IEnumerable<MenuItem> MenuItems
+        );
+
+        public record UpdateMenuItemRequest(
             string OldName,
-            string OldType,
+            DishType OldType,
             decimal? NewPrice = null,
-            string? NewType = null,
+            DishType? NewType = null,
             string? NewName = null
         );
     }

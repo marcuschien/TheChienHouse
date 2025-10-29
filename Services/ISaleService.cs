@@ -5,6 +5,6 @@ namespace TheChienHouse.Services
 {
     public interface ISaleService
     {
-        Task<SaleCreateResponse> CreateSaleAsync(SaleCreateRequest request);
+        Task<Sale> CreateSaleAsync(List<LineItem> lineItems, decimal discount = 0);
     }
 }
