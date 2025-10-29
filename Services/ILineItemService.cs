@@ -5,8 +5,8 @@ namespace TheChienHouse.Services
 {
     public interface ILineItemService
     {
-        Task<LineItem> CreateLineItemAsync(LineItemCreateRequest lineItemRequest);
-        Task<List<LineItem>> CreateLineItemsAsync(List<LineItemCreateRequest> lineItemRequests);
+        Task<LineItem> CreateLineItemAsync(Guid menuItem, int quantity, decimal discount);
+        Task<List<LineItem>> CreateLineItemsAsync(Dictionary<Guid, Tuple<int, decimal>> dictItems);
         Task<List<LineItem>> SetLineItemSaleId(List<LineItem> lineItems, Guid saleId);
     }
 }

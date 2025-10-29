@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TheChienHouse.Models;
 using TheChienHouse.Services;
+using static LineItemDTO;
 using static TheChienHouse.Models.SaleDTO;
 
 namespace TheChienHouse.Controllers
@@ -31,7 +27,8 @@ namespace TheChienHouse.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            List<LineItem> lineItems = _lineItemService.CreateLineItemsAsync(request.LineItems).Result;
+            Dictionary<Guid, Tuple<int, decimal>> lineItemDict = new Dictionary<Guid, Tuple<int, decimal>>();
+            List<LineItem> lineItems = await _lineItemService.CreateLineItemsAsync(lineItemDict);
             Sale sale = await _saleService.CreateSaleAsync(lineItems, request.SaleDiscount);
             return CreatedAtAction(nameof(PostSale), MapToResponse(sale));
         }
