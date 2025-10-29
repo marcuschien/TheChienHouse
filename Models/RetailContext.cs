@@ -12,6 +12,7 @@ namespace TheChienHouse.Models
         public DbSet<MenuItem> MenuItems { get; set; } = null!;
         public DbSet<Sale> Sales { get; set; } = null!;
         public DbSet<EventForm> EventForms { get; set; } = null!;
+        public DbSet<LineItem> LineItems { get; set; } = null!;
 
         // Creating the DB models so that API can map to it correctly
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,6 +36,22 @@ namespace TheChienHouse.Models
                 entity.ToTable("Sales");
                 entity.Property(e => e.Id).HasColumnName("sale_id");
                 // Add more property configurations as needed
+            });
+
+            //Customizing the LineItem table and columns
+            modelBuilder.Entity<LineItem>(entity =>
+            {
+                entity.ToTable("LineItems");
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.SaleId).HasColumnName("sale_id");
+                entity.Property(e => e.MenuItemForSale).HasColumnName("menu_item_id");
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
+                entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+                entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
+                entity.Property(e => e.Discount).HasColumnName("discount");
+                entity.Property(e => e.PricePerItem).HasColumnName("price_per_item");
+                entity.Property(e => e.SubTotal).HasColumnName("sub_total");
+                entity.Property(e => e.TotalCost).HasColumnName("total_cost");
             });
 
             //Customizing the EventForm table and columns
