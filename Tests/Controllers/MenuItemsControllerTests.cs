@@ -35,7 +35,7 @@ namespace TheChienHouse.Tests.Controllers
             // Act
             var result = await _controller.GetMenuItem(new MenuItemRequest(_testItem.Id));
             // Assert
-            var actionResult = Assert.IsType<ActionResult<MenuItem>>(result);
+            var actionResult = Assert.IsType<ActionResult<MenuItemResponse>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
             var returnValue = Assert.IsType<MenuItem>(createdAtActionResult.Value);
             Assert.Equal(_testItem, returnValue);
@@ -49,9 +49,8 @@ namespace TheChienHouse.Tests.Controllers
 
             var result = await _controller.GetMenuItem(new MenuItemRequest(Guid.NewGuid()));
 
-            var actionResult = Assert.IsType<ActionResult<MenuItem>>(result);
-            var notFoundResult = Assert.IsType<NotFoundResult>(actionResult.Result);
-            Assert.Equal(404, notFoundResult.StatusCode);
+            var actionResult = Assert.IsType<ActionResult<MenuItemResponse>>(result);
+            var notFoundResult = Assert.IsType<KeyNotFoundException>(actionResult.Result);
         }
 
         [Fact]
