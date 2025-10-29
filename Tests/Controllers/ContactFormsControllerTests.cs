@@ -32,7 +32,7 @@ namespace TheChienHouse.Tests.Controllers
             new ContactForm() { Id = Guid.NewGuid(), ClientId = _testClientId, FirstName = "TestName3", LastName = "TestLastName", Email = "TestEmail3@Email.com", PhoneNumber = "IShouldDoACheckToMakeSureThisIsAllNumbers", Subject = "TestSubject3", Message = "TestMessage3"},
             new ContactForm() { Id = Guid.NewGuid(), ClientId = _testClientId, FirstName = "TestName4", LastName = "TestLastName", Email = "TestEmail4@Email.com", PhoneNumber = "IShouldDoACheckToMakeSureThisIsAllNumbers", Subject = "TestSubject4", Message = "TestMessage4"},
         };
-        private static readonly ContactFormCreateResponse _testResponse = new ContactFormCreateResponse(
+        private static readonly ContactFormResponse _testResponse = new ContactFormResponse(
             _testForm.Id,
             _testClientId,
             _testForm.FirstName,
@@ -42,7 +42,7 @@ namespace TheChienHouse.Tests.Controllers
             _testForm.Subject,
             _testForm.Message,
             _testForm.CreatedAt);
-        private static readonly ContactFormCreateRequest _testRequest = new ContactFormCreateRequest(
+        private static readonly ContactFormCreateRequest _testCreateRequest = new ContactFormCreateRequest(
             _testClientId,
             _testForm.FirstName,
             _testForm.LastName,
@@ -62,23 +62,35 @@ namespace TheChienHouse.Tests.Controllers
         {
             _mockContactFormService.Setup(service => service.GetContactFormByIdAsync(_testClientId)).ReturnsAsync(_testForm);
 
-            var result = await _controller.GetContactForm(_testClientId);
+            var result = await _controller.GetContactForm(new ContactFormRequest(_testClientId));
 
-            var actionResult = Assert.IsType<ActionResult<ContactForm>>(result);
-            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-            var returnValue = Assert.IsType<ContactForm>(createdAtActionResult.Value);
-            Assert.Equal(_testForm, returnValue);
+            var actionResult = Assert.IsType<ActionResult<ContactFormResponse>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var returnValue = Assert.IsType<ContactFormResponse>(okResult.Value);
+            Assert.Equal(_testForm.Id, returnValue.Id);
+            Assert.Equal(_testForm.ClientId, returnValue.ClientId);
+            Assert.Equal(_testForm.FirstName, returnValue.FirstName);
+            Assert.Equal(_testForm.LastName, returnValue.LastName);
+            Assert.Equal(_testForm.Email, returnValue.Email);
+            Assert.Equal(_testForm.PhoneNumber, returnValue.PhoneNumber);
+            Assert.Equal(_testForm.Subject, returnValue.Subject);
+            Assert.Equal(_testForm.Message, returnValue.Message);
         }
 
         [Fact]
         public async Task GetContactForms_ByClientId_Success()
         {
             _mockContactFormService.Setup(service => service.GetContactFormsAsync(_testClientId, null, null)).ReturnsAsync(_testForms);
-            var result = await _controller.GetContactForms(_testClientId);
-            var actionResult = Assert.IsType<ActionResult<IEnumerable<ContactForm>>>(result);
-            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-            var returnValue = Assert.IsType<List<ContactForm>>(createdAtActionResult.Value);
-            Assert.Equal(_testForms, returnValue);
+            var result = await _controller.GetContactForms(new ContactFormsQueryRequest(_testClientId, null, null));
+            var actionResult = Assert.IsType<ActionResult<ContactFormsResponse>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var returnValue = Assert.IsType<ContactFormsResponse>(okResult.Value);
+            var forms = returnValue.Forms.ToList();
+            Assert.Equal(_testForms.Count, forms.Count);
+            for (int i = 0; i < forms.Count; i++)
+            {
+                Assert.Equal(_testForms[i].Id, forms[i].Id);
+            }
         }
 
         [Fact]
@@ -87,21 +99,22 @@ namespace TheChienHouse.Tests.Controllers
             DateTime startDate = DateTime.UtcNow.AddDays(-10);
             DateTime endDate = DateTime.UtcNow;
             _mockContactFormService.Setup(service => service.GetContactFormsAsync(null, startDate, endDate)).ReturnsAsync(_testForms);
-            var result = await _controller.GetContactForms(null, startDate, endDate);
-            var actionResult = Assert.IsType<ActionResult<IEnumerable<ContactForm>>>(result);
-            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-            var returnValue = Assert.IsType<List<ContactForm>>(createdAtActionResult.Value);
-            Assert.Equal(_testForms, returnValue);
+            var result = await _controller.GetContactForms(new ContactFormsQueryRequest(null, startDate, endDate));
+            var actionResult = Assert.IsType<ActionResult<ContactFormsResponse>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var returnValue = Assert.IsType<ContactFormsResponse>(okResult.Value);
+            var forms = returnValue.Forms.ToList();
+            Assert.Equal(_testForms.Count, forms.Count);
         }
 
         [Fact]
         public async Task CreateContactForm_Success()
         {
-            _mockContactFormService.Setup(service => service.CreateContactFormAsync(_testRequest)).ReturnsAsync(_testResponse);
-            var result = await _controller.CreateContactForm(_testRequest);
-            var actionResult = Assert.IsType<ActionResult<ContactFormCreateResponse>>(result);
+            _mockContactFormService.Setup(service => service.CreateContactFormAsync(_testCreateRequest.ClientId,_testCreateRequest.FirstName,_testCreateRequest.LastName,_testCreateRequest.ClientEmail,_testCreateRequest.ClientPhoneNumber,_testCreateRequest.Subject,_testCreateRequest.Message)).ReturnsAsync(_testForm);
+            var result = await _controller.CreateContactForm(_testCreateRequest);
+            var actionResult = Assert.IsType<ActionResult<ContactFormResponse>>(result);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-            var returnValue = Assert.IsType<ContactFormCreateResponse>(createdAtActionResult.Value);
+            var returnValue = Assert.IsType<ContactFormResponse>(createdAtActionResult.Value);
             Assert.Equal(_testResponse, returnValue);
         }
 
@@ -110,14 +123,14 @@ namespace TheChienHouse.Tests.Controllers
         {
             //TODO: Figure out how to validate the form was deleted
             _mockContactFormService.Setup(service => service.DeleteContactFormAsync(_testClientId)).ReturnsAsync(true);
-            var result = await _controller.DeleteContactForm(_testClientId);
+            var result = await _controller.DeleteContactForm(new ContactFormRequest(_testClientId));
             Assert.IsType<NoContentResult>(result);
         }
         [Fact]
         public async Task DeleteContactForm_NotFound()
         {
             _mockContactFormService.Setup(service => service.DeleteContactFormAsync(_testClientId)).ReturnsAsync(false);
-            var result = await _controller.DeleteContactForm(_testClientId);
+            var result = await _controller.DeleteContactForm(new ContactFormRequest(_testClientId));
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
             Assert.Equal(404, notFoundResult.StatusCode);
         }
@@ -127,7 +140,7 @@ namespace TheChienHouse.Tests.Controllers
         {
             //TODO: Figure out how to validate the forms were deleted
             _mockContactFormService.Setup(service => service.DeleteContactFormsByClientIdAsync(_testClientId)).ReturnsAsync(true);
-            var result = await _controller.DeleteContactFormsByClientId(_testClientId);
+            var result = await _controller.DeleteContactFormsByClientId(new ContactFormsDeleteByClientIdRequest(_testClientId));
             Assert.IsType<NoContentResult>(result);
         }
         
