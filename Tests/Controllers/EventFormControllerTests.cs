@@ -17,50 +17,44 @@ namespace TheChienHouse.Tests.Controllers
     {
         private readonly Mock<IEventFormService> _mockEventFormService;
         private readonly EventFormsController _eventFormsController;
-        //TODO: Eventually I should migrate these to a test database seeding strategy.
-        private static readonly Guid _testClientId = Guid.NewGuid();
-        private static readonly EventForm _testEventForm = new EventForm
+        private readonly Guid _testClientId;
+        private readonly EventForm _testEventForm;
+        private readonly List<EventForm> _testEventForms;
+        private readonly EventFormCreateRequest _testCreateRequest;
+        private readonly EventFormUpdateRequest _testUpdateRequest;
+
+        public EventFormControllerTests()
         {
-            Id = Guid.NewGuid(),
-            EventType = EventType.Party,
-            DietaryRestrictions = new List<DietaryRestrictions> { DietaryRestrictions.None },
-            EventDate = new DateTime(2025, 10, 9),
-            FirstName = "Kennedy",
-            LastName = "Irving",
-            ClientId = Guid.NewGuid(),
-            ClientEmail = "Test@Email.com",
-            Status = Status.Pending,
-            Location = "TheChienHouse",
-            BudgetPerPerson = 22.22m,
-            NumberOfGuests = 2,
-            ExtraNotes = "Test Notes"
-        };
-        private static readonly List<EventForm> _testEventForms = new List<EventForm>
-        {
+            //Create Test Components
+            _mockEventFormService = new Mock<IEventFormService>();
+            _eventFormsController = new EventFormsController(_mockEventFormService.Object);
+
+            //Create Test Data
+            _testClientId = Guid.NewGuid();
+            _testEventForm = new EventForm
+            {
+                Id = Guid.NewGuid(),
+                EventType = EventType.Party,
+                DietaryRestrictions = new List<DietaryRestrictions> { DietaryRestrictions.None },
+                EventDate = new DateTime(2025, 10, 9),
+                FirstName = "Kennedy",
+                LastName = "Irving",
+                ClientId = Guid.NewGuid(),
+                ClientEmail = "Test@Email.com",
+                Status = Status.Pending,
+                Location = "TheChienHouse",
+                BudgetPerPerson = 22.22m,
+                NumberOfGuests = 2,
+                ExtraNotes = "Test Notes"
+            };
+            _testEventForms = new List<EventForm>
+            {
             new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 8), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
             new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 8), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Pending, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
             new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 6), FirstName = "Kennedy", LastName = "Irving", ClientEmail = "Test@Email.com", ClientId = _testClientId, Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 },
             new EventForm { Id = Guid.NewGuid(), EventType = EventType.Party, DietaryRestrictions = new List<DietaryRestrictions>{ DietaryRestrictions.None }, EventDate=new DateTime(2025, 10, 8), FirstName = "NotKennedy", LastName = "NotIrving", ClientEmail = "Test@Email.com", ClientId = Guid.NewGuid(), Status = Status.Confirmed, Location = "TheChienHouse", BudgetPerPerson = 22.22m, NumberOfGuests = 2 }
-        };
-        private static readonly EventFormCreateResponse _testCreateResponse = new EventFormCreateResponse(
-            _testEventForm.Id,
-            _testEventForm.EventType,
-            _testEventForm.DietaryRestrictions,
-            _testEventForm.ClientId,
-            _testEventForm.EventDate,
-            _testEventForm.FirstName,
-            _testEventForm.LastName,
-            _testEventForm.ClientEmail,
-            _testEventForm.ClientPhoneNumber,
-            _testEventForm.Status,
-            _testEventForm.CreatedAt,
-            _testEventForm.UpdatedAt,
-            _testEventForm.Location,
-            _testEventForm.BudgetPerPerson,
-            _testEventForm.NumberOfGuests,
-            _testEventForm.ExtraNotes
-        );
-        private static readonly EventFormCreateRequest _testCreateRequest = new EventFormCreateRequest(
+            };
+            _testCreateRequest = new EventFormCreateRequest(
             _testEventForm.EventType,
             _testEventForm.DietaryRestrictions,
             _testEventForm.ClientId,
@@ -74,9 +68,8 @@ namespace TheChienHouse.Tests.Controllers
             _testEventForm.BudgetPerPerson,
             _testEventForm.NumberOfGuests,
             _testEventForm.ExtraNotes
-        );
-
-        private static readonly EventFormUpdateRequest _testUpdateRequest = new EventFormUpdateRequest(
+            );
+            _testUpdateRequest = new EventFormUpdateRequest(
                 _testEventForm.Id,
                 _testEventForm.EventType,
                 _testEventForm.DietaryRestrictions,
@@ -92,11 +85,6 @@ namespace TheChienHouse.Tests.Controllers
                 _testEventForm.NumberOfGuests,
                 _testEventForm.ExtraNotes
             );
-
-        public EventFormControllerTests()
-        {
-            _mockEventFormService = new Mock<IEventFormService>();
-            _eventFormsController = new EventFormsController(_mockEventFormService.Object);
         }
 
         [Fact]
