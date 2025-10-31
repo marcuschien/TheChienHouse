@@ -88,7 +88,7 @@ namespace TheChienHouse.Services
             IEnumerable<ContactForm> contactForms = await _context.ContactForms.ToListAsync();
             if (clientId.HasValue)
             {
-                contactForms = contactForms.Where(cf => cf.ClientId == clientId);
+                contactForms = contactForms.Where(cf => cf.ClientId == clientId.Value).ToList();
             }
             if (startDate.HasValue || endDate.HasValue)
             {
@@ -100,7 +100,7 @@ namespace TheChienHouse.Services
                 {
                     throw new ArgumentException("Start date must be earlier than or equal to end date.");
                 }
-                contactForms = contactForms.Where(cf => cf.CreatedAt >= startDate && cf.CreatedAt <= endDate);
+                contactForms = contactForms.Where(cf => cf.CreatedAt >= startDate.Value && cf.CreatedAt <= endDate.Value).ToList();
             }
             return contactForms;
         }

@@ -14,8 +14,29 @@ namespace TheChienHouse.Services
             _context = context;
             _logger = logger;
         }
+
         public async Task<EventForm> CreateEventFormAsync(EventType eventType, List<DietaryRestrictions> dietaryRestrictions, Guid? clientId, DateTime eventDate, string firstName, string? lastName, Status status, string location, string email, string? phoneNumber, decimal budgetPP, int numGuests, string? notes)
         {
+            // Validate required fields
+            if (dietaryRestrictions == null || !dietaryRestrictions.Any())
+            {
+                _logger.LogWarning("Attempted to create event form with missing dietary restrictions");
+                throw new ArgumentException("Missing required fields.");
+            }
+
+            // Check for duplicate submissions
+            var existingForm = await _context.EventForms
+                .FirstOrDefaultAsync(ef =>
+                    ef.ClientId == clientId &&
+                    ef.EventDate == eventDate &&
+                    ef.FirstName == firstName);
+
+            if (existingForm != null)
+            {
+                _logger.LogWarning("Duplicate event form detected for ClientId: {ClientId}, EventDate: {EventDate}, FirstName: {FirstName}", clientId, eventDate, firstName);
+                throw new Exception("Duplicate submission found. Event form not created");
+            }
+
             var newEventForm = new EventForm
             {
                 Id = Guid.NewGuid(),
@@ -31,9 +52,10 @@ namespace TheChienHouse.Services
                 CreatedAt = DateTime.UtcNow,
                 Location = location,
                 BudgetPerPerson = budgetPP,
-                NumberOfGuests =numGuests,
+                NumberOfGuests = numGuests,
                 ExtraNotes = notes
             };
+
             _context.EventForms.Add(newEventForm);
             await _context.SaveChangesAsync();
             _logger.LogInformation("Created new event form with ID: {EventFormId}", newEventForm.Id);
@@ -72,29 +94,42 @@ namespace TheChienHouse.Services
             }
         }
 
-        public async Task<IEnumerable<EventForm>> GetEventFormsAsync(Guid? clientId, Status? status, DateTime? startDate, DateTime? endDate) // Why do I want this to be async?
+        public async Task<IEnumerable<EventForm>> GetEventFormsAsync(Guid? clientId, Status? status, DateTime? startDate, DateTime? endDate)
         {
-            IEnumerable<EventForm> eventForms = await _context.EventForms.ToListAsync();
+            // Validate status enum value
+            if (status.HasValue && !Enum.IsDefined(typeof(Status), status.Value))
+            {
+                _logger.LogWarning("Invalid status value: {Status}", status);
+                throw new ArgumentException("Invalid status value.");
+            }
+
+           IEnumerable<EventForm> eventForms = await _context.EventForms.ToListAsync();
+
             if (clientId.HasValue)
             {
-                eventForms = eventForms.Where(cf => cf.ClientId == clientId); //TODO: Fix me. I'm not filtering properly.
+                eventForms = eventForms.Where(cf => cf.ClientId == clientId.Value).ToList();
             }
+
             if (status.HasValue)
             {
-                eventForms = eventForms.Where(cf => cf.Status == status);
+                eventForms = eventForms.Where(cf => cf.Status == status.Value).ToList();
             }
+
             if (startDate.HasValue || endDate.HasValue)
             {
                 if (!startDate.HasValue || !endDate.HasValue)
                 {
+                    _logger.LogWarning("Date range filtering attempted with missing start or end date");
                     throw new ArgumentException("Both start date and end date must be provided for date range filtering.");
                 }
                 if (startDate > endDate)
                 {
+                    _logger.LogWarning("Date range filtering attempted with start date after end date");
                     throw new ArgumentException("Start date must be earlier than or equal to end date.");
                 }
-                eventForms = eventForms.Where(cf => cf.EventDate >= startDate && cf.EventDate <= endDate);
+                eventForms = eventForms.Where(cf => cf.EventDate >= startDate.Value && cf.EventDate <= endDate.Value).ToList();
             }
+
             return eventForms;
             //Optimization?: Would it be better to filter at the database level instead of in-memory? i.e. write a different query for each filter type? It would certainly mean we're not fetching the entire forms table every time.
         }
@@ -129,7 +164,5 @@ namespace TheChienHouse.Services
                 return form;
             }
         }
-
-        
     }
 }
