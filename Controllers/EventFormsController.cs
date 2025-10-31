@@ -44,7 +44,7 @@ namespace TheChienHouse.Controllers
         //GET: api/EventForms?clientId={clientId}&status={status}&startDate={startDate}&endDate={endDate}
         //TODO: Implement/Fix Me
         [HttpGet("forms/{clientId}&{status}&{startDate}&{endDate}")]
-        public async Task<ActionResult<IEnumerable<EventFormsResponse>>> GetEventForms(EventFormRequest request)
+        public async Task<ActionResult<EventFormsResponse>> GetEventForms(EventFormRequest request)
         {
             IEnumerable<EventForm> eventForms = await _eventFormService.GetEventFormsAsync(request.ClientId, request.Status, request.StartDate, request.EndDate);
             return CreatedAtAction(nameof(GetEventForms), new EventFormsResponse(eventForms));

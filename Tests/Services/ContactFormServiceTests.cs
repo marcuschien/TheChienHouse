@@ -7,44 +7,19 @@ using static TheChienHouse.Models.ContactFormDTO;
 
 namespace TheChienHouse.Tests.Services
 {
-    public class ContactFormServiceTests
+    public class ContactFormServiceTests : IDisposable
     {
         private readonly ContactFormService _contactFormsService;
         private readonly RetailContext _context;
         private readonly Mock<ILogger<ContactFormService>> _mockLogger;
-        //TODO: Contactually I should migrate these to a test database. 
-        private static readonly Guid _testClientId = Guid.NewGuid();
-        private static readonly ContactForm _testContactForm = new ContactForm
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "Kennedy",
-            LastName = "Irving",
-            Email = "Test@Test.com",
-            PhoneNumber = "1234567890",
-            Subject = "TestSubject",
-            Message = "TestMessage",
-            ClientId = _testClientId,
-            CreatedAt = DateTime.UtcNow
-        };
-        private static readonly List<ContactForm> _testContactForms = new List<ContactForm>
-        {
-            new ContactForm { Id = Guid.NewGuid(), FirstName = "Marcus", LastName = "Chien", Email = "Test@TheChienHouse.com", PhoneNumber = "2066693774", Subject = "Hello World", Message = "I like yummy food", ClientId = Guid.NewGuid(), CreatedAt = DateTime.UtcNow},
-            new ContactForm { Id = Guid.NewGuid(), FirstName = "Jack", LastName = "Williams", Email = "Test@TheChienHouse.com", PhoneNumber = "2066693774", Subject = "Hello World", Message = "I like yummy food", ClientId = Guid.NewGuid(), CreatedAt = DateTime.UtcNow},
-            new ContactForm { Id = Guid.NewGuid(), FirstName = "Jack", LastName = "Naylor", Email = "Test@TheChienHouse.com", PhoneNumber = "2066693774", Subject = "Hello World", Message = "I like yummy food", ClientId = Guid.NewGuid(), CreatedAt = DateTime.UtcNow},
-            new ContactForm { Id = Guid.NewGuid(), FirstName = "Kennedy", LastName = "Irving", Email = "Test@TheChienHouse.com", PhoneNumber = "2066693774", Subject = "Hello World", Message = "I like yummy food", ClientId = _testClientId, CreatedAt = DateTime.UtcNow.AddDays(-2)},
-        };
-        private static readonly ContactFormCreateRequest _testCreateRequest = new ContactFormCreateRequest(
-            _testClientId,
-            _testContactForm.FirstName,
-            _testContactForm.LastName,
-            _testContactForm.Email,
-            _testContactForm.PhoneNumber,
-            _testContactForm.Subject,
-            _testContactForm.Message
-        );
+        private readonly Guid _testClientId;
+        private readonly ContactForm _testContactForm;
+        private readonly List<ContactForm> _testContactForms;
+        private readonly ContactFormCreateRequest _testCreateRequest;
 
-        public ContactFormServiceTests() //TODO: Figure out how to populate DB context with test data just ONCE so that duplicate items aren't trying to be added. 
+        public ContactFormServiceTests()
         {
+            //Create Test DB and Mock Components
             var options = new DbContextOptionsBuilder<RetailContext>()
                 .UseInMemoryDatabase(databaseName: $"ContactFormTestDb_{Guid.NewGuid()}")
                 .Options;
@@ -52,12 +27,47 @@ namespace TheChienHouse.Tests.Services
             _mockLogger = new Mock<ILogger<ContactFormService>>();
             _contactFormsService = new ContactFormService(_context, _mockLogger.Object);
 
-            foreach (ContactForm contactForm in _testContactForms)
+            //Create Test Data
+            _testClientId = Guid.NewGuid();
+            _testContactForm = new ContactForm
             {
-                _context.ContactForms.Add(contactForm);
-            }
+                Id = Guid.NewGuid(),
+                FirstName = "Kennedy",
+                LastName = "Irving",
+                Email = "Test@Test.com",
+                PhoneNumber = "1234567890",
+                Subject = "TestSubject",
+                Message = "TestMessage",
+                ClientId = _testClientId,
+                CreatedAt = DateTime.UtcNow
+            };
+            _testContactForms = new List<ContactForm>
+            {
+                new ContactForm { Id = Guid.NewGuid(), FirstName = "Marcus", LastName = "Chien", Email = "Test@TheChienHouse.com", PhoneNumber = "2066693774", Subject = "Hello World", Message = "I like yummy food", ClientId = Guid.NewGuid(), CreatedAt = DateTime.UtcNow},
+                new ContactForm { Id = Guid.NewGuid(), FirstName = "Jack", LastName = "Williams", Email = "Test@TheChienHouse.com", PhoneNumber = "2066693774", Subject = "Hello World", Message = "I like yummy food", ClientId = Guid.NewGuid(), CreatedAt = DateTime.UtcNow},
+                new ContactForm { Id = Guid.NewGuid(), FirstName = "Jack", LastName = "Naylor", Email = "Test@TheChienHouse.com", PhoneNumber = "2066693774", Subject = "Hello World", Message = "I like yummy food", ClientId = Guid.NewGuid(), CreatedAt = DateTime.UtcNow},
+                new ContactForm { Id = Guid.NewGuid(), FirstName = "Kennedy", LastName = "Irving", Email = "Test@TheChienHouse.com", PhoneNumber = "2066693774", Subject = "Hello World", Message = "I like yummy food", ClientId = _testClientId, CreatedAt = DateTime.UtcNow.AddDays(-2)},
+            };
+            _testCreateRequest = new ContactFormCreateRequest(
+                _testClientId,
+                _testContactForm.FirstName,
+                _testContactForm.LastName,
+                _testContactForm.Email,
+                _testContactForm.PhoneNumber,
+                _testContactForm.Subject,
+                _testContactForm.Message
+            );
+
+            //Seed the DB
             _context.ContactForms.Add(_testContactForm);
+            _context.ContactForms.AddRange(_testContactForms);
             _context.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
         }
 
         [Fact]
@@ -71,10 +81,10 @@ namespace TheChienHouse.Tests.Services
         [Fact]
         public async Task GetContactForms_ByClientId_Success()
         {
-            var result = await _contactFormsService.GetContactFormsAsync(_testClientId, null, null);
+            IEnumerable<ContactForm> result = await _contactFormsService.GetContactFormsAsync(_testClientId, null, null);
             Assert.NotNull(result);
             Assert.Equal(2, result.Count());
-            Assert.Equal(new List<ContactForm>([_testContactForms[3],_testContactForm]), result);
+            Assert.True(ValidateContactForms(new List<ContactForm>([_testContactForm, _testContactForms[3]]), result.ToList()));
         }
 
         [Fact]
@@ -117,6 +127,17 @@ namespace TheChienHouse.Tests.Services
 
         //TODO: Write more tests for failure cases and other scenarios. Follow EventFormServiceTests pattern.
 
+        public bool ValidateContactForms(List<ContactForm> expected, List<ContactForm> result)
+        {
+            for (int i = 0; i < expected.Count; i++)
+            {
+                if (!ValidateContactForm(expected[i], result[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         public bool ValidateContactForm(ContactForm expected, ContactForm result)
         {
             return expected.ClientId == result.ClientId &&

@@ -12,27 +12,38 @@ namespace TheChienHouse.Tests.Controllers
     {
         private readonly Mock<IContactFormService> _mockContactFormService;
         private readonly ContactFormsController _controller;
-        //TODO: Eventually I should migrate these to a test database seeding strategy.
-        private static Guid _testClientId = Guid.NewGuid();
-        private static readonly ContactForm _testForm = new ContactForm()
+        private Guid _testClientId; 
+        private readonly ContactForm _testForm;
+        private readonly List<ContactForm> _testForms;
+        private readonly ContactFormResponse _testResponse;
+        private readonly ContactFormCreateRequest _testCreateRequest;
+        public ContactFormsControllerTests()
         {
-            Id = Guid.NewGuid(),
-            ClientId = _testClientId,
-            FirstName = "TestFirstName",
-            LastName = "TestLastName",
-            Email = "TestEmail@Email.com",
-            PhoneNumber = "IShouldDoACheckToMakeSureThisIsAllNumbers",
-            Subject = "TestSubject",
-            Message = "TestMessage"
-        };
-        private static readonly List<ContactForm> _testForms = new List<ContactForm>()
-        {
-            new ContactForm() { Id = Guid.NewGuid(), ClientId = _testClientId, FirstName = "TestName1", LastName = "TestLastName", Email = "TestEmail1@Email.com", PhoneNumber = "IShouldDoACheckToMakeSureThisIsAllNumbers", Subject = "TestSubject1", Message = "TestMessage1"},
-            new ContactForm() { Id = Guid.NewGuid(), ClientId = _testClientId, FirstName = "TestName2", LastName = "TestLastName", Email = "TestEmail2@Email.com", PhoneNumber = "IShouldDoACheckToMakeSureThisIsAllNumbers", Subject = "TestSubject2", Message = "TestMessage2" },
-            new ContactForm() { Id = Guid.NewGuid(), ClientId = _testClientId, FirstName = "TestName3", LastName = "TestLastName", Email = "TestEmail3@Email.com", PhoneNumber = "IShouldDoACheckToMakeSureThisIsAllNumbers", Subject = "TestSubject3", Message = "TestMessage3"},
-            new ContactForm() { Id = Guid.NewGuid(), ClientId = _testClientId, FirstName = "TestName4", LastName = "TestLastName", Email = "TestEmail4@Email.com", PhoneNumber = "IShouldDoACheckToMakeSureThisIsAllNumbers", Subject = "TestSubject4", Message = "TestMessage4"},
-        };
-        private static readonly ContactFormResponse _testResponse = new ContactFormResponse(
+            // Create test components
+            _mockContactFormService = new Mock<IContactFormService>();
+            _controller = new ContactFormsController(_mockContactFormService.Object);
+
+            //Create Test Data
+            _testClientId = Guid.NewGuid();
+            _testForm = new ContactForm()
+            {
+                Id = Guid.NewGuid(),
+                ClientId = _testClientId,
+                FirstName = "TestFirstName",
+                LastName = "TestLastName",
+                Email = "TestEmail@Email.com",
+                PhoneNumber = "IShouldDoACheckToMakeSureThisIsAllNumbers",
+                Subject = "TestSubject",
+                Message = "TestMessage"
+            };
+            _testForms = new List<ContactForm>()
+            {
+                new ContactForm() { Id = Guid.NewGuid(), ClientId = _testClientId, FirstName = "TestName1", LastName = "TestLastName", Email = "TestEmail1@Email.com", PhoneNumber = "IShouldDoACheckToMakeSureThisIsAllNumbers", Subject = "TestSubject1", Message = "TestMessage1"},
+                new ContactForm() { Id = Guid.NewGuid(), ClientId = _testClientId, FirstName = "TestName2", LastName = "TestLastName", Email = "TestEmail2@Email.com", PhoneNumber = "IShouldDoACheckToMakeSureThisIsAllNumbers", Subject = "TestSubject2", Message = "TestMessage2" },
+                new ContactForm() { Id = Guid.NewGuid(), ClientId = _testClientId, FirstName = "TestName3", LastName = "TestLastName", Email = "TestEmail3@Email.com", PhoneNumber = "IShouldDoACheckToMakeSureThisIsAllNumbers", Subject = "TestSubject3", Message = "TestMessage3"},
+                new ContactForm() { Id = Guid.NewGuid(), ClientId = _testClientId, FirstName = "TestName4", LastName = "TestLastName", Email = "TestEmail4@Email.com", PhoneNumber = "IShouldDoACheckToMakeSureThisIsAllNumbers", Subject = "TestSubject4", Message = "TestMessage4"},
+            };
+            _testResponse = new ContactFormResponse(
             _testForm.Id,
             _testClientId,
             _testForm.FirstName,
@@ -42,7 +53,7 @@ namespace TheChienHouse.Tests.Controllers
             _testForm.Subject,
             _testForm.Message,
             _testForm.CreatedAt);
-        private static readonly ContactFormCreateRequest _testCreateRequest = new ContactFormCreateRequest(
+            _testCreateRequest = new ContactFormCreateRequest(
             _testClientId,
             _testForm.FirstName,
             _testForm.LastName,
@@ -50,11 +61,6 @@ namespace TheChienHouse.Tests.Controllers
             _testForm.PhoneNumber,
             _testForm.Subject,
             _testForm.Message);
-
-        public ContactFormsControllerTests()
-        {
-            _mockContactFormService = new Mock<IContactFormService>();
-            _controller = new ContactFormsController(_mockContactFormService.Object);
         }
 
         [Fact]
