@@ -1,8 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+﻿using Microsoft.EntityFrameworkCore;
 using TheChienHouse.Models;
-using static LineItemDTO;
-using static TheChienHouse.Models.MenuItemDTO;
-using static TheChienHouse.Models.SaleDTO;
 
 namespace TheChienHouse.Services
 {
@@ -36,6 +33,13 @@ namespace TheChienHouse.Services
             await _context.SaveChangesAsync();
             _logger.LogInformation("Added sale {SaleId} to DB", sale.Id);
             return sale;
+        }
+
+        public async Task<List<Sale>> GetAllSalesAsync()
+        {
+            List<Sale> listOfSales = await _context.Sales.ToListAsync();
+            _logger.LogInformation("Retrieved {SaleCount} sales from DB", listOfSales.Count);
+            return listOfSales;
         }
     }
 }
