@@ -5,13 +5,13 @@ namespace TheChienHouse.Models
 {
     public class SaleDTO
     {
-        public record SaleCreateRequest(
+        public record SaleRequest(
             List<LineItemCreateRequest> LineItems,
             [Range(0.01, double.MaxValue, ErrorMessage = "Discount must be greater than 0")]
             decimal SaleDiscount = 0
         );
 
-        public record SaleCreateResponse(
+        public record SaleResponse(
             Guid Id,
             List<LineItem> LineItems,
             [Range(0.01, double.MaxValue, ErrorMessage = "Sale total must be greater than 0")]

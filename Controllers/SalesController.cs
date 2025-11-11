@@ -23,7 +23,7 @@ namespace TheChienHouse.Controllers
         // POST: api/Sales
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<SaleCreateResponse>> PostSale(SaleCreateRequest request)
+        public async Task<ActionResult<SaleResponse>> PostSale(SaleRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -33,9 +33,17 @@ namespace TheChienHouse.Controllers
             return CreatedAtAction(nameof(PostSale), MapToResponse(sale));
         }
 
-        private SaleCreateResponse MapToResponse(Sale sale)
+        [HttpGet]
+        public async Task<ActionResult<List<SaleResponse>>> GetSales()
         {
-            return new SaleCreateResponse
+            List<Sale> sales = await _saleService.GetAllSalesAsync();
+            List<SaleResponse> response = sales.Select(sale => MapToResponse(sale)).ToList();
+            return Ok(response);
+        }
+
+        private SaleResponse MapToResponse(Sale sale)
+        {
+            return new SaleResponse
             (
                 sale.Id,
                 sale.LineItems,
